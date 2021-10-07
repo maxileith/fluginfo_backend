@@ -10,6 +10,9 @@ For the full list of settings and their values, see
 https://docs.djangoproject.com/en/3.2/ref/settings/
 """
 
+AMADEUS_KEY = 'mQXsefxpnqdSJqhqe6guFuQPBtNtDuVi'
+AMADEUS_SECRET = 'RQ7DvDAO9FfJz71Z'
+
 from pathlib import Path
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
@@ -106,7 +109,7 @@ AUTH_PASSWORD_VALIDATORS = [
 
 LANGUAGE_CODE = 'en-us'
 
-TIME_ZONE = 'UTC+2'
+TIME_ZONE = 'Europe/Berlin'
 
 USE_I18N = True
 
