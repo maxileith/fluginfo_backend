@@ -3,7 +3,7 @@ from .foundation import offer_cache, amadeus_client, bookshelf
 from .utils import split_duration
 import time
 
-class Search:
+class OfferSearch:
 
     def __init__(self: object, **params: dict) -> object:
         self.params = params
