@@ -1,0 +1,12 @@
+%YAML 1.2
+---
+
+django:
+  SECRET_KEY: 'key'
+
+amadeus:
+  API_KEY: 'key'
+  API_SECRET: 'secret'
+
+airhex:
+  API_KEY: 'key'
