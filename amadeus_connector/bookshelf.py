@@ -1,6 +1,7 @@
 from fluginfo.settings import BASE_DIR, DEBUG
 from os import path
 import json
+from .errors import AmadeusNothingFound
 
 class Bookshelf:
 
@@ -27,4 +28,7 @@ class Bookshelf:
                 json.dump(self.__dictionaries, f, indent=4)
 
     def get(self: object, type: str, id: str) -> dict:
-        return self.__dictionaries[type][id]
+        try:
+            return self.__dictionaries[type][id]
+        except KeyError:
+            raise AmadeusNothingFound

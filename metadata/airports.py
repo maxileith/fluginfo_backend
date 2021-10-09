@@ -1,11 +1,10 @@
 from rest_framework.status import HTTP_200_OK, HTTP_404_NOT_FOUND, HTTP_400_BAD_REQUEST
 from rest_framework.views import APIView
 from django.http.response import JsonResponse, HttpResponse
-import amadeus_connector
 from django.utils.decorators import method_decorator
 from django.views.decorators.cache import cache_page
 from drf_spectacular.utils import extend_schema, OpenApiParameter, OpenApiExample
-
+from amadeus_connector import AmadeusNothingFound, Airport
 
 class AirportSearch(APIView):
 
@@ -42,19 +41,12 @@ class AirportSearch(APIView):
             )
 
         try:
-            airports = amadeus_connector.Airport.search(request.GET.get('s'))
-        except AttributeError:
-            return HttpResponse(
-                content='',
-                status=HTTP_400_BAD_REQUEST,
-            )
-
-        if len(airports):
+            airports = Airport.search(request.GET.get('s'))
             return JsonResponse(
                 data=airports,
                 status=HTTP_200_OK,
             )
-        else:
+        except AmadeusNothingFound:
             return HttpResponse(
                 content='',
                 status=HTTP_404_NOT_FOUND,
@@ -95,15 +87,13 @@ class AirportDetails(APIView):
             )
 
         try:
-            airport = amadeus_connector.Airport.details(
-                request.GET.get('iata'))
-        except AttributeError:
+            airport = Airport.details(request.GET.get('iata'))
+            return JsonResponse(
+                data=airport,
+                status=HTTP_200_OK,
+            )
+        except AmadeusNothingFound:
             return HttpResponse(
                 content='',
                 status=HTTP_404_NOT_FOUND,
             )
-
-        return JsonResponse(
-            data=airport,
-            status=HTTP_200_OK,
-        )

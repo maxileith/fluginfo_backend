@@ -1,3 +1,3 @@
-from .offers import OfferSearch
-from .offer_cache import NoMatchingHashError
+from .offers import OfferSearch, OfferSeatmaps
 from .airports import Airport
+from .errors import *

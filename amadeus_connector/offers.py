@@ -2,16 +2,30 @@ from datetime import date
 from .foundation import offer_cache, amadeus_client, bookshelf
 from .utils import split_duration
 from .airports import Airport
+from amadeus.client.errors import ResponseError
 import time
+from .errors import AmadeusBadRequest, AmadeusNothingFound
+import json
 
-
-class OfferConfirm:
+class OfferSeatmaps:
     
-    def __init__(self: object, hash: int) -> object:
+    def __init__(self: object, hash: str) -> object:
         self.__hash = hash
 
-#    def 
+    def go(self: object) -> dict:
+        offer = offer_cache.get([self.__hash])[self.__hash]
 
+        print(json.dumps(offer))
+
+        response = amadeus_client.post(
+            path='/v1/shopping/seatmaps',
+            params={
+                'data': [offer]
+            }
+        )
+        return response.result
+
+        
 
 class OfferSearch:
 
@@ -26,8 +40,11 @@ class OfferSearch:
         return self
 
     def __load_results(self: object) -> list:
-        response = amadeus_client.shopping.flight_offers_search.get(
-            **self.__params)
+        try:
+            response = amadeus_client.shopping.flight_offers_search.get(
+                **self.__params)
+        except ResponseError:
+            raise AmadeusBadRequest
         # save dictionaries
         dictionaries = response.result['dictionaries']
         bookshelf.add(**dictionaries)

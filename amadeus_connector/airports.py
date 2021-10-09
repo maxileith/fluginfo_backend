@@ -1,6 +1,7 @@
 from datetime import date
 from .foundation import amadeus_client, bookshelf
 from amadeus import Location, ResponseError
+from .errors import AmadeusNothingFound
 
 
 def simplify_airports(airports: list) -> dict:
@@ -21,16 +22,18 @@ class Airport:
 
     @staticmethod
     def search(s: str, isIata: bool = False) -> list:
-        airports = {}
         try:
+            if isIata:
+                airports = {s: {'iata': s}}
+            else:
+                airports = {}
             response = amadeus_client.reference_data.locations.get(
                 keyword=s,
                 subType=Location.AIRPORT,
             )
-            airports = simplify_airports(response.result['data'])
+            airports = {**airports, **simplify_airports(response.result['data'])}
         except ResponseError:
-            if isIata:
-                airports = {s: {'iata': s}}
+            raise AmadeusNothingFound
         finally:
             bookshelf.add(airports=airports)
             return airports
@@ -39,13 +42,10 @@ class Airport:
     def details(iata: str) -> dict:
         try:
             return bookshelf.get('airports', iata)
-        except KeyError:
+        except AmadeusNothingFound:
             pass
 
+        # search for the IATA-Code, then take a look
+        # to the bookshelf again.
         Airport.search(iata, isIata=True)
-        try:
-            return bookshelf.get('airports', iata)
-        except KeyError:
-            pass
-
-        return {}
+        return bookshelf.get('airports', iata)

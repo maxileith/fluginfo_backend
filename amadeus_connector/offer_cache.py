@@ -1,6 +1,8 @@
 import json
 from fluginfo.settings import BASE_DIR, DEBUG
 from os import path
+from hashlib import md5
+from .errors import AmadeusNothingFound
 
 
 class OfferCache:
@@ -12,7 +14,7 @@ class OfferCache:
         keys_added = []
         for offer in offers:
             as_string = json.dumps(offer, sort_keys=True)
-            hash_value = hash(as_string)
+            hash_value = md5(as_string.encode('utf-8')).hexdigest()
             self.__offers[hash_value] = offer
             keys_added.append(hash_value)
 
@@ -33,10 +35,6 @@ class OfferCache:
                 offers[h] = self.__offers[h]
             except KeyError:
                 if not ignore_missing:
-                    raise NoMatchingHashError
+                    raise AmadeusNothingFound
 
         return offers
-
-
-class NoMatchingHashError(Exception):
-    pass
