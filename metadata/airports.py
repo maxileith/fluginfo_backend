@@ -27,6 +27,7 @@ class AirportSearch(APIView):
             ),
         ],
         auth=None,
+        summary='Which airports match my keyword?',
     )
     @method_decorator(cache_page(1800))
     def get(self, request):
@@ -80,6 +81,7 @@ class AirportDetails(APIView):
             ),
         ],
         auth=None,
+        summary='Give me details about an airport.',
     )
     @method_decorator(cache_page(86400))
     def get(self, request):

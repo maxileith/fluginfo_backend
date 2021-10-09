@@ -68,6 +68,8 @@ class AirlineLogo(APIView):
             ),
         ],
         auth=None,
+        summary='What ist the logo of a certain airline?',
+
     )
     @method_decorator(cache_page(86400))
     def get(self, request):
@@ -116,8 +118,6 @@ class AirlineLogo(APIView):
             logo_id = f'{iata_code}_{shape}_{AIRHEX_KEY}'
             logo_md5 = md5(logo_id.encode('utf-8')).hexdigest()
             url = f'https://content.airhex.com/content/logos/airlines_{iata_code}_{shape}.svg?md5apikey={logo_md5}'
-
-        print(url)
 
         r = requests.get(url, allow_redirects=False)
         if r.status_code == 200:

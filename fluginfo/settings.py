@@ -146,3 +146,18 @@ AMADEUS_KEY = config_yaml['amadeus']['API_KEY']
 AMADEUS_SECRET = config_yaml['amadeus']['API_SECRET']
 
 AIRHEX_KEY = config_yaml['airhex']['API_KEY']
+
+CACHES = {
+    'default': {
+        'BACKEND': 'django.core.cache.backends.locmem.LocMemCache',
+        'LOCATION': 'unique-snowflake',
+        'OPTIONS': {
+            'MAX_ENTRIES': 5000,
+        },
+        'TIMEOUT': 1800,
+    }
+} if not DEBUG else {
+    'default': {
+        'BACKEND': 'django.core.cache.backends.dummy.DummyCache',
+    },
+}

@@ -232,6 +232,7 @@ class Search(APIView):
             ),
         ],
         auth=None,
+        summary='What are the flight offers?',
     )
     @method_decorator(cache_page(1800))
     def get(self, request):

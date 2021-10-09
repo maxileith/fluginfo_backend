@@ -4,21 +4,30 @@ from .utils import split_duration
 from .airports import Airport
 import time
 
+
+class OfferConfirm:
+    
+    def __init__(self: object, hash: int) -> object:
+        self.__hash = hash
+
+#    def 
+
+
 class OfferSearch:
 
     def __init__(self: object, **params: dict) -> object:
-        self.params = params
+        self.__params = params
 
     def mod_filter(self, **params: dict) -> object:
-        tmp = {**self.params, **params}
+        tmp = {**self.__params, **params}
         # remove key-value-pairs if the value is "None"
         tmp = {k: v for k, v in tmp.items() if v != None}
-        self.params = tmp
+        self.__params = tmp
         return self
 
     def __load_results(self: object) -> list:
         response = amadeus_client.shopping.flight_offers_search.get(
-            **self.params)
+            **self.__params)
         # save dictionaries
         dictionaries = response.result['dictionaries']
         bookshelf.add(**dictionaries)

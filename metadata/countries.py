@@ -36,6 +36,7 @@ class CountryFlag(APIView):
             ),
         ],
         auth=None,
+        summary='What ist the flag of the country?',
     )
     @method_decorator(cache_page(86400))
     def get(self, request):
