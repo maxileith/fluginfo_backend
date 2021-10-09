@@ -4,10 +4,10 @@ import json
 
 class Bookshelf:
 
-    def __init__(self: object, initial_dictionaries: dict = {}):
+    def __init__(self: object, **initial_dictionaries: dict):
         self.__dictionaries = initial_dictionaries
 
-    def add(self: object, dictionaries: dict):
+    def add(self: object, **dictionaries: dict):
         # aircraft, locations, currencies, ...
         all_types = list(dictionaries.keys())
         all_types.extend(self.__dictionaries.keys())
@@ -26,5 +26,5 @@ class Bookshelf:
             with open(json_path, 'w+') as f:
                 json.dump(self.__dictionaries, f, indent=4)
 
-    def get(self: object, type: str, id: str):
+    def get(self: object, type: str, id: str) -> dict:
         return self.__dictionaries[type][id]

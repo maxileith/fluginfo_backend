@@ -1,6 +1,7 @@
 from datetime import date
 from .foundation import offer_cache, amadeus_client, bookshelf
 from .utils import split_duration
+from .airports import Airport
 import time
 
 class OfferSearch:
@@ -20,7 +21,7 @@ class OfferSearch:
             **self.params)
         # save dictionaries
         dictionaries = response.result['dictionaries']
-        bookshelf.add(dictionaries)
+        bookshelf.add(**dictionaries)
         # cache offers
         offers = response.result['data']
         hashes = offer_cache.add(offers)
@@ -57,10 +58,17 @@ class OfferSearch:
                         'segments': [
                             {
                                 'duration': split_duration(s['duration']),
+                                'carrierCode': s['carrierCode'],
                                 'carrier': bookshelf.get('carriers', s['carrierCode']),
                                 'aircraft': bookshelf.get('aircraft', s['aircraft']['code']),
-                                'departure': s['departure'],
-                                'arrival': s['arrival'],
+                                'departure': {
+                                    'airport': Airport.details(s['departure']['iataCode']),
+                                    'at': s['departure']['at'],
+                                },
+                                'arrival': {
+                                    'airport': Airport.details(s['arrival']['iataCode']),
+                                    'at': s['arrival']['at'],
+                                },
                             } 
                             for s in i['segments']
                         ]

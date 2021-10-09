@@ -1,6 +1,7 @@
 .vscode/
 amadeus_connector/offer_cache.json
 amadeus_connector/bookshelf.json
+config.yaml
 
 # Byte-compiled / optimized / DLL files
 __pycache__/

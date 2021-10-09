@@ -1,7 +1,7 @@
 from rest_framework.status import HTTP_200_OK, HTTP_404_NOT_FOUND, HTTP_400_BAD_REQUEST
 from rest_framework.views import APIView
-from django.http.response import JsonResponse
-from amadeus_connector import OfferSearch
+from django.http.response import JsonResponse, HttpResponse
+import amadeus_connector
 from django.utils.decorators import method_decorator
 from django.views.decorators.cache import cache_page
 from drf_spectacular.utils import extend_schema, OpenApiParameter, OpenApiExample
@@ -233,7 +233,7 @@ class Search(APIView):
         ],
         auth=None,
     )
-    @method_decorator(cache_page(30 * 60))
+    @method_decorator(cache_page(1800))
     def get(self, request):
         """
         This endpoint returns flight connections that match the search criteria
@@ -241,16 +241,21 @@ class Search(APIView):
         To retrieve details, the key can be used at the corresponding endpoint. 
         """
         try:
-            s = OfferSearch(**request.GET.dict())
+            s = amadeus_connector.OfferSearch(**request.GET.dict())
             offers = s.go()
 
-            return JsonResponse(
-                data=offers,
-                status=HTTP_200_OK if len(offers) else HTTP_404_NOT_FOUND
-            )
-        except AttributeError:
-            return JsonResponse(
-                data={},
-                status=HTTP_400_BAD_REQUEST
-            )
-        
+            if len(offers):
+                return JsonResponse(
+                    data=offers,
+                    status=HTTP_200_OK,
+                )
+            else:
+                return HttpResponse(
+                    content='',
+                    status=HTTP_404_NOT_FOUND,
+                )
+        except KeyError:
+            return HttpResponse(
+                content='',
+                status=HTTP_400_BAD_REQUEST,
+            )        

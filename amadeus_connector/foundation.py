@@ -9,7 +9,6 @@ amadeus_client = Client(
     client_id=AMADEUS_KEY,
     client_secret=AMADEUS_SECRET,
     logger=logging.Logger,
-    log_level='warn',
     hostname='test',
     ssl=True,
 )
