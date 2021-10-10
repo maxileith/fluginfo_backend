@@ -12,7 +12,7 @@ class OfferSeatmaps:
     def __init__(self: object, hash: str) -> object:
         self.__hash = hash
 
-    def go(self: object) -> dict:
+    def get(self: object) -> dict:
         offer = offer_cache.get([self.__hash])[self.__hash]
 
         print(json.dumps(offer))
@@ -24,6 +24,75 @@ class OfferSeatmaps:
             }
         )
         return response.result
+
+
+class OfferDetails:
+
+    def __init__(self: object, hash: str) -> object:
+        self.__hash = hash
+
+    def get(self: object) -> dict:
+        offer = offer_cache.get([self.__hash])[self.__hash]
+        return self.__simplify_offer(offer)
+
+    def __simplify_offer(self: object, offer: dict) -> dict:
+
+        currency = bookshelf.get('currencies', offer['price']['currency'])
+
+        return {
+            'price': {
+                'total': f'{offer["price"]["total"]} {currency}',
+                'base': f'{offer["price"]["base"]} {currency}',
+                'fees': [
+                    {
+                        'amount': f'{f["amount"]} {currency}',
+                        'type': f['type'],
+                    } for f in offer['price']['fees']
+                ],
+                'grandTotal': f'{offer["price"]["grandTotal"]} {currency}',
+                'perTraveler': {
+                    t['travelerId']: {
+                        'fareOption': t['fareOption'],
+                        'travelerType': t['travelerType'],
+                        'price': {
+                            'total': f'{t["price"]["total"]} {currency}',
+                            'base': f'{t["price"]["base"]} {currency}',
+                        },
+                    } for t in offer['travelerPricings']
+                },
+            },
+            'itineraries': [
+                {
+                    'duration': split_duration(i['duration']),
+                    'segments': [
+                        {
+                            'id': s['id'],
+                            'departure': {
+                                'airport': Airport.details(s['departure']['iataCode']),
+                                'at': s['departure']['at'],
+                                'terminal': s['departure']['terminal'],
+                            },
+                            'arrival': {
+                                'airport': Airport.details(s['arrival']['iataCode']),
+                                'at': s['arrival']['at'],
+                                'terminal': s['arrival']['terminal'],
+                            },
+                            'carrierCode': s['carrierCode'],
+                            'carrier': bookshelf.get('carriers', s['carrierCode']),
+                            'duration': split_duration(s['duration']),
+                            'aircraft': bookshelf.get('aircraft', s['aircraft']['code']),
+                            'detailsPerTraveler': {
+                                t['travelerId']: {
+                                    'cabin': d['cabin'],
+                                    'class': d['class'],
+                                    'includedCheckedBags': d['includedCheckedBags'] if 'includedCheckedBags' in d.keys() else {},
+                                } for t in offer['travelerPricings'] for d in t['fareDetailsBySegment'] if d['segmentId'] == s['id']
+                            }
+                        } for s in i['segments']
+                    ],
+                } for i in offer['itineraries']
+            ],
+        }
 
         
 
@@ -72,34 +141,31 @@ class OfferSearch:
                 for s in tp['fareDetailsBySegment']:
                     classes.add(s['cabin'])
 
+            currency = bookshelf.get('currencies', offer['price']['currency'])
+            price = offer['price']['grandTotal']
+
             slim_offers[key] = {
-                'price': {
-                    'currency': bookshelf.get('currencies', offer['price']['currency']),
-                    'value': offer['price']['grandTotal'],
-                },
+                'price': f'{price} {currency}',
                 'classes': list(classes),
                 'itineraries': [
                     {
                         'duration': split_duration(i['duration']),
-                        'segments': [
+                        'stops': len(i['segments']) - 1,
+                        'carriers': [
                             {
-                                'duration': split_duration(s['duration']),
-                                'carrierCode': s['carrierCode'],
-                                'carrier': bookshelf.get('carriers', s['carrierCode']),
-                                'aircraft': bookshelf.get('aircraft', s['aircraft']['code']),
-                                'departure': {
-                                    'airport': Airport.details(s['departure']['iataCode']),
-                                    'at': s['departure']['at'],
-                                },
-                                'arrival': {
-                                    'airport': Airport.details(s['arrival']['iataCode']),
-                                    'at': s['arrival']['at'],
-                                },
-                            } 
-                            for s in i['segments']
-                        ]
-                    }
-                    for i in offer['itineraries']
+                                'carrierCode': carrierCode,
+                                'carrier': bookshelf.get('carriers', carrierCode),
+                            } for carrierCode in set([s['carrierCode'] for s in i['segments']])
+                        ],
+                        'departure': {
+                            'airport': Airport.details(i['segments'][0]['departure']['iataCode']),
+                            'at': i['segments'][0]['departure']['at'],
+                        },
+                        'arrival': {
+                            'airport': Airport.details(i['segments'][-1]['arrival']['iataCode']),
+                            'at': i['segments'][-1]['arrival']['at'],
+                        },
+                    } for i in offer['itineraries']
                 ],
             }
 

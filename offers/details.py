@@ -1,11 +1,11 @@
 from rest_framework.status import HTTP_200_OK, HTTP_404_NOT_FOUND, HTTP_400_BAD_REQUEST
 from rest_framework.views import APIView
 from django.http.response import JsonResponse, HttpResponse
-from amadeus_connector import OfferSeatmaps, AmadeusBadRequest, AmadeusNothingFound
+from amadeus_connector import OfferDetails, AmadeusBadRequest, AmadeusNothingFound
 from drf_spectacular.utils import extend_schema, OpenApiParameter
 
 
-class Seatmaps(APIView):
+class Details(APIView):
 
     @extend_schema(
         parameters=[
@@ -18,22 +18,22 @@ class Seatmaps(APIView):
             ),
         ],
         auth=None,
-        summary='How do the seatmaps look like?',
+        summary='Give me some details about an offer.',
     )
     def get(self, request):
         """
-        This endpoint returns the seatmaps matching an offer.
+        This endpoint returns details of the matching offer.
         """
         if 'id' not in request.GET.dict().keys():
             return HttpResponse(
                 content='',
                 status=HTTP_400_BAD_REQUEST,
             )
-        
-        seatmap = OfferSeatmaps(request.GET.get('id'))
+
+        details = OfferDetails(request.GET.get('id'))
         try:
             return JsonResponse(
-                data=seatmap.get(),
+                data=details.get(),
                 status=HTTP_200_OK,
             )
         except AmadeusNothingFound:
