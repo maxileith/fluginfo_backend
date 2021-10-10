@@ -232,7 +232,7 @@ class Search(APIView):
             ),
         ],
         auth=None,
-        summary='What are the flight offers?',
+        summary='How do I get from A to B?',
     )
     @method_decorator(cache_page(1800))
     def get(self, request):
