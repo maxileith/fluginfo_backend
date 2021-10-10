@@ -66,6 +66,36 @@ class AirlineLogo(APIView):
                 location=OpenApiParameter.QUERY,
                 default=200,
             ),
+            OpenApiParameter(
+                name='background',
+                description='This specifies the background color (hexcolor). Ignored for SVGs.',
+                required=False,
+                type=str,
+                location=OpenApiParameter.QUERY,
+                default='',
+                examples=[
+                    OpenApiExample(
+                        "transparent",
+                        summary="transparent",
+                        value='',
+                    ),
+                    OpenApiExample(
+                        "white",
+                        summary="white",
+                        value='FFFFFF',
+                    ),
+                    OpenApiExample(
+                        "grey",
+                        summary="grey",
+                        value='AAAAAA',
+                    ),
+                    OpenApiExample(
+                        "frost",
+                        summary="frost",
+                        value='81A1C1',
+                    ),
+                ],
+            ),
         ],
         auth=None,
         summary='What ist the logo of a certain airline?',
@@ -102,6 +132,11 @@ class AirlineLogo(APIView):
                 status=HTTP_400_BAD_REQUEST,
             )
 
+        if 'background' in request.GET.dict().keys():
+            background = request.GET.get('background')
+        else:
+            background = ''
+
         iata_code = request.GET.get('iata').upper()
         
         # png
@@ -110,7 +145,7 @@ class AirlineLogo(APIView):
             width = request.GET.get('width') if 'width' in request.GET.dict().keys() else 200
             logo_id = f'{iata_code}_{width}_{height}_{shape}_{AIRHEX_KEY}'
             logo_md5 = md5(logo_id.encode('utf-8')).hexdigest()
-            url = f'https://content.airhex.com/content/logos/airlines_{iata_code}_{width}_{height}_{shape}.png?proportions=keep&md5apikey={logo_md5}'
+            url = f'https://content.airhex.com/content/logos/airlines_{iata_code}_{width}_{height}_{shape}.png?proportions=keep&md5apikey={logo_md5}&background={background}'
         
         # svg
         else:
