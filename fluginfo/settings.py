@@ -45,6 +45,7 @@ INSTALLED_APPS = [
     'django.contrib.staticfiles',
     'rest_framework',
     'drf_spectacular',
+    'drf_spectacular_sidecar',
 ]
 
 MIDDLEWARE = [
@@ -140,6 +141,8 @@ SPECTACULAR_SETTINGS = {
     'TITLE': 'Fluginfo API',
     'DESCRIPTION': 'API to query information about flights.',
     'VERSION': '0.1',
+    'SWAGGER_UI_DIST': 'SIDECAR',
+    'SWAGGER_UI_FAVICON_HREF': 'SIDECAR',
 }
 
 AMADEUS_KEY = config_yaml['amadeus']['API_KEY']
