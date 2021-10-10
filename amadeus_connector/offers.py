@@ -70,12 +70,12 @@ class OfferDetails:
                             'departure': {
                                 'airport': Airport.details(s['departure']['iataCode']),
                                 'at': s['departure']['at'],
-                                'terminal': s['departure']['terminal'],
+                                'terminal': s['departure']['terminal'] if 'terminal' in s['departure'].keys() else None,
                             },
                             'arrival': {
                                 'airport': Airport.details(s['arrival']['iataCode']),
                                 'at': s['arrival']['at'],
-                                'terminal': s['arrival']['terminal'],
+                                'terminal': s['arrival']['terminal'] if 'terminal' in s['arrival'].keys() else None,
                             },
                             'carrierCode': s['carrierCode'],
                             'carrier': bookshelf.get('carriers', s['carrierCode']),
