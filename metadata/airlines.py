@@ -171,6 +171,9 @@ class AirlineLogo(APIView):
             background = ''
 
         iata_code = request.GET.get('iata').upper()
+
+        # usage of the API according to the documentation
+        # https://airhex.com/api/logos/
         
         # png
         if request.GET.get('filetype') == 'png':
