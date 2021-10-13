@@ -15,8 +15,6 @@ class OfferSeatmaps:
     def get(self: object) -> dict:
         offer = offer_cache.get([self.__hash])[self.__hash]
 
-        print(json.dumps(offer))
-
         response = amadeus_client.post(
             path='/v1/shopping/seatmaps',
             params={
