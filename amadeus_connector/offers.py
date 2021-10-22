@@ -83,7 +83,6 @@ class OfferDetails:
                                 t['travelerId']: {
                                     'cabin': d['cabin'],
                                     'class': d['class'],
-                                    'includedCheckedBags': d['includedCheckedBags'] if 'includedCheckedBags' in d.keys() else {},
                                 } for t in offer['travelerPricings'] for d in t['fareDetailsBySegment'] if d['segmentId'] == s['id']
                             }
                         } for s in i['segments']

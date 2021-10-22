@@ -197,32 +197,6 @@ class Search(APIView):
                 location=OpenApiParameter.QUERY,
             ),
             OpenApiParameter(
-                name='currencyCode',
-                description='the preferred currency for the flight offers. Currency is specified in the ISO 4217 format, e.g. EUR for Euro',
-                required=False,
-                type=str,
-                location=OpenApiParameter.QUERY,
-                examples=[
-                    OpenApiExample(
-                        'Euro',
-                        summary='Euro',
-                        value='EUR',
-                    ),
-                    OpenApiExample(
-                        'US-Dollar',
-                        summary='US-Dollar',
-                        value='USD',
-                    ),
-                ],
-            ),
-            OpenApiParameter(
-                name='maxPrice',
-                description='maximum price per traveler. By default, no limit is applied. If specified, the value should be a positive number with no decimals',
-                required=False,
-                type=int,
-                location=OpenApiParameter.QUERY,
-            ),
-            OpenApiParameter(
                 name='max',
                 description='maximum number of flight offers to return. If specified, the value should be greater than or equal to 1',
                 required=False,
@@ -243,7 +217,7 @@ class Search(APIView):
         (see "/offers/seatmaps")
         """
         try:
-            s = OfferSearch(**request.GET.dict())
+            s = OfferSearch(**{**request.GET.dict(), 'currencyCode': 'EUR'})
             offers = s.go()
 
             if len(offers):
