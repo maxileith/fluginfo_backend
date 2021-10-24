@@ -1,27 +1,158 @@
 from datetime import date
-from .foundation import offer_cache, amadeus_client, bookshelf
-from .utils import split_duration
+from .foundation import offer_cache, amadeus_client, bookshelf, seatmaps_cache
+from .utils import split_duration, inches_to_cm
 from .airports import Airport
 from amadeus.client.errors import ResponseError
 import time
 from .errors import AmadeusBadRequest, AmadeusNothingFound
 import json
+from copy import copy
 
-class OfferSeatmaps:
-    
-    def __init__(self: object, hash: str) -> object:
+
+class OfferSeatmap:
+
+    def __init__(self: object, hash: str, segment_id: int) -> object:
         self.__hash = hash
+        self.__segment_id = segment_id
 
     def get(self: object) -> dict:
-        offer = offer_cache.get([self.__hash])[self.__hash]
+        try:
+            seatmaps = seatmaps_cache.get(self.__hash)
+        except AmadeusNothingFound:
+            offer = offer_cache.get([self.__hash])[self.__hash]
+            response = amadeus_client.post(
+                path='/v1/shopping/seatmaps',
+                params={
+                    'data': [offer]
+                }
+            )
+            seatmaps = response.result['data']
+            seatmaps_cache.add(self.__hash, seatmaps)
+            dictionaries = response.result['dictionaries']
+            bookshelf.add(**dictionaries)
 
-        response = amadeus_client.post(
-            path='/v1/shopping/seatmaps',
-            params={
-                'data': [offer]
+        # in the var "seatmaps" are now all seatmaps of the
+        # given order associated with self.__hash
+
+        return self.__simplify_seatmap(seatmaps)
+
+    def __simplify_seatmap(self: object, seatmaps: list) -> dict:
+        try:
+            seatmap = list(
+                filter(lambda m: m['segmentId'] == self.__segment_id, seatmaps))[0]
+        except IndexError:
+            raise AmadeusNothingFound
+
+        # create the simplified seatmap
+        simplified_seatmap = dict()
+
+        # provide cabin amenities
+        aircraftCabinAmenities = seatmap['aircraftCabinAmenities']
+
+        # get information about the seat
+        legSpaceUnit = aircraftCabinAmenities['seat']['spaceUnit']
+        legSpaceValue = aircraftCabinAmenities['seat']['legSpace']
+        legSpace = legSpaceValue if legSpaceUnit == 'CENTIMENTERS' else inches_to_cm(
+            legSpaceValue)
+
+        amenities = {
+            'power': {
+                'isChargeable': aircraftCabinAmenities['power']['isChargeable'],
+                'type': bookshelf.get('aircraftCabinAmenitiesPower', aircraftCabinAmenities['power']['powerType']),
+            },
+            'seat': {
+                'legSpace': f'{legSpace} cm',
+                'tilt': bookshelf.get('aircraftCabinAmenitiesSeatTilt', aircraftCabinAmenities['seat']['tilt']),
+                'images': [
+                    {
+                        'title': m['title'],
+                        'description': m['description']['text'],
+                        'href': m['href'],
+                    } for m in aircraftCabinAmenities['seat']['medias'] if m['mediaType'] == 'image'
+                ],
+            },
+            'wifi': {
+                'isChargeable': aircraftCabinAmenities['wifi']['isChargeable'],
+                'type': bookshelf.get('aircraftCabinAmenitiesWifi', aircraftCabinAmenities['wifi']['wifiCoverage']),
+            },
+            'entertainment': [
+                {
+                    'isChargeable': e['isChargeable'],
+                    'type': bookshelf.get('aircraftCabinAmenitiesEntertainment', e['entertainmentType']),
+                } for e in aircraftCabinAmenities['entertainment']
+            ],
+            'food': {
+                'isChargeable': aircraftCabinAmenities['food']['isChargeable'],
+                'type': bookshelf.get('aircraftCabinAmenitiesFood', aircraftCabinAmenities['food']['foodType']),
+            },
+            'beverage': {
+                'isChargeable': aircraftCabinAmenities['beverage']['isChargeable'],
+                'type': bookshelf.get('aircraftCabinAmenitiesBeverage', aircraftCabinAmenities['beverage']['beverageType']),
+            },
+        }
+
+        simplified_seatmap['amenities'] = amenities
+
+        # make the grid with seat and facility
+        # information
+        simplified_seatmap['decks'] = list()
+        for deck in seatmap['decks']:
+
+            # collect deck_infos about the deck
+            deck_infos = {
+                'wings': {
+                    'startX': deck['deckConfiguration']['startWingsX'],
+                    'endX': deck['deckConfiguration']['endWingsX'],
+                },
+                'seatRows': {
+                    'start': deck['deckConfiguration']['startSeatRow'],
+                    'end': deck['deckConfiguration']['endSeatRow'],
+                },
             }
-        )
-        return response.result
+
+            # create an empty grid for storing seat and
+            # facility information
+            width = deck['deckConfiguration']['width']
+            length = deck['deckConfiguration']['length']
+            row = [None] * width
+            grid = list()
+            for i in range(0, length, 1):
+                grid.append(copy(row))
+
+            # fill the grid up with seats
+            for seat in deck['seats']:
+                try:
+                    x = seat['coordinates']['x']
+                    y = seat['coordinates']['y']
+                except KeyError:
+                    continue
+
+                grid[x][y] = {
+                    'type': 'seat',
+                    'number': seat['number'],
+                    'available': seat['travelerPricing'][0]['seatAvailabilityStatus'] == "AVAILABLE",
+                    'characteristics': [
+                        bookshelf.get('seatCharacteristics', c) for c in seat['characteristicsCodes']
+                    ],
+                }
+
+            # fill the seats up with facilities
+            for facility in deck['facilities']:
+                try:
+                    x = facility['coordinates']['x']
+                    y = facility['coordinates']['y']
+                except KeyError:
+                    continue
+
+                grid[x][y] = {
+                    'type': 'facility',
+                    'name': bookshelf.get('facilities', facility['code']),
+                }
+
+            # add deck to the seatmaps
+            simplified_seatmap['decks'].append({**deck_infos, 'grid': grid})
+
+        return simplified_seatmap
 
 
 class OfferDetails:
@@ -48,16 +179,6 @@ class OfferDetails:
                     } for f in offer['price']['fees']
                 ],
                 'grandTotal': f'{offer["price"]["grandTotal"]} {currency}',
-                'perTraveler': {
-                    t['travelerId']: {
-                        'fareOption': t['fareOption'],
-                        'travelerType': t['travelerType'],
-                        'price': {
-                            'total': f'{t["price"]["total"]} {currency}',
-                            'base': f'{t["price"]["base"]} {currency}',
-                        },
-                    } for t in offer['travelerPricings']
-                },
             },
             'itineraries': [
                 {
@@ -68,30 +189,23 @@ class OfferDetails:
                             'departure': {
                                 'airport': Airport.details(s['departure']['iataCode']),
                                 'at': s['departure']['at'],
-                                'terminal': s['departure']['terminal'] if 'terminal' in s['departure'].keys() else None,
                             },
                             'arrival': {
                                 'airport': Airport.details(s['arrival']['iataCode']),
                                 'at': s['arrival']['at'],
-                                'terminal': s['arrival']['terminal'] if 'terminal' in s['arrival'].keys() else None,
                             },
                             'carrierCode': s['carrierCode'],
                             'carrier': bookshelf.get('carriers', s['carrierCode']),
                             'duration': split_duration(s['duration']),
                             'aircraft': bookshelf.get('aircraft', s['aircraft']['code']),
-                            'detailsPerTraveler': {
-                                t['travelerId']: {
-                                    'cabin': d['cabin'],
-                                    'class': d['class'],
-                                } for t in offer['travelerPricings'] for d in t['fareDetailsBySegment'] if d['segmentId'] == s['id']
-                            }
+                            'cabin': list(filter(lambda d: d['segmentId'] == s['id'], offer['travelerPricings'][0]['fareDetailsBySegment']))[0]['cabin'],
+                            'class': list(filter(lambda d: d['segmentId'] == s['id'], offer['travelerPricings'][0]['fareDetailsBySegment']))[0]['class'],
                         } for s in i['segments']
                     ],
                 } for i in offer['itineraries']
             ],
         }
 
-        
 
 class OfferSearch:
 

@@ -21,3 +21,7 @@ def split_duration(src: str) -> dict:
         'hours': h,
         'minutes': m,
     }
+
+
+def inches_to_cm(inches: float) -> int:
+    return round(inches * 2.54)

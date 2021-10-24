@@ -1,5 +1,6 @@
 .vscode/
 amadeus_connector/offer_cache.json
+amadeus_connector/seatmap_cache.json
 amadeus_connector/bookshelf.json
 config.yaml
 

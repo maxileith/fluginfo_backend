@@ -5,7 +5,7 @@ from .errors import AmadeusNothingFound
 
 class Bookshelf:
 
-    def __init__(self: object, **initial_dictionaries: dict):
+    def __init__(self: object, initial_dictionaries: dict):
         self.__dictionaries = initial_dictionaries
 
     def add(self: object, **dictionaries: dict):
