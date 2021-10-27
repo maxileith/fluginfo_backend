@@ -3,6 +3,8 @@ from rest_framework.views import APIView
 from django.http.response import JsonResponse, HttpResponse
 from amadeus_connector import OfferSeatmap, AmadeusBadRequest, AmadeusNothingFound
 from drf_spectacular.utils import extend_schema, OpenApiParameter
+from django.utils.decorators import method_decorator
+from django.views.decorators.cache import cache_page
 
 
 class Seatmap(APIView):
@@ -27,6 +29,7 @@ class Seatmap(APIView):
         auth=None,
         summary='How do the seatmap look like?',
     )
+    @method_decorator(cache_page(1800))
     def get(self, request):
         """
         This endpoint returns the seatmaps matching an offer.
