@@ -2,7 +2,6 @@ from amadeus import Client
 from fluginfo.settings import AMADEUS_KEY, AMADEUS_SECRET
 import logging
 from .offer_cache import OfferCache
-from .seatmaps_cache import SeatmapsCache
 from .bookshelf import Bookshelf
 
 # init amadeus client
@@ -16,9 +15,6 @@ amadeus_client = Client(
 
 # offer cache
 offer_cache = OfferCache()
-
-# seatmap cache
-seatmaps_cache = SeatmapsCache()
 
 AIRCRAFT_CABIN_AMENITIES = {
     'aircraftCabinAmenitiesPower': {
