@@ -1,5 +1,5 @@
 from datetime import date
-from .foundation import offer_cache, amadeus_client, bookshelf, seatmaps_cache
+from .foundation import offer_cache, amadeus_client, bookshelf
 from .utils import split_duration, inches_to_cm
 from .airports import Airport
 from amadeus.client.errors import ResponseError
@@ -16,19 +16,15 @@ class OfferSeatmap:
         self.__segment_id = segment_id
 
     def get(self: object) -> dict:
-        try:
-            seatmaps = seatmaps_cache.get(self.__hash)
-        except AmadeusNothingFound:
-            offer = offer_cache.get([self.__hash])[self.__hash]
-            response = amadeus_client.shopping.seatmaps.post(
-                {
-                    'data': [offer]
-                }
-            )
-            seatmaps = response.result['data']
-            seatmaps_cache.add(self.__hash, seatmaps)
-            dictionaries = response.result['dictionaries']
-            bookshelf.add(**dictionaries)
+        offer = offer_cache.get([self.__hash])[self.__hash]
+        response = amadeus_client.shopping.seatmaps.post(
+            {
+                'data': [offer]
+            }
+        )
+        seatmaps = response.result['data']
+        dictionaries = response.result['dictionaries']
+        bookshelf.add(**dictionaries)
 
         # in the var "seatmaps" are now all seatmaps of the
         # given order associated with self.__hash

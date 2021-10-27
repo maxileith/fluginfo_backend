@@ -97,7 +97,7 @@ class Search(APIView):
                     OpenApiExample(
                         'Family',
                         summary='2 adults',
-                        description='Family of 2 adults, 2 childs and 1 infant.',
+                        description='Family of 2 adults, 2 children and 1 infant.',
                         value=2,
                     ),
                 ],
@@ -111,8 +111,8 @@ class Search(APIView):
                 examples=[
                     OpenApiExample(
                         'Family',
-                        summary='2 childs',
-                        description='Family of 2 adults, 2 childs and 1 infant.',
+                        summary='2 children',
+                        description='Family of 2 adults, 2 children and 1 infant.',
                         value=2,
                     ),
                 ],
@@ -127,7 +127,7 @@ class Search(APIView):
                     OpenApiExample(
                         'Family',
                         summary='1 infant',
-                        description='Family of 2 adults, 2 childs and 1 infant.',
+                        description='Family of 2 adults, 2 children and 1 infant.',
                         value=1,
                     ),
                 ],
