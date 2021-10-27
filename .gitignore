@@ -1,4 +1,5 @@
-.vscode/
+.vscode/**
+!.vscode/tasks.json
 amadeus_connector/offer_cache.json
 amadeus_connector/bookshelf.json
 config.yaml
