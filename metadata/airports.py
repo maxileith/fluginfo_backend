@@ -5,6 +5,7 @@ from django.utils.decorators import method_decorator
 from django.views.decorators.cache import cache_page
 from drf_spectacular.utils import extend_schema, OpenApiParameter, OpenApiExample
 from amadeus_connector import AmadeusNothingFound, Airport
+from fluginfo.settings import CACHE_TIMEOUT
 
 class AirportSearch(APIView):
 
@@ -28,7 +29,7 @@ class AirportSearch(APIView):
         auth=None,
         summary='Which airports match my keyword?',
     )
-    @method_decorator(cache_page(1800))
+    @method_decorator(cache_page(CACHE_TIMEOUT))
     def get(self, request):
         """
         This endpoint returns data on airports that match

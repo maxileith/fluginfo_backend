@@ -31,7 +31,11 @@ SECRET_KEY = config_yaml['django']['SECRET_KEY']
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS = [
+    'localhost',
+    '127.0.0.1',
+    config_yaml['hostname'],
+]
 
 
 # Application definition
@@ -148,6 +152,8 @@ AMADEUS_SECRET = config_yaml['amadeus']['API_SECRET']
 
 AIRHEX_KEY = config_yaml['airhex']['API_KEY']
 
+CACHE_TIMEOUT = 1800
+
 CACHES = {
     'default': {
         'BACKEND': 'django.core.cache.backends.locmem.LocMemCache',
@@ -155,10 +161,11 @@ CACHES = {
         'OPTIONS': {
             'MAX_ENTRIES': 5000,
         },
-        'TIMEOUT': 1800,
+        'TIMEOUT': CACHE_TIMEOUT,
     }
 } if not DEBUG else {
     'default': {
         'BACKEND': 'django.core.cache.backends.dummy.DummyCache',
+        'TIMEOUT': CACHE_TIMEOUT,
     },
 }

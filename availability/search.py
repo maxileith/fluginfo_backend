@@ -5,6 +5,7 @@ from amadeus_connector import AmadeusBadRequest, OfferSearch, AvailabilitySearch
 from django.utils.decorators import method_decorator
 from django.views.decorators.cache import cache_page
 from drf_spectacular.utils import extend_schema, OpenApiParameter, OpenApiExample
+from fluginfo.settings import CACHE_TIMEOUT
 
 
 class Search(APIView):
@@ -75,14 +76,14 @@ class Search(APIView):
             ),
         ],
         auth=None,
-        summary='Which flights are there to go from A to B on a certain day?',
+        summary='How many seats are available on flights going from A to B on a certain day?',
     )
-    @method_decorator(cache_page(1800))
+    @method_decorator(cache_page(CACHE_TIMEOUT))
     def get(self, request):
         """
-        This endpoint returns the availability of flights traveling
-        from a certain airport to a certain airport on a specific
-        date.
+        This endpoint returns the number of seats that are available
+        on flights going from A to B on a certain day. The number of
+        seats is categorized by class.
         """
         if 'departureIata' not in request.GET.dict().keys():
             return HttpResponse(

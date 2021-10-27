@@ -5,6 +5,7 @@ from amadeus_connector import OfferSeatmap, AmadeusBadRequest, AmadeusNothingFou
 from drf_spectacular.utils import extend_schema, OpenApiParameter
 from django.utils.decorators import method_decorator
 from django.views.decorators.cache import cache_page
+from fluginfo.settings import CACHE_TIMEOUT
 
 
 class Seatmap(APIView):
@@ -29,7 +30,7 @@ class Seatmap(APIView):
         auth=None,
         summary='How do the seatmap look like?',
     )
-    @method_decorator(cache_page(1800))
+    @method_decorator(cache_page(CACHE_TIMEOUT))
     def get(self, request):
         """
         This endpoint returns the seatmaps matching an offer.

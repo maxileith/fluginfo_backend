@@ -5,6 +5,7 @@ from amadeus_connector import AmadeusBadRequest, OfferSearch
 from django.utils.decorators import method_decorator
 from django.views.decorators.cache import cache_page
 from drf_spectacular.utils import extend_schema, OpenApiParameter, OpenApiExample
+from fluginfo.settings import CACHE_TIMEOUT
 
 
 class Search(APIView):
@@ -208,7 +209,7 @@ class Search(APIView):
         auth=None,
         summary='How do I get from A to B?',
     )
-    @method_decorator(cache_page(1800))
+    @method_decorator(cache_page(CACHE_TIMEOUT))
     def get(self, request):
         """
         This endpoint returns flight connections that match the search criteria

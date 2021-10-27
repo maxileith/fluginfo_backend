@@ -10,3 +10,5 @@ amadeus:
 
 airhex:
   API_KEY: 'key'
+
+hostname: 'example.org'
