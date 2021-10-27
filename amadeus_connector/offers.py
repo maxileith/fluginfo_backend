@@ -20,9 +20,8 @@ class OfferSeatmap:
             seatmaps = seatmaps_cache.get(self.__hash)
         except AmadeusNothingFound:
             offer = offer_cache.get([self.__hash])[self.__hash]
-            response = amadeus_client.post(
-                path='/v1/shopping/seatmaps',
-                params={
+            response = amadeus_client.shopping.seatmaps.post(
+                {
                     'data': [offer]
                 }
             )
@@ -169,17 +168,18 @@ class OfferDetails:
         currency = bookshelf.get('currencies', offer['price']['currency'])
 
         return {
-            'price': {
-                'total': f'{offer["price"]["total"]} {currency}',
-                'base': f'{offer["price"]["base"]} {currency}',
-                'fees': [
-                    {
-                        'amount': f'{f["amount"]} {currency}',
-                        'type': f['type'],
-                    } for f in offer['price']['fees']
-                ],
-                'grandTotal': f'{offer["price"]["grandTotal"]} {currency}',
-            },
+            #'price': {
+            #    'total': f'{offer["price"]["total"]} {currency}',
+            #    'base': f'{offer["price"]["base"]} {currency}',
+            #    'fees': [
+            #        {
+            #            'amount': f'{f["amount"]} {currency}',
+            #            'type': f['type'],
+            #        } for f in offer['price']['fees']
+            #    ],
+            #    'grandTotal': f'{offer["price"]["grandTotal"]} {currency}',
+            #},
+            'price': f'{offer["price"]["grandTotal"]} {currency}',
             'itineraries': [
                 {
                     'duration': split_duration(i['duration']),
@@ -194,6 +194,7 @@ class OfferDetails:
                                 'airport': Airport.details(s['arrival']['iataCode']),
                                 'at': s['arrival']['at'],
                             },
+                            'flightNumber': s['carrierCode'] + s['number'],
                             'carrierCode': s['carrierCode'],
                             'carrier': bookshelf.get('carriers', s['carrierCode']),
                             'duration': split_duration(s['duration']),

@@ -6,6 +6,8 @@ from .errors import AmadeusNothingFound
 
 class SeatmapsCache:
 
+    # TODO: ist ein Cache für Seatmaps sinnvoll?
+
     def __init__(self: object):
         self.__seatmaps = dict()
     
@@ -19,6 +21,9 @@ class SeatmapsCache:
                 json.dump(self.__seatmaps, f, indent=4)
     
     def get(self: object, hash: str) -> dict:
+
+        # TODO: Zeile entfernen wenn Seatmap Cache gewünscht
+        raise AmadeusNothingFound
         
         # load from cached seatmaps
         try:
