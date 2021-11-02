@@ -22,7 +22,7 @@ class FlightRoute:
             raise AmadeusBadRequest
         return carrier_code, number
 
-    def go(self: object) -> dict:
+    def get(self: object) -> dict:
         carrier_code, number = self.__split_flight_number(self.__flight_number)
         # load availabilities
         try:

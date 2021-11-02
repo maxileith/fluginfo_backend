@@ -106,7 +106,7 @@ class Search(APIView):
                 arrival_iata=request.GET.get('arrivalIata'),
                 date=request.GET.get('date'),
             )
-            availabilities = s.go()
+            availabilities = s.get()
 
             return JsonResponse(
                 data=availabilities,

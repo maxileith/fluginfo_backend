@@ -65,7 +65,7 @@ class Seatmap(APIView):
                 flight_number=request.GET.get('flightNumber'),
                 date=request.GET.get('date'),
             )
-            seatmap = s.go()
+            seatmap = s.get()
 
             return JsonResponse(
                 data=seatmap,

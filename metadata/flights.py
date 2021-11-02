@@ -66,7 +66,7 @@ class FlightRoute(APIView):
                 flight_number=request.GET.get('flightNumber'),
                 date=request.GET.get('date'),
             )
-            route = r.go()
+            route = r.get()
             return JsonResponse(
                 data=route,
                 status=HTTP_200_OK,

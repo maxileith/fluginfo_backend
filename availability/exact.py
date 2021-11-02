@@ -66,7 +66,7 @@ class Exact(APIView):
                 flight_number=request.GET.get('flightNumber'),
                 date=request.GET.get('date'),
             )
-            availability = s.go()
+            availability = s.get()
 
             return JsonResponse(
                 data=availability,

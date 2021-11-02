@@ -230,7 +230,7 @@ class OfferSearch:
         hashes = offer_cache.add(offers)
         return hashes
 
-    def go(self: object) -> list:
+    def get(self: object) -> list:
         hashes = self.__load_results()
         # loading the offers from cache to get the hashes
         # and to be uniform with the rest of the code. It

@@ -10,13 +10,13 @@ class AvailabilityExact:
         self.__flight_number = flight_number
         self.__date = date
 
-    def go(self: object) -> dict:
-        route = FlightRoute(self.__flight_number, self.__date).go()
+    def get(self: object) -> dict:
+        route = FlightRoute(self.__flight_number, self.__date).get()
         availabilities = AvailabilitySearch(
             departure_iata=route['departureIata'],
             arrival_iata=route['arrivalIata'],
             date=self.__date,
-        ).go()
+        ).get()
         try:
             return availabilities[self.__flight_number]
         except KeyError:
@@ -30,7 +30,7 @@ class AvailabilitySearch:
         self.__arrival_iata = arrival_iata
         self.__date = date
 
-    def go(self: object) -> list:
+    def get(self: object) -> list:
         # load availabilities
         try:
             response = amadeus_client.shopping.availability.flight_availabilities.post(
@@ -94,5 +94,5 @@ class AvailabilitySeatmap:
         self.__flight_number = flight_number
         self.__date = date
 
-    def go(self: object) -> dict:
+    def get(self: object) -> dict:
         return {}

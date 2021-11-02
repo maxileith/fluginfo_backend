@@ -219,7 +219,7 @@ class Search(APIView):
         """
         try:
             s = OfferSearch(**{**request.GET.dict(), 'currencyCode': 'EUR'})
-            offers = s.go()
+            offers = s.get()
 
             if len(offers):
                 return JsonResponse(
