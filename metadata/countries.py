@@ -1,4 +1,4 @@
-from rest_framework.status import HTTP_200_OK, HTTP_404_NOT_FOUND, HTTP_400_BAD_REQUEST
+from rest_framework.status import HTTP_200_OK, HTTP_404_NOT_FOUND, HTTP_400_BAD_REQUEST, HTTP_503_SERVICE_UNAVAILABLE
 from rest_framework.views import APIView
 from django.http.response import HttpResponse
 from drf_spectacular.utils import extend_schema, OpenApiParameter, OpenApiExample
@@ -53,14 +53,20 @@ class CountryFlag(APIView):
         country_code = request.GET.get('countryCode').lower()
         url = f'https://raw.githubusercontent.com/hampusborgos/country-flags/main/svg/{country_code}.svg'
 
-        r = requests.get(url, allow_redirects=False)
-        if r.status_code == 200:
+        try:
+            r = requests.get(url, allow_redirects=False)
+        except ConnectionError:
+            return HttpResponse(
+                content='',
+                status=HTTP_503_SERVICE_UNAVAILABLE,
+            )
+        if r.status_code == HTTP_200_OK:
             return HttpResponse(
                 content=r.content,
                 content_type="image/svg+xml",
                 status=HTTP_200_OK,
             )
-        elif r.status_code == 404:
+        elif r.status_code == HTTP_404_NOT_FOUND:
             return HttpResponse(
                 content='',
                 status=HTTP_404_NOT_FOUND,
