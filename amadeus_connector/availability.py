@@ -86,3 +86,13 @@ class AvailabilitySearch:
                 c['class']: c['numberOfBookableSeats'] for c in the_only_segment['availabilityClasses']
             }
         return simplified_availabilities
+
+
+class AvailabilitySeatmap:
+
+    def __init__(self: object, flight_number: str, date: str) -> object:
+        self.__flight_number = flight_number
+        self.__date = date
+
+    def go(self: object) -> dict:
+        return {}
