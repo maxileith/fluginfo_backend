@@ -166,6 +166,5 @@ CACHES = {
 } if not DEBUG else {
     'default': {
         'BACKEND': 'django.core.cache.backends.dummy.DummyCache',
-        'TIMEOUT': CACHE_TIMEOUT,
     },
 }
