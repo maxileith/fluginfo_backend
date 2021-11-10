@@ -1,8 +1,10 @@
-.vscode/**
-!.vscode/tasks.json
+.git/
+config.yaml.example
+.gitignore
+db.sqlite3
+docker-compose.yaml
 amadeus_connector/offer_cache.json
 amadeus_connector/bookshelf.json
-docker-compose.yaml
 
 # Byte-compiled / optimized / DLL files
 __pycache__/
