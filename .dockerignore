@@ -1,10 +1,12 @@
 .git/
-config.yaml.example
 .gitignore
 db.sqlite3
 docker-compose.yaml
+docker-compose.yaml.example
 amadeus_connector/offer_cache.json
 amadeus_connector/bookshelf.json
+.dockerignore
+Dockerfile
 
 # Byte-compiled / optimized / DLL files
 __pycache__/

@@ -1,5 +1,8 @@
 # pull the official base image
-FROM python:3.9.7
+FROM python:3.9
+
+# create dir
+RUN mkdir /app
 
 # set work directory
 WORKDIR /app
@@ -17,12 +20,13 @@ COPY . /app
 # install dependencies
 RUN python -m pip install --upgrade pip 
 RUN python -m pip install -r requirements.txt
+RUN rm requirements.txt
 
 # install server
 RUN python -m pip install gunicorn==20.1.0
 
 # make startup script executable
-RUN chmod +x start_docker.sh
+RUN chmod +x docker-entrypoint.sh
 EXPOSE 80
 
-CMD ["./start_docker.sh"]
+CMD [ "/bin/bash", "docker-entrypoint.sh" ]
