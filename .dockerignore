@@ -7,6 +7,8 @@ amadeus_connector/offer_cache.json
 amadeus_connector/bookshelf.json
 .dockerignore
 Dockerfile
+docker-build.sh
+docker-entrypoint.sh
 
 # Byte-compiled / optimized / DLL files
 __pycache__/
