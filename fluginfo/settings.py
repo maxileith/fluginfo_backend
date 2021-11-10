@@ -12,31 +12,27 @@ https://docs.djangoproject.com/en/3.2/ref/settings/
 
 from pathlib import Path
 import os
-import yaml
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
-CONFIG_YAML = os.path.join(BASE_DIR, 'config.yaml')
-
-# load config.yaml
-with open(CONFIG_YAML, 'r') as f:
-    config_yaml = yaml.load(f, Loader=yaml.FullLoader)
 
 # Quick-start development settings - unsuitable for production
 # See https://docs.djangoproject.com/en/3.2/howto/deployment/checklist/
 
 # SECURITY WARNING: keep the secret key used in production secret!
-SECRET_KEY = config_yaml['django']['SECRET_KEY']
-
+SECRET_KEY = os.environ.get('FLUGINFO_BACKEND_DJANGO_SECRET_KEY')
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = True
+DEBUG = os.environ.get('FLUGINFO_BACKEND_DEBUG', 'false') == 'true'
 
 ALLOWED_HOSTS = [
     'localhost',
     '127.0.0.1',
-    config_yaml['hostname'],
+    os.environ.get('FLUGINFO_BACKEND_HOSTNAME', 'localhost'),
 ]
 
+CORS_ALLOWED_ORIGINS_REGEX = [
+    f'^https://{os.environ.get("FLUGINFO_BACKEND_FRONTEND_HOSTNAME", "localhost")}(:[0-9]+)?'
+]
 
 # Application definition
 
@@ -49,12 +45,13 @@ INSTALLED_APPS = [
     'django.contrib.staticfiles',
     'rest_framework',
     'drf_spectacular',
-    'drf_spectacular_sidecar',
+    'corsheaders',
 ]
 
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',
     'django.contrib.sessions.middleware.SessionMiddleware',
+    'corsheaders.middleware.CorsMiddleware',
     'django.middleware.common.CommonMiddleware',
     'django.middleware.csrf.CsrfViewMiddleware',
     'django.contrib.auth.middleware.AuthenticationMiddleware',
@@ -143,14 +140,12 @@ SPECTACULAR_SETTINGS = {
     'TITLE': 'Fluginfo API',
     'DESCRIPTION': 'API to query information about flights.',
     'VERSION': '0.1',
-    'SWAGGER_UI_DIST': 'SIDECAR',
-    'SWAGGER_UI_FAVICON_HREF': 'SIDECAR',
 }
 
-AMADEUS_KEY = config_yaml['amadeus']['API_KEY']
-AMADEUS_SECRET = config_yaml['amadeus']['API_SECRET']
+AMADEUS_KEY = os.environ.get('FLUGINFO_BACKEND_AMADEUS_API_KEY')
+AMADEUS_SECRET = os.environ.get('FLUGINFO_BACKEND_AMADEUS_API_SECRET')
 
-AIRHEX_KEY = config_yaml['airhex']['API_KEY']
+AIRHEX_KEY = os.environ.get('FLUGINFO_BACKEND_AIRHEX_API_KEY', '')
 
 CACHE_TIMEOUT = 1800
 
