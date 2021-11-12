@@ -65,3 +65,13 @@ def timed_lru_cache(
         return wrapper_cache
     else:
         return wrapper_cache(_func)
+
+def split_flight_number(flight_number: str) -> tuple:
+    result = re.match(
+        r'^([A-Z0-9][A-Z0-9])([0-9][0-9][0-9][0-9]?)$', flight_number)
+    try:
+        carrier_code = result.group(1)
+        number = result.group(2)
+    except AttributeError:
+        raise AmadeusBadRequest
+    return carrier_code, number

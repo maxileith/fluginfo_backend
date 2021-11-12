@@ -136,17 +136,18 @@ class OfferSeatmap:
                 }
 
             # fill the seats up with facilities
-            for facility in deck['facilities']:
-                try:
-                    x = facility['coordinates']['x']
-                    y = facility['coordinates']['y']
-                except KeyError:
-                    continue
-
-                grid[x][y] = {
-                    'type': 'facility',
-                    'name': bookshelf.get('facilities', facility['code']),
-                }
+            if 'facilities' in deck.keys():
+                for facility in deck['facilities']:
+                    try:
+                        x = facility['coordinates']['x']
+                        y = facility['coordinates']['y']
+                    except KeyError:
+                        continue
+                    
+                    grid[x][y] = {
+                        'type': 'facility',
+                        'name': bookshelf.get('facilities', facility['code']),
+                    }
 
             # add deck to the seatmaps
             simplified_seatmap['decks'].append({**deck_infos, 'grid': grid})
@@ -159,7 +160,7 @@ class OfferDetails:
     @staticmethod
     def get(hash_val: str) -> dict:
         offer = offer_cache.get([hash_val])[hash_val]
-        return __simplify_offer(offer)
+        return OfferDetails.__simplify_offer(offer)
 
     @staticmethod
     def __simplify_offer(offer: dict) -> dict:
@@ -215,15 +216,14 @@ class OfferSearch:
 
     @staticmethod
     @timed_lru_cache
-    def get(**params: dict) -> list:
+    def get(**params: dict) -> dict:
         hashes = OfferSearch.__load_results(params)
         # loading the offers from cache to get the hashes
         # and to be uniform with the rest of the code. It
         # would be possible to handle this bit of the code
         # without utilizing the cache.
         offers = offer_cache.get(hashes)
-        slim_offers = OfferSearch.__simplify_offer(offers)
-        return slim_offers
+        return OfferSearch.__simplify_offer(offers)
 
     @staticmethod
     def __simplify_offer(offers: dict) -> dict:

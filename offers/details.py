@@ -30,10 +30,9 @@ class Details(APIView):
                 status=HTTP_400_BAD_REQUEST,
             )
 
-        details = OfferDetails(request.GET.get('id'))
         try:
             return JsonResponse(
-                data=details.get(),
+                data=OfferDetails.get(request.GET.get('id')),
                 status=HTTP_200_OK,
             )
         except AmadeusNothingFound:

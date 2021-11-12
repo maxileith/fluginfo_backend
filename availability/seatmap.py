@@ -3,7 +3,6 @@ from rest_framework.views import APIView
 from django.http.response import JsonResponse, HttpResponse
 from amadeus_connector import AmadeusBadRequest, AmadeusNothingFound, AvailabilitySeatmap
 from drf_spectacular.utils import extend_schema, OpenApiParameter, OpenApiExample
-from fluginfo.settings import CACHE_TIMEOUT
 
 
 class Seatmap(APIView):
@@ -38,6 +37,15 @@ class Seatmap(APIView):
                     ),
                 ],
             ),
+            OpenApiParameter(
+                name='travelClass',
+                description='The accepted travel class is economy, premium economy, business or first class.',
+                required=False,
+                type=str,
+                enum=['ECONOMY', 'PREMIUM_ECONOMY', 'BUSINESS', 'FIRST'],
+                location=OpenApiParameter.QUERY,
+                default='ECONOMY'
+            ),
         ],
         auth=None,
         summary='How does the seatmap looks like on a specific flight?',
@@ -57,12 +65,17 @@ class Seatmap(APIView):
                 content='',
                 status=HTTP_400_BAD_REQUEST,
             )
+        if 'travelClass' not in request.GET.dict().keys():
+            return HttpResponse(
+                content='',
+                status=HTTP_400_BAD_REQUEST,
+            )
         try:
-            s = AvailabilitySeatmap(
+            seatmap = AvailabilitySeatmap.get(
                 flight_number=request.GET.get('flightNumber'),
                 date=request.GET.get('date'),
+                travelClass=request.GET.get('travelClass'),
             )
-            seatmap = s.get()
 
             return JsonResponse(
                 data=seatmap,

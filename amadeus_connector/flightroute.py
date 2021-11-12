@@ -2,28 +2,13 @@ from .foundation import amadeus_client
 from amadeus.client.errors import ResponseError, ClientError
 from .errors import AmadeusBadRequest, AmadeusNothingFound
 import re
-from .utils import timed_lru_cache
-
-
-FLIGHT_NUMBER_PATTERN = r'^([A-Z0-9][A-Z0-9])([0-9][0-9][0-9][0-9]?)$'
-
+from .utils import timed_lru_cache, split_flight_number
 
 class FlightRoute:
 
     @staticmethod
-    def __split_flight_number(flight_number: str) -> tuple:
-        result = re.match(FLIGHT_NUMBER_PATTERN, flight_number)
-        try:
-            carrier_code = result.group(1)
-            number = result.group(2)
-        except AttributeError:
-            raise AmadeusBadRequest
-        return carrier_code, number
-
-    @staticmethod
     @timed_lru_cache
-    def get(flight_number: str, date: str) -> dict:
-        carrier_code, number = FlightRoute.__split_flight_number(flight_number)
+    def get_advanced(carrier_code: str, number: int, date: str):
         # load availabilities
         try:
             response = amadeus_client.schedule.flights.get(
@@ -45,3 +30,8 @@ class FlightRoute:
             'departureIata': data[0]['flightPoints'][0]['iataCode'],
             'arrivalIata': data[0]['flightPoints'][-1]['iataCode'],
         }
+
+    @staticmethod
+    def get(flight_number: str, date: str) -> dict:
+        carrier_code, number = split_flight_number(flight_number)
+        return FlightRoute.get_advanced(carrier_code, number, date)
