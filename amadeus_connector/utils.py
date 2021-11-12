@@ -1,7 +1,7 @@
 import re
 import math
 from functools import lru_cache, wraps
-from fluginfo.settings import CACHE_TIMEOUT
+from fluginfo.settings import CACHE_TIMEOUT, DEBUG
 from time import monotonic_ns
 
 DURATION_REGEX = r'^PT((\d+)H)?((\d+)M)?$'
@@ -28,9 +28,11 @@ def split_duration(src: str) -> dict:
 def inches_to_cm(inches: float) -> int:
     return round(inches * 2.54)
 
+cache_timeout = 0 if DEBUG else CACHE_TIMEOUT
+
 # https://blog.soumendrak.com/cache-heavy-computation-functions-with-a-timeout-value
 def timed_lru_cache(
-    _func=None, *, seconds: int = CACHE_TIMEOUT, maxsize: int = 128, typed: bool = False
+    _func=None, *, seconds: int = cache_timeout, maxsize: int = 128, typed: bool = False
 ):
     """ Extension over existing lru_cache with timeout
     :param seconds: timeout value
