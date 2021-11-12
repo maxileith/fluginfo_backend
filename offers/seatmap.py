@@ -3,9 +3,6 @@ from rest_framework.views import APIView
 from django.http.response import JsonResponse, HttpResponse
 from amadeus_connector import OfferSeatmap, AmadeusBadRequest, AmadeusNothingFound
 from drf_spectacular.utils import extend_schema, OpenApiParameter
-from django.utils.decorators import method_decorator
-from django.views.decorators.cache import cache_page
-from fluginfo.settings import CACHE_TIMEOUT
 
 
 class Seatmap(APIView):
@@ -30,7 +27,6 @@ class Seatmap(APIView):
         auth=None,
         summary='How do the seatmap look like?',
     )
-    @method_decorator(cache_page(CACHE_TIMEOUT))
     def get(self, request):
         """
         This endpoint returns the seatmaps matching an offer.
@@ -46,10 +42,10 @@ class Seatmap(APIView):
                 status=HTTP_400_BAD_REQUEST,
             )
         
-        seatmap = OfferSeatmap(request.GET.get('id'), request.GET.get('segment'))
         try:
+            seatmap = OfferSeatmap.get(request.GET.get('id'), request.GET.get('segment'))
             return JsonResponse(
-                data=seatmap.get(),
+                data=seatmap,
                 status=HTTP_200_OK,
             )
         except AmadeusNothingFound:

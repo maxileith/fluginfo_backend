@@ -1,6 +1,6 @@
 from datetime import date
 from .foundation import offer_cache, amadeus_client, bookshelf
-from .utils import split_duration, inches_to_cm
+from .utils import split_duration, inches_to_cm, timed_lru_cache
 from .airports import Airport
 from amadeus.client.errors import ResponseError
 import time
@@ -11,30 +11,34 @@ from copy import copy
 
 class OfferSeatmap:
 
-    def __init__(self: object, hash: str, segment_id: int) -> object:
-        self.__hash = hash
-        self.__segment_id = segment_id
-
-    def get(self: object) -> dict:
-        offer = offer_cache.get([self.__hash])[self.__hash]
+    @staticmethod
+    @timed_lru_cache
+    def __load_seatmaps_of_offer(hash_val: str) -> dict:
+        offer = offer_cache.get([hash_val])[hash_val]
         response = amadeus_client.shopping.seatmaps.post(
             {
                 'data': [offer]
             }
         )
-        seatmaps = response.result['data']
         dictionaries = response.result['dictionaries']
         bookshelf.add(**dictionaries)
+        return response
+
+    @staticmethod
+    def get(hash_val: str, segment_id: int) -> dict:
+        response = OfferSeatmap.__load_seatmaps_of_offer(hash_val)
+        seatmaps = response.result['data']
 
         # in the var "seatmaps" are now all seatmaps of the
         # given order associated with self.__hash
 
-        return self.__simplify_seatmap(seatmaps)
+        return OfferSeatmap.__simplify_seatmap(seatmaps, segment_id)
 
-    def __simplify_seatmap(self: object, seatmaps: list) -> dict:
+    @staticmethod
+    def __simplify_seatmap(seatmaps: list, segment_id: int) -> dict:
         try:
             seatmap = list(
-                filter(lambda m: m['segmentId'] == self.__segment_id, seatmaps))[0]
+                filter(lambda m: m['segmentId'] == segment_id, seatmaps))[0]
         except IndexError:
             raise AmadeusNothingFound
 
@@ -152,29 +156,17 @@ class OfferSeatmap:
 
 class OfferDetails:
 
-    def __init__(self: object, hash: str) -> object:
-        self.__hash = hash
+    @staticmethod
+    def get(hash_val: str) -> dict:
+        offer = offer_cache.get([hash_val])[hash_val]
+        return __simplify_offer(offer)
 
-    def get(self: object) -> dict:
-        offer = offer_cache.get([self.__hash])[self.__hash]
-        return self.__simplify_offer(offer)
-
-    def __simplify_offer(self: object, offer: dict) -> dict:
+    @staticmethod
+    def __simplify_offer(offer: dict) -> dict:
 
         currency = bookshelf.get('currencies', offer['price']['currency'])
 
         return {
-            #'price': {
-            #    'total': f'{offer["price"]["total"]} {currency}',
-            #    'base': f'{offer["price"]["base"]} {currency}',
-            #    'fees': [
-            #        {
-            #            'amount': f'{f["amount"]} {currency}',
-            #            'type': f['type'],
-            #        } for f in offer['price']['fees']
-            #    ],
-            #    'grandTotal': f'{offer["price"]["grandTotal"]} {currency}',
-            #},
             'price': f'{offer["price"]["grandTotal"]} {currency}',
             'itineraries': [
                 {
@@ -206,20 +198,11 @@ class OfferDetails:
 
 class OfferSearch:
 
-    def __init__(self: object, **params: dict) -> object:
-        self.__params = params
-
-    def mod_filter(self, **params: dict) -> object:
-        tmp = {**self.__params, **params}
-        # remove key-value-pairs if the value is "None"
-        tmp = {k: v for k, v in tmp.items() if v != None}
-        self.__params = tmp
-        return self
-
-    def __load_results(self: object) -> list:
+    @staticmethod
+    def __load_results(params: dict) -> list:
         try:
             response = amadeus_client.shopping.flight_offers_search.get(
-                **self.__params)
+                **params)
         except ResponseError:
             raise AmadeusBadRequest
         # save dictionaries
@@ -230,17 +213,20 @@ class OfferSearch:
         hashes = offer_cache.add(offers)
         return hashes
 
-    def get(self: object) -> list:
-        hashes = self.__load_results()
+    @staticmethod
+    @timed_lru_cache
+    def get(**params: dict) -> list:
+        hashes = OfferSearch.__load_results(params)
         # loading the offers from cache to get the hashes
         # and to be uniform with the rest of the code. It
         # would be possible to handle this bit of the code
         # without utilizing the cache.
         offers = offer_cache.get(hashes)
-        slim_offers = self.__simplify_offer(offers)
+        slim_offers = OfferSearch.__simplify_offer(offers)
         return slim_offers
 
-    def __simplify_offer(self: object, offers: dict) -> dict:
+    @staticmethod
+    def __simplify_offer(offers: dict) -> dict:
         slim_offers = {}
         for key, offer in offers.items():
 

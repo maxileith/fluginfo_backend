@@ -9,6 +9,7 @@ amadeus_connector/bookshelf.json
 Dockerfile
 docker-build.sh
 docker-entrypoint.sh
+.vscode/
 
 # Byte-compiled / optimized / DLL files
 __pycache__/

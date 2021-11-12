@@ -16,7 +16,7 @@ class Bookshelf:
 
         for t in all_types:
             if t in self.__dictionaries.keys() and t in dictionaries.keys():
-                # combine e.g. the aircrafts from both dictionairies
+                # combine e.g. the aircrafts from both dictionaries
                 self.__dictionaries[t] = {**dictionaries[t], **self.__dictionaries[t]}
             elif t in dictionaries.keys():
                 self.__dictionaries[t] = dictionaries[t]

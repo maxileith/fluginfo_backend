@@ -1,11 +1,8 @@
 from rest_framework.status import HTTP_200_OK, HTTP_404_NOT_FOUND, HTTP_400_BAD_REQUEST
 from rest_framework.views import APIView
 from django.http.response import JsonResponse, HttpResponse
-from django.utils.decorators import method_decorator
-from django.views.decorators.cache import cache_page
 from drf_spectacular.utils import extend_schema, OpenApiParameter, OpenApiExample
 from amadeus_connector import AmadeusNothingFound, Airport
-from fluginfo.settings import CACHE_TIMEOUT
 
 class AirportSearch(APIView):
 
@@ -29,7 +26,6 @@ class AirportSearch(APIView):
         auth=None,
         summary='Which airports match my keyword?',
     )
-    @method_decorator(cache_page(CACHE_TIMEOUT))
     def get(self, request):
         """
         This endpoint returns data on airports that match
@@ -76,7 +72,6 @@ class AirportDetails(APIView):
         auth=None,
         summary='Give me details about an airport.',
     )
-    @method_decorator(cache_page(86400))
     def get(self, request):
         """
         This endpoint returns data to the specified airport.

@@ -2,8 +2,6 @@ from rest_framework.status import HTTP_200_OK, HTTP_404_NOT_FOUND, HTTP_400_BAD_
 from rest_framework.views import APIView
 from django.http.response import JsonResponse, HttpResponse
 from amadeus_connector import AmadeusBadRequest, OfferSearch, AvailabilitySearch
-from django.utils.decorators import method_decorator
-from django.views.decorators.cache import cache_page
 from drf_spectacular.utils import extend_schema, OpenApiParameter, OpenApiExample
 from fluginfo.settings import CACHE_TIMEOUT
 
@@ -78,7 +76,6 @@ class Search(APIView):
         auth=None,
         summary='How many seats are available on flights going from A to B on a certain day?',
     )
-    @method_decorator(cache_page(CACHE_TIMEOUT))
     def get(self, request):
         """
         This endpoint returns the number of seats that are available
@@ -101,12 +98,11 @@ class Search(APIView):
                 status=HTTP_400_BAD_REQUEST,
             )
         try:
-            s = AvailabilitySearch(
+            availabilities = AvailabilitySearch.get(
                 departure_iata=request.GET.get('departureIata'),
                 arrival_iata=request.GET.get('arrivalIata'),
                 date=request.GET.get('date'),
             )
-            availabilities = s.get()
 
             return JsonResponse(
                 data=availabilities,

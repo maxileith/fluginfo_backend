@@ -2,8 +2,6 @@ from rest_framework.status import HTTP_200_OK, HTTP_404_NOT_FOUND, HTTP_400_BAD_
 from rest_framework.views import APIView
 from django.http.response import JsonResponse, HttpResponse
 from amadeus_connector import AmadeusBadRequest, AmadeusNothingFound, AvailabilitySeatmap
-from django.utils.decorators import method_decorator
-from django.views.decorators.cache import cache_page
 from drf_spectacular.utils import extend_schema, OpenApiParameter, OpenApiExample
 from fluginfo.settings import CACHE_TIMEOUT
 
@@ -44,7 +42,6 @@ class Seatmap(APIView):
         auth=None,
         summary='How does the seatmap looks like on a specific flight?',
     )
-    @method_decorator(cache_page(CACHE_TIMEOUT))
     def get(self, request):
         """
         This endpoint returns a seatmap for the aircraft doing the

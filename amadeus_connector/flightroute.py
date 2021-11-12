@@ -2,6 +2,7 @@ from .foundation import amadeus_client
 from amadeus.client.errors import ResponseError, ClientError
 from .errors import AmadeusBadRequest, AmadeusNothingFound
 import re
+from .utils import timed_lru_cache
 
 
 FLIGHT_NUMBER_PATTERN = r'^([A-Z0-9][A-Z0-9])([0-9][0-9][0-9][0-9]?)$'
@@ -9,11 +10,8 @@ FLIGHT_NUMBER_PATTERN = r'^([A-Z0-9][A-Z0-9])([0-9][0-9][0-9][0-9]?)$'
 
 class FlightRoute:
 
-    def __init__(self: object, flight_number: str, date: str) -> object:
-        self.__flight_number = flight_number
-        self.__date = date
-
-    def __split_flight_number(self: object, flight_number: str) -> tuple:
+    @staticmethod
+    def __split_flight_number(flight_number: str) -> tuple:
         result = re.match(FLIGHT_NUMBER_PATTERN, flight_number)
         try:
             carrier_code = result.group(1)
@@ -22,14 +20,16 @@ class FlightRoute:
             raise AmadeusBadRequest
         return carrier_code, number
 
-    def get(self: object) -> dict:
-        carrier_code, number = self.__split_flight_number(self.__flight_number)
+    @staticmethod
+    @timed_lru_cache
+    def get(flight_number: str, date: str) -> dict:
+        carrier_code, number = FlightRoute.__split_flight_number(flight_number)
         # load availabilities
         try:
             response = amadeus_client.schedule.flights.get(
                 carrierCode=carrier_code,
                 flightNumber=number,
-                scheduledDepartureDate=self.__date,
+                scheduledDepartureDate=date,
             )
         except ResponseError:
             raise AmadeusBadRequest

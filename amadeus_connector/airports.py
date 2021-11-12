@@ -2,6 +2,7 @@ from datetime import date
 from .foundation import amadeus_client, bookshelf
 from amadeus import Location, ResponseError
 from .errors import AmadeusNothingFound
+from .utils import timed_lru_cache
 
 
 def simplify_airports(airports: list) -> dict:
@@ -21,6 +22,7 @@ def simplify_airports(airports: list) -> dict:
 class Airport:
 
     @staticmethod
+    @timed_lru_cache
     def search(s: str, isIata: bool = False) -> list:
         try:
             if isIata:

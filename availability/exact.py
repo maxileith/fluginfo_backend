@@ -2,8 +2,6 @@ from rest_framework.status import HTTP_200_OK, HTTP_404_NOT_FOUND, HTTP_400_BAD_
 from rest_framework.views import APIView
 from django.http.response import JsonResponse, HttpResponse
 from amadeus_connector import AmadeusBadRequest, AmadeusNothingFound, AvailabilityExact
-from django.utils.decorators import method_decorator
-from django.views.decorators.cache import cache_page
 from drf_spectacular.utils import extend_schema, OpenApiParameter, OpenApiExample
 from fluginfo.settings import CACHE_TIMEOUT
 
@@ -44,7 +42,6 @@ class Exact(APIView):
         auth=None,
         summary='How many seats are available on a specific flight?',
     )
-    @method_decorator(cache_page(CACHE_TIMEOUT))
     def get(self, request):
         """
         This endpoint return the number of seats that are available
@@ -62,11 +59,10 @@ class Exact(APIView):
                 status=HTTP_400_BAD_REQUEST,
             )
         try:
-            s = AvailabilityExact(
+            availability = AvailabilityExact.get(
                 flight_number=request.GET.get('flightNumber'),
                 date=request.GET.get('date'),
             )
-            availability = s.get()
 
             return JsonResponse(
                 data=availability,

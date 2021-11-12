@@ -2,35 +2,29 @@ from .foundation import bookshelf, amadeus_client
 from amadeus.client.errors import ResponseError, ClientError
 from .errors import AmadeusBadRequest, AmadeusNothingFound
 from .flightroute import FlightRoute
+from .utils import timed_lru_cache
 
 
 class AvailabilityExact:
 
-    def __init__(self: object, flight_number: str, date: str) -> object:
-        self.__flight_number = flight_number
-        self.__date = date
-
-    def get(self: object) -> dict:
-        route = FlightRoute(self.__flight_number, self.__date).get()
-        availabilities = AvailabilitySearch(
+    def get(flight_number: str, date: str) -> dict:
+        route = FlightRoute.get(flight_number, date)
+        availabilities = AvailabilitySearch.get(
             departure_iata=route['departureIata'],
             arrival_iata=route['arrivalIata'],
-            date=self.__date,
-        ).get()
+            date=date,
+        )
         try:
-            return availabilities[self.__flight_number]
+            return availabilities[flight_number]
         except KeyError:
             raise AmadeusNothingFound
 
 
 class AvailabilitySearch:
 
-    def __init__(self: object, departure_iata: str, arrival_iata: str, date: str) -> object:
-        self.__departure_iata = departure_iata
-        self.__arrival_iata = arrival_iata
-        self.__date = date
-
-    def get(self: object) -> list:
+    @staticmethod
+    @timed_lru_cache
+    def get(departure_iata: str, arrival_iata: str, date: str) -> list:
         # load availabilities
         try:
             response = amadeus_client.shopping.availability.flight_availabilities.post(
@@ -38,10 +32,10 @@ class AvailabilitySearch:
                     'originDestinations': [
                         {
                             'id': '1',
-                            'originLocationCode': self.__departure_iata,
-                            'destinationLocationCode': self.__arrival_iata,
+                            'originLocationCode': departure_iata,
+                            'destinationLocationCode': arrival_iata,
                             'departureDateTime': {
-                                'date': self.__date,
+                                'date': date,
                             },
                         },
                     ],
@@ -67,10 +61,11 @@ class AvailabilitySearch:
 
         availabilities = response.result['data']
 
-        slim_availabilities = self.__simplify_availabilities(availabilities)
+        slim_availabilities = AvailabilitySearch.__simplify_availabilities(availabilities)
         return slim_availabilities
 
-    def __simplify_availabilities(self: object, availabilities: list) -> dict:
+    @staticmethod
+    def __simplify_availabilities(availabilities: list) -> dict:
         simplified_availabilities = dict()
         for a in availabilities:
             # go for only non-stop
@@ -90,9 +85,6 @@ class AvailabilitySearch:
 
 class AvailabilitySeatmap:
 
-    def __init__(self: object, flight_number: str, date: str) -> object:
-        self.__flight_number = flight_number
-        self.__date = date
-
-    def get(self: object) -> dict:
+    @staticmethod
+    def get(flight_number: str, date: str) -> dict:
         return {}

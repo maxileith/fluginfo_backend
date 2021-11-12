@@ -7,6 +7,7 @@ from django.views.decorators.cache import cache_page
 import requests
 from fluginfo.settings import AIRHEX_KEY
 from hashlib import md5
+from fluginfo.settings import CACHE_TIMEOUT
 
 
 class AirlineLogo(APIView):
@@ -133,7 +134,7 @@ class AirlineLogo(APIView):
         auth=None,
         summary='What ist the logo of a certain airline?',
     )
-    @method_decorator(cache_page(86400))
+    @method_decorator(cache_page(CACHE_TIMEOUT))
     def get(self, request):
         """
         This endpoint gives the logo of the airline associated with

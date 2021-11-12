@@ -152,7 +152,7 @@ CACHE_TIMEOUT = 1800
 CACHES = {
     'default': {
         'BACKEND': 'django.core.cache.backends.locmem.LocMemCache',
-        'LOCATION': 'unique-snowflake',
+        'LOCATION': 'cache_table',
         'OPTIONS': {
             'MAX_ENTRIES': 5000,
         },
