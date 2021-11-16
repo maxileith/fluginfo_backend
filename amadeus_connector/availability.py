@@ -8,6 +8,7 @@ from .offers import OfferSearch, OfferDetails, OfferSeatmap
 
 class AvailabilityExact:
 
+    @staticmethod
     def get(flight_number: str, date: str) -> dict:
         route = FlightRoute.get(flight_number, date)
         availabilities = AvailabilitySearch.get(
