@@ -7,6 +7,8 @@ from amadeus_connector import AmadeusNothingFound, AmadeusBadRequest, FlightRout
 
 class FlightRoute(APIView):
 
+    serializer_class = None
+
     @extend_schema(
         parameters=[
             OpenApiParameter(

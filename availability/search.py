@@ -8,6 +8,8 @@ from fluginfo.settings import CACHE_TIMEOUT
 
 class Search(APIView):
 
+    serializer_class = None
+
     @extend_schema(
         parameters=[
             OpenApiParameter(

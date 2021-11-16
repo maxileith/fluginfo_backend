@@ -6,7 +6,10 @@ import requests
 from django.utils.decorators import method_decorator
 from django.views.decorators.cache import cache_page
 
+
 class CountryFlag(APIView):
+
+    serializer_class = None
 
     @extend_schema(
         parameters=[

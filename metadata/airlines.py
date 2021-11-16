@@ -12,6 +12,8 @@ from fluginfo.settings import CACHE_TIMEOUT
 
 class AirlineLogo(APIView):
 
+    serializer_class = None
+
     @extend_schema(
         parameters=[
             OpenApiParameter(

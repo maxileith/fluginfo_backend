@@ -7,6 +7,8 @@ from drf_spectacular.utils import extend_schema, OpenApiParameter, OpenApiExampl
 
 class Search(APIView):
 
+    serializer_class = None
+
     @extend_schema(
         parameters=[
             OpenApiParameter(

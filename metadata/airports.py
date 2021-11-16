@@ -4,7 +4,10 @@ from django.http.response import JsonResponse, HttpResponse
 from drf_spectacular.utils import extend_schema, OpenApiParameter, OpenApiExample
 from amadeus_connector import AmadeusNothingFound, Airport
 
+
 class AirportSearch(APIView):
+
+    serializer_class = None
 
     @extend_schema(
         parameters=[
@@ -51,6 +54,8 @@ class AirportSearch(APIView):
 
 
 class AirportDetails(APIView):
+
+    serializer_class = None
 
     @extend_schema(
         parameters=[
