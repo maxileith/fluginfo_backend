@@ -2,7 +2,7 @@ from datetime import date
 from .foundation import offer_cache, amadeus_client, bookshelf
 from .utils import split_duration, inches_to_cm, timed_lru_cache
 from .airports import Airport
-from amadeus.client.errors import ResponseError
+from amadeus.client.errors import ResponseError, ClientError
 import time
 from .errors import AmadeusBadRequest, AmadeusNothingFound
 import json
@@ -15,11 +15,14 @@ class OfferSeatmap:
     @timed_lru_cache
     def __load_seatmaps_of_offer(hash_val: str) -> dict:
         offer = offer_cache.get([hash_val])[hash_val]
-        response = amadeus_client.shopping.seatmaps.post(
-            {
-                'data': [offer]
-            }
-        )
+        try:
+            response = amadeus_client.shopping.seatmaps.post(
+                {
+                    'data': [offer]
+                }
+            )
+        except ClientError:
+            raise AmadeusBadRequest
         dictionaries = response.result['dictionaries']
         bookshelf.add(**dictionaries)
         return response
@@ -98,16 +101,25 @@ class OfferSeatmap:
         for deck in seatmap['decks']:
 
             # collect deck_infos about the deck
-            deck_infos = {
-                'wings': {
-                    'startX': deck['deckConfiguration']['startWingsX'],
-                    'endX': deck['deckConfiguration']['endWingsX'],
-                },
-                'seatRows': {
-                    'start': deck['deckConfiguration']['startSeatRow'],
-                    'end': deck['deckConfiguration']['endSeatRow'],
-                },
-            }
+            deck_infos = dict()
+
+            if 'startWingsX' in deck['deckConfiguration'].keys() and 'endWingsX' in deck['deckConfiguration'].keys():
+                deck_infos = {
+                    'wings': {
+                        'startX': deck['deckConfiguration']['startWingsX'],
+                        'endX': deck['deckConfiguration']['endWingsX'],
+                    },
+                    **deck_infos,
+                }
+
+            if 'startSeatRow' in deck['deckConfiguration'].keys() and 'endSeatRow' in deck['deckConfiguration'].keys():
+                deck_infos = {
+                    'seatRows': {
+                        'start': deck['deckConfiguration']['startSeatRow'],
+                        'end': deck['deckConfiguration']['endSeatRow'],
+                    },
+                    **deck_infos,
+                }
 
             # create an empty grid for storing seat and
             # facility information
@@ -207,8 +219,9 @@ class OfferSearch:
         except ResponseError:
             raise AmadeusBadRequest
         # save dictionaries
-        dictionaries = response.result['dictionaries']
-        bookshelf.add(**dictionaries)
+        if 'dictionaries' in response.result.keys():
+            dictionaries = response.result['dictionaries']
+            bookshelf.add(**dictionaries)
         # cache offers
         offers = response.result['data']
         hashes = offer_cache.add(offers)

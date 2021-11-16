@@ -53,3 +53,8 @@ class Seatmap(APIView):
                 content='',
                 status=HTTP_404_NOT_FOUND,
             )
+        except AmadeusBadRequest:
+            return HttpResponse(
+                content='',
+                status=HTTP_400_BAD_REQUEST,
+            )
