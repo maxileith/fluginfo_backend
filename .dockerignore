@@ -8,7 +8,6 @@ amadeus_connector/bookshelf.json
 .dockerignore
 Dockerfile
 docker-build.sh
-docker-entrypoint.sh
 .vscode/
 
 # Byte-compiled / optimized / DLL files
