@@ -1,1 +1,1 @@
-docker build -t fluginfo-backend:latest .
+docker build -t maxileith/fluginfo-backend:latest .

@@ -2,17 +2,17 @@ version: '3'
 
 services:
   backend:
-    image: fluginfo-backend:latest
+    image: maxileith/fluginfo-backend:latest
     container_name: fluginfo_backend
     restart: always
     environment:
-      - FLUGINFO_BACKEND_AMADEUS_API_SECRET='secret'
-      - FLUGINFO_BACKEND_AIRHEX_API_KEY='key'
-      - FLUGINFO_BACKEND_AMADEUS_API_KEY='key'
-      - FLUGINFO_BACKEND_DEBUG='false'
-      - FLUGINFO_BACKEND_DJANGO_SECRET_KEY='secret'
-      - FLUGINFO_BACKEND_HOSTNAME='domain.tld'
-      - FLUGINFO_BACKEND_FRONTEND_HOSTNAME='domain.tld'
+      - FLUGINFO_BACKEND_AMADEUS_API_SECRET=secret
+      - FLUGINFO_BACKEND_AIRHEX_API_KEY='key
+      - FLUGINFO_BACKEND_AMADEUS_API_KEY=key
+      - FLUGINFO_BACKEND_DEBUG=false
+      - FLUGINFO_BACKEND_DJANGO_SECRET_KEY=secret
+      - FLUGINFO_BACKEND_HOSTNAME=domain.tld
+      - FLUGINFO_BACKEND_FRONTEND_HOSTNAME=domain.tld
     volumes:
       - ./db.sqlite3:/app/db.sqlite3
     ports:

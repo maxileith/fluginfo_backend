@@ -1,5 +1,8 @@
 # pull the official base image
-FROM python:3.9
+FROM python:3.9-alpine
+
+# install bash
+RUN apk add --upgrade bash
 
 # create dir
 RUN mkdir /app
@@ -29,4 +32,5 @@ RUN python -m pip install gunicorn==20.1.0
 RUN chmod +x docker-entrypoint.sh
 EXPOSE 80
 
-CMD [ "/bin/bash", "docker-entrypoint.sh" ]
+ENTRYPOINT [ "/bin/bash" ]
+CMD [ "docker-entrypoint.sh" ]
