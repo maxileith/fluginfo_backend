@@ -41,12 +41,28 @@ class Seatmap(APIView):
             ),
             OpenApiParameter(
                 name='travelClass',
-                description='The accepted travel class is economy, premium economy, business or first class.',
-                required=False,
+                description='The accepted travel class.',
+                required=True,
                 type=str,
-                enum=['ECONOMY', 'PREMIUM_ECONOMY', 'BUSINESS', 'FIRST'],
                 location=OpenApiParameter.QUERY,
-                default='ECONOMY'
+                default='Y',
+                examples=[
+                    OpenApiExample(
+                        'Economy',
+                        summary='Economy',
+                        value='Y',
+                    ),
+                    OpenApiExample(
+                        'Business',
+                        summary='Business',
+                        value='C',
+                    ),
+                    OpenApiExample(
+                        'First',
+                        summary='First',
+                        value='F',
+                    ),
+                ],
             ),
         ],
         auth=None,
@@ -76,7 +92,7 @@ class Seatmap(APIView):
             seatmap = AvailabilitySeatmap.get(
                 flight_number=request.GET.get('flightNumber'),
                 date=request.GET.get('date'),
-                travelClass=request.GET.get('travelClass'),
+                travel_class=request.GET.get('travelClass'),
             )
 
             return JsonResponse(

@@ -260,9 +260,9 @@ class OfferSearch:
                         'stops': len(i['segments']) - 1,
                         'carriers': [
                             {
-                                'carrierCode': carrierCode,
-                                'carrier': bookshelf.get('carriers', carrierCode),
-                            } for carrierCode in set([s['carrierCode'] for s in i['segments']])
+                                'carrierCode': carrier_code,
+                                'carrier': bookshelf.get('carriers', carrier_code),
+                            } for carrier_code in set([s['carrierCode'] for s in i['segments']])
                         ],
                         'departure': {
                             'airport': Airport.details(i['segments'][0]['departure']['iataCode']),

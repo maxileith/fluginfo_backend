@@ -3,6 +3,10 @@ from fluginfo.settings import AMADEUS_KEY, AMADEUS_SECRET
 import logging
 from .offer_cache import OfferCache
 from .bookshelf import Bookshelf
+import json
+from fluginfo.settings import BASE_DIR
+from os import path
+
 
 # init amadeus client
 amadeus_client = Client(
@@ -54,3 +58,9 @@ AIRCRAFT_CABIN_AMENITIES = {
 
 # bookshelf
 bookshelf = Bookshelf(AIRCRAFT_CABIN_AMENITIES)
+
+
+seatmap_offer_blueprint_path = path.join(
+    BASE_DIR, "amadeus_connector", "seatmap_offer_blueprint.json")
+with open(seatmap_offer_blueprint_path) as f:
+    SEATMAP_OFFER_BLUEPRINT = json.load(f)

@@ -1,0 +1,34 @@
+{
+    "type": "flight-offer",
+    "id": "1",
+    "itineraries": [
+        {
+            "segments": [
+                {
+                    "departure": {
+                        "iataCode": "FRA",
+                        "at": "2021-12-01T00:00:00"
+                    },
+                    "arrival": {
+                        "iataCode": "CDG"
+                    },
+                    "carrierCode": "AF",
+                    "number": "1519",
+                    "id": "1"
+                }
+            ]
+        }
+    ],
+    "travelerPricings": [
+        {
+            "travelerId": "1",
+            "travelerType": "ADULT",
+            "fareDetailsBySegment": [
+                {
+                    "segmentId": "1",
+                    "class": "R"
+                }
+            ]
+        }
+    ]
+}

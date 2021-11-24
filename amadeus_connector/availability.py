@@ -1,4 +1,4 @@
-from .foundation import bookshelf, amadeus_client
+from .foundation import bookshelf, amadeus_client, SEATMAP_OFFER_BLUEPRINT, offer_cache
 from amadeus.client.errors import ResponseError, ClientError
 from .errors import AmadeusBadRequest, AmadeusNothingFound
 from .flightroute import FlightRoute
@@ -88,22 +88,27 @@ class AvailabilitySearch:
 class AvailabilitySeatmap:
 
     @staticmethod
-    def get(flight_number: str, date: str, travelClass: str) -> dict:
+    def get(flight_number: str, date: str, travel_class: str) -> dict:
         carrier_code, number = split_flight_number(flight_number)
         route = FlightRoute.get_advanced(carrier_code, number, date)
-        offers = OfferSearch.get(
-            adults=1,
-            departureDate=date,
-            destinationLocationCode=route['arrivalIata'],
-            originLocationCode=route['departureIata'],
-            includedAirlineCodes=carrier_code,
-            travelClass=travelClass,
-            max=250,
+        offer = AvailabilitySeatmap.__get_offer_from_blueprint(
+            departureIata=route['departureIata'],
+            arrivalIata=route['arrivalIata'],
+            carrier_code=carrier_code,
+            number=number,
+            travel_class=travel_class,
+            date=date,
         )
-        for k in offers.keys():
-            if [travelClass] != offers[k]['classes']:
-                continue
-            o = OfferDetails.get(k)
-            if o['itineraries'][0]['segments'][0]['flightNumber'] == flight_number:
-                return OfferSeatmap.get(k, o['itineraries'][0]['segments'][0]['id'])
-        raise AmadeusNothingFound
+        hash_val = offer_cache.add([offer])[0]
+        return OfferSeatmap.get(hash_val, '1')
+
+    @staticmethod
+    def __get_offer_from_blueprint(departureIata: str, arrivalIata: str, carrier_code: str, number: str, travel_class: str, date: str):
+        offer = SEATMAP_OFFER_BLUEPRINT.copy()
+        offer['itineraries'][0]['segments'][0]['departure']['iataCode'] = departureIata
+        offer['itineraries'][0]['segments'][0]['departure']['at'] = f'{date}T00:00:00'
+        offer['itineraries'][0]['segments'][0]['arrival']['iataCode'] = arrivalIata
+        offer['itineraries'][0]['segments'][0]['carrierCode'] = carrier_code
+        offer['itineraries'][0]['segments'][0]['number'] = number
+        offer['travelerPricings'][0]['fareDetailsBySegment'][0]['class'] = travel_class
+        return offer
