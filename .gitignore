@@ -1,3 +1,4 @@
+*.tar
 .vscode/**
 !.vscode/tasks.json
 amadeus_connector/offer_cache.json

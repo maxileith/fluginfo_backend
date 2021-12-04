@@ -1,3 +1,4 @@
+*.tar
 .git/
 .gitignore
 db.sqlite3
