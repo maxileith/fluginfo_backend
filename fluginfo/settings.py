@@ -30,9 +30,11 @@ ALLOWED_HOSTS = [
     os.environ.get('FLUGINFO_BACKEND_HOSTNAME', 'localhost'),
 ]
 
-CORS_ALLOWED_ORIGINS_REGEX = [
-    f'^https://{os.environ.get("FLUGINFO_BACKEND_FRONTEND_HOSTNAME", "localhost")}(:[0-9]+)?'
+CORS_ALLOWED_ORIGIN_REGEXES = [
+    fr'^http(s)?://{os.environ.get("FLUGINFO_BACKEND_FRONTEND_HOSTNAME", "localhost")}(:[0-9]+)?$'
 ]
+
+print(CORS_ALLOWED_ORIGIN_REGEXES)
 
 # Application definition
 
