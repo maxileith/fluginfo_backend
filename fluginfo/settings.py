@@ -34,8 +34,6 @@ CORS_ALLOWED_ORIGIN_REGEXES = [
     fr'^http(s)?://{os.environ.get("FLUGINFO_BACKEND_FRONTEND_HOSTNAME", "localhost")}(:[0-9]+)?$'
 ]
 
-print(CORS_ALLOWED_ORIGIN_REGEXES)
-
 # Application definition
 
 INSTALLED_APPS = [
