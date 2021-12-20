@@ -43,7 +43,9 @@ class AirportSearch(APIView):
         try:
             airports = Airport.search(request.GET.get('s'))
             return JsonResponse(
-                data=airports,
+                data={
+                    'data': airports,
+                },
                 status=HTTP_200_OK,
             )
         except AmadeusNothingFound:

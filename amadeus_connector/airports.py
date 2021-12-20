@@ -5,9 +5,9 @@ from .errors import AmadeusNothingFound
 from .utils import timed_lru_cache
 
 
-def simplify_airports(airports: list) -> dict:
-    return {
-        a['iataCode']: {
+def simplify_airports(airports: list) -> list:
+    return [
+        {
             'iata': a['iataCode'],
             'name': a['name'],
             'city': a['address']['cityName'],
@@ -16,7 +16,7 @@ def simplify_airports(airports: list) -> dict:
             'timezone': a['timeZoneOffset'],
         }
         for a in airports
-    }
+    ]
 
 
 class Airport:
@@ -26,18 +26,18 @@ class Airport:
     def search(s: str, isIata: bool = False) -> list:
         try:
             if isIata:
-                airports = {s: {'iata': s}}
+                airports = [{'iata': s}]
             else:
-                airports = {}
+                airports = []
             response = amadeus_client.reference_data.locations.get(
                 keyword=s,
                 subType=Location.AIRPORT,
             )
-            airports = {**airports, **simplify_airports(response.result['data'])}
+            airports += simplify_airports(response.result['data'])
         except ResponseError:
             raise AmadeusNothingFound
         finally:
-            bookshelf.add(airports=airports)
+            bookshelf.add(airports={a['iata']: a for a in airports})
             return airports
 
     @staticmethod
