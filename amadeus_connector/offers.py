@@ -229,7 +229,7 @@ class OfferSearch:
 
     @staticmethod
     @timed_lru_cache
-    def get(**params: dict) -> dict:
+    def get(**params: dict) -> list:
         hashes = OfferSearch.__load_results(params)
         # loading the offers from cache to get the hashes
         # and to be uniform with the rest of the code. It
@@ -239,8 +239,8 @@ class OfferSearch:
         return OfferSearch.__simplify_offer(offers)
 
     @staticmethod
-    def __simplify_offer(offers: dict) -> dict:
-        slim_offers = {}
+    def __simplify_offer(offers: dict) -> list:
+        slim_offers = list()
         for key, offer in offers.items():
 
             classes = set()
@@ -251,7 +251,8 @@ class OfferSearch:
             currency = bookshelf.get('currencies', offer['price']['currency'])
             price = offer['price']['grandTotal']
 
-            slim_offers[key] = {
+            slim_offers.append({
+                'hash': key,
                 'price': f'{price} {currency}',
                 'classes': list(classes),
                 'itineraries': [
@@ -274,6 +275,6 @@ class OfferSearch:
                         },
                     } for i in offer['itineraries']
                 ],
-            }
+            })
 
         return slim_offers

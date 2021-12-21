@@ -220,7 +220,9 @@ class Search(APIView):
 
             if len(offers):
                 return JsonResponse(
-                    data=offers,
+                    data={
+                        'data': offers,
+                    },
                     status=HTTP_200_OK,
                 )
             else:

@@ -1,7 +1,7 @@
 import json
 from fluginfo.settings import BASE_DIR, DEBUG
 from os import path
-from hashlib import sha256
+from hashlib import sha512
 from .errors import AmadeusNothingFound
 
 
@@ -14,7 +14,7 @@ class OfferCache:
         keys_added = []
         for offer in offers:
             as_string = json.dumps(offer, sort_keys=True)
-            hash_value = sha256(as_string.encode('utf-8')).hexdigest()
+            hash_value = sha512(as_string.encode('utf-8')).hexdigest()
             self.__offers[hash_value] = offer
             keys_added.append(hash_value)
 
