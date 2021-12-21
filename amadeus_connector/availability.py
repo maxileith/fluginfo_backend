@@ -2,8 +2,9 @@ from .foundation import bookshelf, amadeus_client, SEATMAP_OFFER_BLUEPRINT, offe
 from amadeus.client.errors import ResponseError, ClientError
 from .errors import AmadeusBadRequest, AmadeusNothingFound
 from .flightroute import FlightRoute
-from .utils import timed_lru_cache, split_flight_number
+from .utils import timed_lru_cache, split_flight_number, split_duration
 from .offers import OfferSearch, OfferDetails, OfferSeatmap
+from .airports import Airport
 
 
 class AvailabilityExact:
@@ -16,8 +17,10 @@ class AvailabilityExact:
             arrival_iata=route['arrivalIata'],
             date=date,
         )
+        # filter for right flight number
+        availabilities = [a for a in availabilities if a['flightNumber'] == flight_number]
         try:
-            return availabilities[flight_number]
+            return availabilities[0]
         except KeyError:
             raise AmadeusNothingFound
 
@@ -63,25 +66,44 @@ class AvailabilitySearch:
 
         availabilities = response.result['data']
 
-        slim_availabilities = AvailabilitySearch.__simplify_availabilities(availabilities)
-        return slim_availabilities
+        return AvailabilitySearch.__simplify_availabilities(availabilities)
 
     @staticmethod
-    def __simplify_availabilities(availabilities: list) -> dict:
-        simplified_availabilities = dict()
+    def __simplify_availabilities(availabilities: list) -> list:
+        simplified_availabilities = list()
         for a in availabilities:
             # go for only non-stop
             if len(a['segments']) != 1:
                 continue
             # extract the only segment
-            # tos: the only segment
             the_only_segment = a['segments'][0]
             flight_number = the_only_segment['carrierCode'] + \
                 the_only_segment['number']
 
-            simplified_availabilities[flight_number] = {
-                c['class']: c['numberOfBookableSeats'] for c in the_only_segment['availabilityClasses']
-            }
+            # it is possible that the aircraft name is not in the bookshelf
+            # because the aircraft names are not part of the dictionaries on
+            # availability searches
+            try:
+                aircraft = bookshelf.get('aircraft', the_only_segment['aircraft']['code'])
+            except AmadeusNothingFound:
+                aircraft = the_only_segment['aircraft']['code']
+
+            simplified_availabilities.append({
+                'flightNumber': flight_number,
+                'departure': {
+                    'airport': Airport.details(the_only_segment['departure']['iataCode']),
+                    'at': the_only_segment['departure']['at'],
+                },
+                'arrival': {
+                    'airport': Airport.details(the_only_segment['arrival']['iataCode']),
+                    'at': the_only_segment['arrival']['at'],
+                },
+                'duration': split_duration(a['duration']),
+                'aircraft': aircraft,
+                'availableSeats': {
+                    c['class']: c['numberOfBookableSeats'] for c in the_only_segment['availabilityClasses']
+                },
+            })
         return simplified_availabilities
 
 

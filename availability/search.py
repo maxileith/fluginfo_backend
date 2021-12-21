@@ -107,7 +107,9 @@ class Search(APIView):
             )
 
             return JsonResponse(
-                data=availabilities,
+                data={
+                    'data': availabilities
+                },
                 status=HTTP_200_OK,
             )
         except AmadeusBadRequest:

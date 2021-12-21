@@ -3,6 +3,7 @@ import math
 from functools import lru_cache, wraps
 from fluginfo.settings import CACHE_TIMEOUT, DEBUG
 from time import monotonic_ns
+from .errors import AmadeusBadRequest
 
 DURATION_REGEX = r'^PT((\d+)H)?((\d+)M)?$'
 
