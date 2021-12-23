@@ -155,7 +155,7 @@ class OfferSeatmap:
                         y = facility['coordinates']['y']
                     except KeyError:
                         continue
-                    
+
                     grid[x][y] = {
                         'type': 'facility',
                         'name': bookshelf.get('facilities', facility['code']),
@@ -243,10 +243,22 @@ class OfferSearch:
         slim_offers = list()
         for key, offer in offers.items():
 
-            classes = set()
+            # save the segment ids belonging to an
+            # itinerary within the itinerary itself
+            for i in offer['itineraries']:
+                segments = list()
+                for s in i['segments']:
+                    segments.append(s['id'])
+                i['segment_ids'] = segments
+                i['classes'] = set()
+
+            # determine which classes are included
+            # in each itinerary
             for tp in offer['travelerPricings']:
                 for s in tp['fareDetailsBySegment']:
-                    classes.add(s['cabin'])
+                    for i in offer['itineraries']:
+                        if s['segmentId'] in i['segment_ids']:
+                            i['classes'].add(s['cabin'])
 
             currency = bookshelf.get('currencies', offer['price']['currency'])
             price = offer['price']['grandTotal']
@@ -254,11 +266,11 @@ class OfferSearch:
             slim_offers.append({
                 'hash': key,
                 'price': f'{price} {currency}',
-                'classes': list(classes),
                 'itineraries': [
                     {
                         'duration': split_duration(i['duration']),
                         'stops': len(i['segments']) - 1,
+                        'classes': list(i['classes']),
                         'carriers': [
                             {
                                 'carrierCode': carrier_code,
