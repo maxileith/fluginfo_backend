@@ -186,7 +186,7 @@ class OfferDetails:
                     'duration': split_duration(i['duration']),
                     'segments': [
                         {
-                            'id': s['id'],
+                            'id': int(s['id']),
                             'departure': {
                                 'airport': Airport.details(s['departure']['iataCode']),
                                 'at': s['departure']['at'],
