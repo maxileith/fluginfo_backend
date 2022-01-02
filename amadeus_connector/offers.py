@@ -6,7 +6,7 @@ from amadeus.client.errors import ResponseError, ClientError
 import time
 from .errors import AmadeusBadRequest, AmadeusNothingFound
 import json
-from copy import copy
+from copy import copy, deepcopy
 
 
 class OfferSeatmap:
@@ -242,6 +242,8 @@ class OfferSearch:
     def __simplify_offer(offers: dict) -> list:
         slim_offers = list()
         for key, offer in offers.items():
+
+            offer = deepcopy(offer)
 
             # save the segment ids belonging to an
             # itinerary within the itinerary itself

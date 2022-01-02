@@ -6,7 +6,7 @@ from .errors import AmadeusNothingFound
 
 
 class OfferCache:
-    
+
     def __init__(self: object, initial_offers: dict = {}) -> object:
         self.__offers = initial_offers
 
@@ -20,14 +20,15 @@ class OfferCache:
 
         # write dict as json to file
         if DEBUG:
-            json_path = path.join(BASE_DIR, 'amadeus_connector', 'offer_cache.json')
+            json_path = path.join(
+                BASE_DIR, 'amadeus_connector', 'offer_cache.json')
             with open(json_path, 'w+') as f:
                 json.dump(self.__offers, f, indent=4)
-        
+
         return keys_added
-    
+
     def get(self: object, hash_values: list, ignore_missing: bool = False) -> dict:
-        offers = {}
+        offers = dict()
 
         # load from cached offers
         for h in hash_values:
