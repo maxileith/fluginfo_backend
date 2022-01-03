@@ -17,13 +17,16 @@ ENV PYTHONDONTWRITEBYTECODE 1
 # output straight to terminal
 ENV PYTHONUNBUFFERED 1
 
-# copy project
-COPY . /app
+# copy requirements
+COPY ./requirements.txt /app/requirements.txt
 
 # install dependencies
 RUN python -m pip install --upgrade pip 
 RUN python -m pip install -r requirements.txt
 RUN rm requirements.txt
+
+# copy project
+COPY . /app
 
 # install server
 RUN python -m pip install gunicorn==20.1.0

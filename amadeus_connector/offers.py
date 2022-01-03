@@ -201,7 +201,7 @@ class OfferDetails:
                             'duration': split_duration(s['duration']),
                             'aircraft': bookshelf.get('aircraft', s['aircraft']['code']),
                             'cabin': list(filter(lambda d: d['segmentId'] == s['id'], offer['travelerPricings'][0]['fareDetailsBySegment']))[0]['cabin'],
-                            'class': list(filter(lambda d: d['segmentId'] == s['id'], offer['travelerPricings'][0]['fareDetailsBySegment']))[0]['class'],
+                            'classId': list(filter(lambda d: d['segmentId'] == s['id'], offer['travelerPricings'][0]['fareDetailsBySegment']))[0]['class'],
                         } for s in i['segments']
                     ],
                 } for i in offer['itineraries']
