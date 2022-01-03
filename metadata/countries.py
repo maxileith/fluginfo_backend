@@ -1,10 +1,12 @@
-from rest_framework.status import HTTP_200_OK, HTTP_404_NOT_FOUND, HTTP_400_BAD_REQUEST, HTTP_503_SERVICE_UNAVAILABLE
+from rest_framework.status import HTTP_500_INTERNAL_SERVER_ERROR, HTTP_200_OK, HTTP_404_NOT_FOUND, HTTP_400_BAD_REQUEST, HTTP_503_SERVICE_UNAVAILABLE
 from rest_framework.views import APIView
 from django.http.response import HttpResponse
 from drf_spectacular.utils import extend_schema, OpenApiParameter, OpenApiExample
 import requests
 from django.utils.decorators import method_decorator
 from django.views.decorators.cache import cache_page
+from fluginfo.settings import BASE_DIR
+from os import path
 
 
 class CountryFlag(APIView):
@@ -35,6 +37,11 @@ class CountryFlag(APIView):
                         summary='United States of America',
                         value='US',
                     ),
+                    OpenApiExample(
+                        'World',
+                        summary='World',
+                        value='WORLD',
+                    ),
                 ],
             ),
         ],
@@ -54,6 +61,20 @@ class CountryFlag(APIView):
             )
 
         country_code = request.GET.get('countryCode').lower()
+
+        if country_code == "world":
+            with open(path.join(BASE_DIR, "metadata", "globe.svg")) as f:
+                return HttpResponse(
+                    content=f.readlines(),
+                    status=HTTP_200_OK,
+                    content_type="image/svg+xml",
+                )
+
+            return HttpResponse(
+                content='',
+                status=HTTP_500_INTERNAL_SERVER_ERROR,
+            )
+
         url = f'https://raw.githubusercontent.com/hampusborgos/country-flags/main/svg/{country_code}.svg'
 
         try:
