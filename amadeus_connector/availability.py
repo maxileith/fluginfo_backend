@@ -90,6 +90,7 @@ class AvailabilitySearch:
 
             simplified_availabilities.append({
                 'flightNumber': flight_number,
+                'carrierCode': the_only_segment['carrierCode'],
                 'departure': {
                     'airport': Airport.details(the_only_segment['departure']['iataCode']),
                     'at': the_only_segment['departure']['at'],
@@ -100,10 +101,24 @@ class AvailabilitySearch:
                 },
                 'duration': split_duration(a['duration']),
                 'aircraft': aircraft,
-                'availableSeats': {
-                    c['class']: c['numberOfBookableSeats'] for c in the_only_segment['availabilityClasses']
-                },
+                'availableSeats': [
+                    {
+                        'classId': c['class'],
+                        'seats': c['numberOfBookableSeats'],
+                    } for c in the_only_segment['availabilityClasses']
+                ],
             })
+
+
+
+            # it is possible that the carrier name is not in the bookshelf
+            # because the carrier names are not part of the dictionaries on
+            # availability searches
+            try:
+                simplified_availabilities[-1]['carrier'] = bookshelf.get("carriers", the_only_segment['carrierCode'])
+            except AmadeusNothingFound:
+                pass
+
         return simplified_availabilities
 
 
