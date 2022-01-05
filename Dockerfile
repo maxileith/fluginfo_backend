@@ -25,11 +25,11 @@ RUN python -m pip install --upgrade pip
 RUN python -m pip install -r requirements.txt
 RUN rm requirements.txt
 
-# copy project
-COPY . /app
-
 # install server
 RUN python -m pip install gunicorn==20.1.0
+
+# copy project
+COPY . /app
 
 # make startup script executable
 RUN chmod +x docker-entrypoint.sh

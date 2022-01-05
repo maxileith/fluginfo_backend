@@ -21,7 +21,7 @@ class AvailabilityExact:
         availabilities = [a for a in availabilities if a['flightNumber'] == flight_number]
         try:
             return availabilities[0]
-        except KeyError:
+        except IndexError:
             raise AmadeusNothingFound
 
 
