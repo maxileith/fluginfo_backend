@@ -180,7 +180,10 @@ class OfferDetails:
         currency = bookshelf.get('currencies', offer['price']['currency'])
 
         return {
-            'price': f'{offer["price"]["grandTotal"]} {currency}',
+            'price': {
+                'value': float(offer["price"]["grandTotal"]),
+                'currency': currency,
+            },
             'itineraries': [
                 {
                     'duration': split_duration(i['duration']),
@@ -267,7 +270,10 @@ class OfferSearch:
 
             slim_offers.append({
                 'hash': key,
-                'price': f'{price} {currency}',
+                'price': {
+                    'value': float(price),
+                    'currency': currency,
+                },
                 'itineraries': [
                     {
                         'duration': split_duration(i['duration']),
