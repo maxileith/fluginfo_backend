@@ -1,6 +1,6 @@
 from datetime import date
 from .foundation import offer_cache, amadeus_client, bookshelf
-from .utils import split_duration, inches_to_cm, timed_lru_cache
+from .utils import duration_to_minutes, inches_to_cm, timed_lru_cache
 from .airports import Airport
 from amadeus.client.errors import ResponseError, ClientError
 import time
@@ -186,7 +186,7 @@ class OfferDetails:
             },
             'itineraries': [
                 {
-                    'duration': split_duration(i['duration']),
+                    'duration': duration_to_minutes(i['duration']),
                     'segments': [
                         {
                             'id': int(s['id']),
@@ -201,7 +201,7 @@ class OfferDetails:
                             'flightNumber': s['carrierCode'] + s['number'],
                             'carrierCode': s['carrierCode'],
                             'carrier': bookshelf.get('carriers', s['carrierCode']),
-                            'duration': split_duration(s['duration']),
+                            'duration': duration_to_minutes(s['duration']),
                             'aircraft': bookshelf.get('aircraft', s['aircraft']['code']),
                             'cabin': list(filter(lambda d: d['segmentId'] == s['id'], offer['travelerPricings'][0]['fareDetailsBySegment']))[0]['cabin'],
                             'classId': list(filter(lambda d: d['segmentId'] == s['id'], offer['travelerPricings'][0]['fareDetailsBySegment']))[0]['class'],
@@ -276,7 +276,7 @@ class OfferSearch:
                 },
                 'itineraries': [
                     {
-                        'duration': split_duration(i['duration']),
+                        'duration': duration_to_minutes(i['duration']),
                         'stops': len(i['segments']) - 1,
                         'classes': list(i['classes']),
                         'carriers': [

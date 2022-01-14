@@ -2,7 +2,7 @@ from .foundation import bookshelf, amadeus_client, SEATMAP_OFFER_BLUEPRINT, offe
 from amadeus.client.errors import ResponseError, ClientError
 from .errors import AmadeusBadRequest, AmadeusNothingFound
 from .flightroute import FlightRoute
-from .utils import timed_lru_cache, split_flight_number, split_duration
+from .utils import timed_lru_cache, split_flight_number, duration_to_minutes
 from .offers import OfferSearch, OfferDetails, OfferSeatmap
 from .airports import Airport
 
@@ -99,7 +99,7 @@ class AvailabilitySearch:
                     'airport': Airport.details(the_only_segment['arrival']['iataCode']),
                     'at': the_only_segment['arrival']['at'],
                 },
-                'duration': split_duration(a['duration']),
+                'duration': duration_to_minutes(a['duration']),
                 'aircraft': aircraft,
                 'availableSeats': [
                     {

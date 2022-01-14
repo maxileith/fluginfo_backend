@@ -7,7 +7,7 @@ from .errors import AmadeusBadRequest
 
 DURATION_REGEX = r'^PT((\d+)H)?((\d+)M)?$'
 
-def split_duration(src: str) -> dict:
+def duration_to_minutes(src: str) -> int:
     result = re.match(DURATION_REGEX, src)
 
     try:
@@ -20,10 +20,7 @@ def split_duration(src: str) -> dict:
     except TypeError:
         m = 0
 
-    return {
-        'hours': h,
-        'minutes': m,
-    }
+    return h * 60 + m
 
 
 def inches_to_cm(inches: float) -> int:
