@@ -1,11 +1,11 @@
 from rest_framework.status import HTTP_200_OK, HTTP_404_NOT_FOUND, HTTP_400_BAD_REQUEST
 from rest_framework.views import APIView
 from django.http.response import JsonResponse, HttpResponse
-from amadeus_connector import AmadeusBadRequest, AmadeusNothingFound, AvailabilityExact
+from amadeus_connector import AmadeusBadRequest, AmadeusNothingFound, StatusTimings
 from drf_spectacular.utils import extend_schema, OpenApiParameter, OpenApiExample
 
 
-class Exact(APIView):
+class Timings(APIView):
 
     serializer_class = None
 
@@ -13,7 +13,7 @@ class Exact(APIView):
         parameters=[
             OpenApiParameter(
                 name='flightNumber',
-                description='The flight number to check the availability for.',
+                description='The flight number to check the delay for.',
                 required=True,
                 type=str,
                 location=OpenApiParameter.QUERY,
@@ -27,7 +27,7 @@ class Exact(APIView):
             ),
             OpenApiParameter(
                 name='date',
-                description='the date on which the traveler will depart from the origin to go to the destination. Dates are specified in the ISO 8601 YYYY-MM-DD format, e.g. 2017-12-25',
+                description='the date on which the flight will depart. Dates are specified in the ISO 8601 YYYY-MM-DD format, e.g. 2017-12-25',
                 required=True,
                 type=str,
                 location=OpenApiParameter.QUERY,
@@ -41,12 +41,11 @@ class Exact(APIView):
             ),
         ],
         auth=None,
-        summary='How many seats are available on a specific flight?',
+        summary='Delay of a flight.',
     )
     def get(self, request):
         """
-        This endpoint return the number of seats that are available
-        on a specific flight. The number of seats is categorized by
+        This endpoint returns the current delay of a flight.
         class.
         """
         if 'flightNumber' not in request.GET.dict().keys():
@@ -59,14 +58,15 @@ class Exact(APIView):
                 content='',
                 status=HTTP_400_BAD_REQUEST,
             )
+
         try:
-            availability = AvailabilityExact.get(
+            timings = StatusTimings.get(
                 flight_number=request.GET.get('flightNumber'),
                 date=request.GET.get('date'),
             )
 
             return JsonResponse(
-                data=availability,
+                data=timings,
                 status=HTTP_200_OK,
             )
         except AmadeusBadRequest:

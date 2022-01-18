@@ -3,3 +3,4 @@ from .availability import AvailabilitySearch, AvailabilityExact, AvailabilitySea
 from .airports import Airport
 from .errors import AmadeusBadRequest, AmadeusNothingFound
 from .flightroute import FlightRoute
+from .status import StatusTimings
