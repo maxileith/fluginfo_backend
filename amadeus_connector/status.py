@@ -1,8 +1,7 @@
-from .foundation import amadeus_client
 from .utils import split_flight_number
 from amadeus.client.errors import ResponseError, ClientError
 from .errors import AmadeusBadRequest, AmadeusNothingFound
-from .utils import timed_lru_cache
+from .utils import timed_lru_cache, get_flight_schedule
 
 class StatusTimings:
 
@@ -14,10 +13,10 @@ class StatusTimings:
         
         # load status
         try:
-            response = amadeus_client.schedule.flights.get(
-                carrierCode=carrier_code,
-                flightNumber=number,
-                scheduledDepartureDate=date,
+            response = get_flight_schedule(
+                carrier_code=carrier_code,
+                number=number,
+                date=date,
             )
         except ResponseError:
             raise AmadeusBadRequest

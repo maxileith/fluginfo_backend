@@ -4,6 +4,7 @@ from functools import lru_cache, wraps
 from fluginfo.settings import CACHE_TIMEOUT, DEBUG
 from time import monotonic_ns
 from .errors import AmadeusBadRequest
+from .foundation import amadeus_client
 
 DURATION_REGEX = r'^PT((\d+)H)?((\d+)M)?$'
 
@@ -73,3 +74,11 @@ def split_flight_number(flight_number: str) -> tuple:
     except AttributeError:
         raise AmadeusBadRequest
     return carrier_code, number
+
+@timed_lru_cache
+def get_flight_schedule(carrier_code: str, number: str, date: str) -> dict:
+    return amadeus_client.schedule.flights.get(
+        carrierCode=carrier_code,
+        flightNumber=number,
+        scheduledDepartureDate=date,
+    )

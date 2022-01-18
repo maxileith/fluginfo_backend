@@ -11,7 +11,9 @@ class AvailabilityExact:
 
     @staticmethod
     def get(flight_number: str, date: str) -> dict:
+        print(1)
         route = FlightRoute.get(flight_number, date)
+        print(2)
         availabilities = AvailabilitySearch.get(
             departure_iata=route['departureIata'],
             arrival_iata=route['arrivalIata'],
