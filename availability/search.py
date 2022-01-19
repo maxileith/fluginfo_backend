@@ -4,6 +4,8 @@ from django.http.response import JsonResponse, HttpResponse
 from amadeus_connector import AmadeusBadRequest, OfferSearch, AvailabilitySearch, AmadeusServerError
 from drf_spectacular.utils import extend_schema, OpenApiParameter, OpenApiExample
 from fluginfo.settings import CACHE_TIMEOUT
+import traceback
+from fluginfo.settings import DEBUG
 
 
 class Search(APIView):
@@ -113,16 +115,22 @@ class Search(APIView):
                 status=HTTP_200_OK,
             )
         except AmadeusBadRequest:
+            if DEBUG:
+                traceback.print_exc()
             return HttpResponse(
                 content='',
                 status=HTTP_400_BAD_REQUEST,
             )
         except AmadeusNothingFound:
+            if DEBUG:
+                traceback.print_exc()
             return HttpResponse(
                 content='',
                 status=HTTP_404_NOT_FOUND,
             )
         except AmadeusServerError as e:
+            if DEBUG:
+                traceback.print_exc()
             return HttpResponse(
                 content='',
                 status=HTTP_503_SERVICE_UNAVAILABLE,
