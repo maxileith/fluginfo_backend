@@ -14,7 +14,6 @@ class OfferSeatmap:
     @staticmethod
     @timed_lru_cache
     def __load_seatmaps_of_offer(hash_val: str) -> dict:
-        print(hash_val)
         offer = offer_cache.get([hash_val])[hash_val]
         try:
             response = amadeus_client.shopping.seatmaps.post(
