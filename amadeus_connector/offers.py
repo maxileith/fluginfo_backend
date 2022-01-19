@@ -2,9 +2,9 @@ from datetime import date
 from .foundation import offer_cache, amadeus_client, bookshelf
 from .utils import duration_to_minutes, inches_to_cm, timed_lru_cache
 from .airports import Airport
-from amadeus.client.errors import ResponseError, ClientError
+from amadeus.client.errors import ServerError, NotFoundError, ClientError
 import time
-from .errors import AmadeusBadRequest, AmadeusNothingFound
+from .errors import AmadeusBadRequest, AmadeusNothingFound, AmadeusServerError
 import json
 from copy import copy, deepcopy
 
@@ -21,8 +21,12 @@ class OfferSeatmap:
                     'data': [offer]
                 }
             )
+        except ServerError:
+            raise AmadeusServerError
         except ClientError:
             raise AmadeusBadRequest
+        except NotFoundError:
+            raise AmadeusNothingFound
         dictionaries = response.result['dictionaries']
         bookshelf.add(**dictionaries)
         return response
@@ -219,8 +223,12 @@ class OfferSearch:
         try:
             response = amadeus_client.shopping.flight_offers_search.get(
                 **params)
-        except ResponseError:
+        except ServerError:
+            raise AmadeusServerError
+        except ClientError:
             raise AmadeusBadRequest
+        except NotFoundError:
+            raise AmadeusNothingFound
         # save dictionaries
         if 'dictionaries' in response.result.keys():
             dictionaries = response.result['dictionaries']

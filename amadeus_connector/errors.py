@@ -3,3 +3,6 @@ class AmadeusBadRequest(Exception):
 
 class AmadeusNothingFound(Exception):
     pass
+
+class AmadeusServerError(Exception):
+    pass

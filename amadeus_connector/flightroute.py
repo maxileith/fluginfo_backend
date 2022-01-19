@@ -1,5 +1,5 @@
-from amadeus.client.errors import ResponseError, ClientError
-from .errors import AmadeusBadRequest, AmadeusNothingFound
+from amadeus.client.errors import ClientError, ServerError, NotFoundError
+from .errors import AmadeusBadRequest, AmadeusNothingFound, AmadeusServerError
 import re
 from .utils import timed_lru_cache, split_flight_number, get_flight_schedule
 
@@ -14,10 +14,12 @@ class FlightRoute:
                 number=number,
                 date=date,
             )
-        except ResponseError:
-            raise AmadeusBadRequest
+        except ServerError:
+            raise AmadeusServerError
         except ClientError:
             raise AmadeusBadRequest
+        except NotFoundError:
+            raise AmadeusNothingFound
 
         data = response.result['data']
 
