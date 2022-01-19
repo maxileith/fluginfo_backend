@@ -5,6 +5,7 @@ from fluginfo.settings import CACHE_TIMEOUT, DEBUG
 from time import monotonic_ns
 from .errors import AmadeusBadRequest
 from .foundation import amadeus_client
+from amadeus.client.errors import ResponseError, ClientError
 
 DURATION_REGEX = r'^PT((\d+)H)?((\d+)M)?$'
 

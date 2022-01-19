@@ -1,7 +1,7 @@
-from rest_framework.status import HTTP_200_OK, HTTP_404_NOT_FOUND, HTTP_400_BAD_REQUEST
+from rest_framework.status import HTTP_200_OK, HTTP_404_NOT_FOUND, HTTP_400_BAD_REQUEST, HTTP_503_SERVICE_UNAVAILABLE
 from rest_framework.views import APIView
 from django.http.response import JsonResponse, HttpResponse
-from amadeus_connector import AmadeusBadRequest, OfferSearch
+from amadeus_connector import AmadeusBadRequest, OfferSearch, AmadeusNothingFound, AmadeusServerError
 from drf_spectacular.utils import extend_schema, OpenApiParameter, OpenApiExample
 
 
@@ -234,4 +234,14 @@ class Search(APIView):
             return HttpResponse(
                 content='',
                 status=HTTP_400_BAD_REQUEST,
-            )   
+            )
+        except AmadeusNothingFound:
+            return HttpResponse(
+                content='',
+                status=HTTP_404_NOT_FOUND,
+            )
+        except AmadeusServerError:
+            return HttpResponse(
+                content='',
+                status=HTTP_503_SERVICE_UNAVAILABLE,
+            )

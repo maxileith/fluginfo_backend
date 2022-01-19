@@ -1,9 +1,9 @@
-from rest_framework.status import HTTP_200_OK, HTTP_404_NOT_FOUND, HTTP_400_BAD_REQUEST
+from rest_framework.status import HTTP_200_OK, HTTP_404_NOT_FOUND, HTTP_400_BAD_REQUEST, HTTP_503_SERVICE_UNAVAILABLE
 from rest_framework.views import APIView
 from django.http.response import JsonResponse, HttpResponse
-from amadeus_connector import AmadeusBadRequest, AmadeusNothingFound, AvailabilitySeatmap
+from amadeus_connector import AmadeusBadRequest, AmadeusNothingFound, AvailabilitySeatmap, AmadeusServerError
 from drf_spectacular.utils import extend_schema, OpenApiParameter, OpenApiExample
-
+import traceback
 
 class Seatmap(APIView):
 
@@ -100,12 +100,20 @@ class Seatmap(APIView):
                 status=HTTP_200_OK,
             )
         except AmadeusBadRequest:
+            traceback.print_exc()
             return HttpResponse(
                 content='',
                 status=HTTP_400_BAD_REQUEST,
             )
         except AmadeusNothingFound:
+            traceback.print_exc()
             return HttpResponse(
                 content='',
                 status=HTTP_404_NOT_FOUND,
+            )
+        except AmadeusServerError:
+            traceback.print_exc()
+            return HttpResponse(
+                content='',
+                status=HTTP_503_SERVICE_UNAVAILABLE,
             )

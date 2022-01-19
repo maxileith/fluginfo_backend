@@ -1,6 +1,6 @@
 from .utils import split_flight_number
-from amadeus.client.errors import ResponseError, ClientError
-from .errors import AmadeusBadRequest, AmadeusNothingFound
+from amadeus.client.errors import ServerError, NotFoundError, ClientError
+from .errors import AmadeusBadRequest, AmadeusNothingFound, AmadeusServerError
 from .utils import timed_lru_cache, get_flight_schedule
 
 class StatusTimings:
@@ -18,16 +18,14 @@ class StatusTimings:
                 number=number,
                 date=date,
             )
-        except ResponseError:
-            raise AmadeusBadRequest
+        except ServerError:
+            raise AmadeusServerError
         except ClientError:
             raise AmadeusBadRequest
+        except NotFoundError:
+            raise AmadeusNothingFound
 
-        for x in response.result['data']:
-            if x['flightDesignator']['carrierCode'] == carrier_code and str(x['flightDesignator']['flightNumber']) == number:
-                return StatusTimings.__simplify_timings(x)
-            
-        raise AmadeusNothingFound
+        return StatusTimings.__simplify_timings(response.result['data'][0])
 
     def __simplify_timings(status: dict) -> dict:
         return {

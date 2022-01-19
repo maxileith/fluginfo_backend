@@ -1,8 +1,8 @@
-from rest_framework.status import HTTP_200_OK, HTTP_404_NOT_FOUND, HTTP_400_BAD_REQUEST
+from rest_framework.status import HTTP_200_OK, HTTP_404_NOT_FOUND, HTTP_400_BAD_REQUEST, HTTP_503_SERVICE_UNAVAILABLE
 from rest_framework.views import APIView
 from django.http.response import JsonResponse, HttpResponse
 from drf_spectacular.utils import extend_schema, OpenApiParameter, OpenApiExample
-from amadeus_connector import AmadeusNothingFound, AmadeusBadRequest, FlightRoute as AmadeusConnectorFlightRoute
+from amadeus_connector import AmadeusNothingFound, AmadeusBadRequest, FlightRoute as AmadeusConnectorFlightRoute, AmadeusServerError
 
 
 class FlightRoute(APIView):
@@ -78,4 +78,8 @@ class FlightRoute(APIView):
                 content='',
                 status=HTTP_404_NOT_FOUND,
             )
-        
+        except AmadeusServerError:
+            return HttpResponse(
+                content='',
+                status=HTTP_503_SERVICE_UNAVAILABLE,
+            )

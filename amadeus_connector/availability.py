@@ -1,6 +1,6 @@
 from .foundation import bookshelf, amadeus_client, SEATMAP_OFFER_BLUEPRINT, offer_cache
-from amadeus.client.errors import ResponseError, ClientError
-from .errors import AmadeusBadRequest, AmadeusNothingFound
+from amadeus.client.errors import NotFoundError, ClientError, ServerError
+from .errors import AmadeusBadRequest, AmadeusNothingFound, AmadeusServerError
 from .flightroute import FlightRoute
 from .utils import timed_lru_cache, split_flight_number, duration_to_minutes
 from .offers import OfferSearch, OfferDetails, OfferSeatmap
@@ -11,9 +11,7 @@ class AvailabilityExact:
 
     @staticmethod
     def get(flight_number: str, date: str) -> dict:
-        print(1)
         route = FlightRoute.get(flight_number, date)
-        print(2)
         availabilities = AvailabilitySearch.get(
             departure_iata=route['departureIata'],
             arrival_iata=route['arrivalIata'],
@@ -57,10 +55,12 @@ class AvailabilitySearch:
                     ],
                 },
             )
-        except ResponseError:
-            raise AmadeusBadRequest
+        except ServerError:
+            raise AmadeusServerError
         except ClientError:
             raise AmadeusBadRequest
+        except NotFoundError:
+            raise AmadeusNothingFound
 
         # save dictionaries
         dictionaries = response.result['dictionaries']
