@@ -29,6 +29,6 @@ class StatusTimings:
 
     def __simplify_timings(status: dict) -> dict:
         return {
-            'departure': status['flightPoints'][0]['departure']['timings'][0]['value'],
-            'arrival': status['flightPoints'][-1]['arrival']['timings'][-1]['value'],
+            'departure': status['flightPoints'][0]['departure']['timings'][0]['value'][:-6],
+            'arrival': status['flightPoints'][-1]['arrival']['timings'][-1]['value'][:-6],
         }
