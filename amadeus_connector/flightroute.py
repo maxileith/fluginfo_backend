@@ -1,7 +1,7 @@
 from amadeus.client.errors import ClientError, ServerError, NotFoundError
 from .errors import AmadeusBadRequest, AmadeusNothingFound, AmadeusServerError
 import re
-from .utils import timed_lru_cache, split_flight_number, get_flight_schedule
+from .utils import split_flight_number, get_flight_schedule
 
 class FlightRoute:
 

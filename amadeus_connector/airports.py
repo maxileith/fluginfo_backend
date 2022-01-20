@@ -23,7 +23,7 @@ def simplify_airports(airports: list) -> list:
 class Airport:
 
     @staticmethod
-    @timed_lru_cache
+    @timed_lru_cache(forever=True)
     def search(s: str, isIata: bool = False) -> list:
 
         if s == "":
