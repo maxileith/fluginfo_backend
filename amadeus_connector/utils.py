@@ -44,13 +44,12 @@ def timed_lru_cache(
         # create a function wrapped with traditional lru_cache
         f = lru_cache(maxsize=maxsize, typed=typed)(f)
         # convert seconds to nanoseconds to set the expiry time in nanoseconds
-        if not forever and not DEBUG:
-            f.delta = seconds * 10 ** 9
-            f.expiration = monotonic_ns() + f.delta
+        f.delta = seconds * 10 ** 9
+        f.expiration = monotonic_ns() + f.delta
 
         @wraps(f)  # wraps is used to access the decorated function attributes
         def wrapped_f(*args, **kwargs):
-            if monotonic_ns() >= f.expiration:
+            if not forever and monotonic_ns() >= f.expiration:
                 # if the current cache expired of the decorated function then
                 # clear cache for that function and set a new cache value with new expiration time
                 f.cache_clear()
