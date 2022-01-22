@@ -20,6 +20,8 @@ class AvailabilityExact:
         # filter for right flight number
         availabilities = [a for a in availabilities if a['flightNumber'] == flight_number]
         try:
+            availabilities[0]['departure']['airport'] = Airport.details(availabilities[0]['departure']['airport']['iata'])
+            availabilities[0]['arrival']['airport'] = Airport.details(availabilities[0]['arrival']['airport']['iata'])
             return availabilities[0]
         except IndexError:
             raise AmadeusNothingFound
@@ -94,11 +96,15 @@ class AvailabilitySearch:
                 'flightNumber': flight_number,
                 'carrierCode': the_only_segment['carrierCode'],
                 'departure': {
-                    'airport': Airport.details(the_only_segment['departure']['iataCode']),
+                    'airport': {
+                        'iata': the_only_segment['departure']['iataCode'],
+                    },
                     'at': the_only_segment['departure']['at'],
                 },
                 'arrival': {
-                    'airport': Airport.details(the_only_segment['arrival']['iataCode']),
+                    'airport': {
+                        'iata': the_only_segment['arrival']['iataCode'],
+                    },
                     'at': the_only_segment['arrival']['at'],
                 },
                 'duration': duration_to_minutes(a['duration']),
