@@ -69,69 +69,6 @@ class AirlineLogo(APIView):
                 location=OpenApiParameter.QUERY,
                 default=200,
             ),
-            OpenApiParameter(
-                name='background',
-                description='This specifies the background color (hexcolor). Ignored for SVGs.',
-                required=False,
-                type=str,
-                location=OpenApiParameter.QUERY,
-                default='',
-                examples=[
-                    OpenApiExample(
-                        'transparent',
-                        summary='transparent',
-                        value='',
-                    ),
-                    OpenApiExample(
-                        'polar night',
-                        summary='polar night',
-                        value='434C5E',
-                        description='Based on the awesome nord color palette.',
-                    ),
-                    OpenApiExample(
-                        'snow storm',
-                        summary='snow storm',
-                        value='E5E9F0',
-                        description='Based on the awesome nord color palette.',
-                    ),
-                    OpenApiExample(
-                        'frost',
-                        summary='frost',
-                        value='81A1C1',
-                        description='Based on the awesome nord color palette.',
-                    ),
-                    OpenApiExample(
-                        'aurora red',
-                        summary='aurora red',
-                        value='BF616A',
-                        description='Based on the awesome nord color palette.',
-                    ),
-                    OpenApiExample(
-                        'aurora orange',
-                        summary='aurora orange',
-                        value='D08770',
-                        description='Based on the awesome nord color palette.',
-                    ),
-                    OpenApiExample(
-                        'aurora yellow',
-                        summary='aurora yellow',
-                        value='EBCB8B',
-                        description='Based on the awesome nord color palette.',
-                    ),
-                    OpenApiExample(
-                        'aurora green',
-                        summary='aurora green',
-                        value='A3BE8C',
-                        description='Based on the awesome nord color palette.',
-                    ),
-                    OpenApiExample(
-                        'aurora purple',
-                        summary='aurora purple',
-                        value='B48EAD',
-                        description='Based on the awesome nord color palette.',
-                    ),
-                ],
-            ),
         ],
         auth=None,
         summary='What ist the logo of a certain airline?',
@@ -168,11 +105,6 @@ class AirlineLogo(APIView):
                 status=HTTP_400_BAD_REQUEST,
             )
 
-        if 'background' in request.GET.dict().keys():
-            background = request.GET.get('background')
-        else:
-            background = ''
-
         iata_code = request.GET.get('iata').upper()
 
         # usage of the API according to the documentation
@@ -184,7 +116,7 @@ class AirlineLogo(APIView):
             width = request.GET.get('width') if 'width' in request.GET.dict().keys() else 200
             logo_id = f'{iata_code}_{width}_{height}_{shape}_{AIRHEX_KEY}'
             logo_md5 = md5(logo_id.encode('utf-8')).hexdigest()
-            url = f'https://content.airhex.com/content/logos/airlines_{iata_code}_{width}_{height}_{shape}.png?proportions=keep&md5apikey={logo_md5}&background={background}'
+            url = f'https://content.airhex.com/content/logos/airlines_{iata_code}_{width}_{height}_{shape}.png?proportions=keep&md5apikey={logo_md5}'
         
         # svg
         else:
