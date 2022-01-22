@@ -28,12 +28,14 @@ RUN rm requirements.txt
 # install server
 RUN python -m pip install gunicorn==20.1.0
 
-# copy project
-COPY . /app
+COPY ./docker-entrypoint.sh ./docker-entrypoint.sh
 
 # make startup script executable
 RUN chmod +x docker-entrypoint.sh
 EXPOSE 80
+
+# copy project
+COPY . .
 
 ENTRYPOINT [ "/bin/bash" ]
 CMD [ "docker-entrypoint.sh" ]

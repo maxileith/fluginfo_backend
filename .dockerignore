@@ -1,4 +1,5 @@
 *.tar
+*.tar.gz
 .git/
 .gitignore
 db.sqlite3
@@ -9,6 +10,7 @@ amadeus_connector/bookshelf.json
 .dockerignore
 Dockerfile
 docker-build.sh
+docker-save.sh
 .vscode/
 
 # Byte-compiled / optimized / DLL files

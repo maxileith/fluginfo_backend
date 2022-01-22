@@ -32,7 +32,7 @@ cache_timeout = 0 if DEBUG else CACHE_TIMEOUT
 
 # https://blog.soumendrak.com/cache-heavy-computation-functions-with-a-timeout-value
 def timed_lru_cache(
-    _func=None, *, seconds: int = cache_timeout, maxsize: int = 128, typed: bool = False
+    _func=None, *, seconds: int = cache_timeout, maxsize: int = 1024, typed: bool = False, forever: bool = False
 ):
     """ Extension over existing lru_cache with timeout
     :param seconds: timeout value
@@ -49,7 +49,7 @@ def timed_lru_cache(
 
         @wraps(f)  # wraps is used to access the decorated function attributes
         def wrapped_f(*args, **kwargs):
-            if monotonic_ns() >= f.expiration:
+            if not forever and monotonic_ns() >= f.expiration:
                 # if the current cache expired of the decorated function then
                 # clear cache for that function and set a new cache value with new expiration time
                 f.cache_clear()
