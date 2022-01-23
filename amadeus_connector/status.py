@@ -6,7 +6,6 @@ from .utils import timed_lru_cache, get_flight_schedule
 class StatusTimings:
 
     @staticmethod
-    @timed_lru_cache
     def get(flight_number: str, date:str) -> dict:
 
         carrier_code, number = split_flight_number(flight_number)
