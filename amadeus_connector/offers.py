@@ -109,9 +109,9 @@ class OfferSeatmap:
 
             if 'startWingsX' in deck['deckConfiguration'].keys() and 'endWingsX' in deck['deckConfiguration'].keys():
                 deck_infos = {
-                    'wings': {
-                        'startX': deck['deckConfiguration']['startWingsX'],
-                        'endX': deck['deckConfiguration']['endWingsX'],
+                    'wingsX': {
+                        'start': deck['deckConfiguration']['startWingsX'],
+                        'end': deck['deckConfiguration']['endWingsX'],
                     },
                     **deck_infos,
                 }
@@ -122,6 +122,12 @@ class OfferSeatmap:
                         'start': deck['deckConfiguration']['startSeatRow'],
                         'end': deck['deckConfiguration']['endSeatRow'],
                     },
+                    **deck_infos,
+                }
+
+            if 'exitRowsX' in deck['deckConfiguration'].keys():
+                deck_infos = {
+                    'exitRowsX': deck['deckConfiguration']['exitRowsX'],
                     **deck_infos,
                 }
 
