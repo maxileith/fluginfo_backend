@@ -52,6 +52,13 @@ class OfferSeatmap:
         # create the simplified seatmap
         simplified_seatmap = dict()
 
+        # insert some metainformation such as the flightNumber
+        simplified_seatmap['flightNumber'] = seatmap['carrierCode'] + \
+            seatmap['number']
+        simplified_seatmap['classId'] = seatmap['class']
+        simplified_seatmap['departureIata'] = seatmap['departure']['iataCode']
+        simplified_seatmap['arrivalIata'] = seatmap['arrival']['iataCode']
+
         # provide cabin amenities
         aircraftCabinAmenities = seatmap['aircraftCabinAmenities']
 
