@@ -58,6 +58,7 @@ class OfferSeatmap:
         simplified_seatmap['classId'] = seatmap['class']
         simplified_seatmap['departureIata'] = seatmap['departure']['iataCode']
         simplified_seatmap['arrivalIata'] = seatmap['arrival']['iataCode']
+        simplified_seatmap['date'] = seatmap['departure']['at']
 
         # provide cabin amenities
         aircraftCabinAmenities = seatmap['aircraftCabinAmenities']
