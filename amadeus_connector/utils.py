@@ -9,6 +9,7 @@ from amadeus.client.errors import ResponseError, ClientError
 
 DURATION_REGEX = r'^PT((\d+)H)?((\d+)M)?$'
 
+
 def duration_to_minutes(src: str) -> int:
     result = re.match(DURATION_REGEX, src)
 
@@ -16,7 +17,7 @@ def duration_to_minutes(src: str) -> int:
         h = int(result.group(2))
     except TypeError:
         h = 0
-    
+
     try:
         m = int(result.group(4))
     except TypeError:
@@ -28,9 +29,12 @@ def duration_to_minutes(src: str) -> int:
 def inches_to_cm(inches: float) -> int:
     return round(inches * 2.54)
 
+
 cache_timeout = 0 if DEBUG else CACHE_TIMEOUT
 
 # https://blog.soumendrak.com/cache-heavy-computation-functions-with-a-timeout-value
+
+
 def timed_lru_cache(
     _func=None, *, seconds: int = cache_timeout, maxsize: int = 1024, typed: bool = False, forever: bool = False
 ):
@@ -66,15 +70,17 @@ def timed_lru_cache(
     else:
         return wrapper_cache(_func)
 
+
 def split_flight_number(flight_number: str) -> tuple:
     result = re.match(
-        r'^([A-Z0-9][A-Z0-9])([0-9][0-9][0-9][0-9]?)$', flight_number)
+        r'^([A-Z0-9][A-Z0-9])([0-9]+)$', flight_number)
     try:
         carrier_code = result.group(1)
         number = result.group(2)
     except AttributeError:
         raise AmadeusBadRequest
     return carrier_code, number
+
 
 @timed_lru_cache
 def get_flight_schedule(carrier_code: str, number: str, date: str) -> dict:
