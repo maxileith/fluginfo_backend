@@ -78,6 +78,7 @@ class AirportDetails(APIView):
     serializer_class = None
 
     @extend_schema(
+        deprecated=True,
         parameters=[
             OpenApiParameter(
                 name='iata',
