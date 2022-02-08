@@ -2,9 +2,10 @@ from rest_framework.status import HTTP_200_OK, HTTP_404_NOT_FOUND, HTTP_400_BAD_
 from rest_framework.views import APIView
 from django.http.response import JsonResponse, HttpResponse
 from amadeus_connector import OfferDetails, AmadeusBadRequest, AmadeusNothingFound, AmadeusServerError
-from drf_spectacular.utils import extend_schema, OpenApiParameter
+from drf_spectacular.utils import extend_schema, OpenApiParameter, OpenApiResponse
 import traceback
 from fluginfo.settings import DEBUG
+from schemas import offer_details_response_schema
 
 
 class Details(APIView):
@@ -23,6 +24,10 @@ class Details(APIView):
         ],
         auth=None,
         summary='Give me some details about an offer.',
+        responses={
+            HTTP_200_OK: offer_details_response_schema,
+            HTTP_404_NOT_FOUND: OpenApiResponse(description="No flight there with the specified ID."),
+        },
     )
     def get(self, request):
         """

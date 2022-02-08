@@ -5,6 +5,7 @@ from amadeus_connector import AmadeusBadRequest, OfferSearch, AmadeusNothingFoun
 from drf_spectacular.utils import extend_schema, OpenApiParameter, OpenApiExample, OpenApiResponse
 import traceback
 from fluginfo.settings import DEBUG
+from schemas import offer_search_response_schema
 
 
 class Search(APIView):
@@ -69,9 +70,9 @@ class Search(APIView):
                 location=OpenApiParameter.QUERY,
                 examples=[
                     OpenApiExample(
-                        'The 1st of November 2021',
-                        summary='The 1st of November 2021',
-                        value='2021-11-01',
+                        'The 1st of March 2022',
+                        summary='The 1st of March 2022',
+                        value='2022-03-01',
                     ),
                 ],
             ),
@@ -83,9 +84,9 @@ class Search(APIView):
                 location=OpenApiParameter.QUERY,
                 examples=[
                     OpenApiExample(
-                        'The 3rd of November 2021',
-                        summary='The 3rd of November 2021',
-                        value='2021-11-03',
+                        'The 3rd of March 2022',
+                        summary='The 3rd of November 2022',
+                        value='2022-03-03',
                     ),
                 ],
             ),
@@ -209,6 +210,13 @@ class Search(APIView):
         ],
         auth=None,
         summary='How do I get from A to B?',
+        responses={
+            HTTP_200_OK: offer_search_response_schema,
+            HTTP_404_NOT_FOUND: OpenApiResponse(description="There are no flights matching the search criteria."),
+            HTTP_400_BAD_REQUEST: None,
+            HTTP_503_SERVICE_UNAVAILABLE: OpenApiResponse(
+                description="The internally used service provider has server problems."),
+        },
     )
     def get(self, request):
         """

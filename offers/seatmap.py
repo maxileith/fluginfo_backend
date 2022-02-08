@@ -2,9 +2,10 @@ from rest_framework.status import HTTP_200_OK, HTTP_404_NOT_FOUND, HTTP_400_BAD_
 from rest_framework.views import APIView
 from django.http.response import JsonResponse, HttpResponse
 from amadeus_connector import OfferSeatmap, AmadeusBadRequest, AmadeusNothingFound, AmadeusServerError
-from drf_spectacular.utils import extend_schema, OpenApiParameter
+from drf_spectacular.utils import extend_schema, OpenApiParameter, OpenApiResponse
 import traceback
 from fluginfo.settings import DEBUG
+from schemas import seatmap_response_schema
 
 
 class Seatmap(APIView):
@@ -30,6 +31,13 @@ class Seatmap(APIView):
         ],
         auth=None,
         summary='How do the seatmap look like?',
+        responses={
+            HTTP_200_OK: seatmap_response_schema,
+            HTTP_404_NOT_FOUND: OpenApiResponse(description="There is no seatmap for the specified flight."),
+            HTTP_400_BAD_REQUEST: None,
+            HTTP_503_SERVICE_UNAVAILABLE: OpenApiResponse(
+                description="The internally used service provider has server problems."),
+        },
     )
     def get(self, request):
         """
@@ -45,9 +53,10 @@ class Seatmap(APIView):
                 content='',
                 status=HTTP_400_BAD_REQUEST,
             )
-        
+
         try:
-            seatmap = OfferSeatmap.get(request.GET.get('id'), request.GET.get('segment'))
+            seatmap = OfferSeatmap.get(request.GET.get(
+                'id'), request.GET.get('segment'))
             return JsonResponse(
                 data=seatmap,
                 status=HTTP_200_OK,

@@ -2,9 +2,11 @@ from rest_framework.status import HTTP_200_OK, HTTP_404_NOT_FOUND, HTTP_400_BAD_
 from rest_framework.views import APIView
 from django.http.response import JsonResponse, HttpResponse
 from amadeus_connector import AmadeusBadRequest, AmadeusNothingFound, AvailabilitySeatmap, AmadeusServerError
-from drf_spectacular.utils import extend_schema, OpenApiParameter, OpenApiExample
+from drf_spectacular.utils import extend_schema, OpenApiParameter, OpenApiExample, OpenApiResponse
 import traceback
 from fluginfo.settings import DEBUG
+from schemas import seatmap_response_schema
+
 
 class Seatmap(APIView):
 
@@ -34,9 +36,9 @@ class Seatmap(APIView):
                 location=OpenApiParameter.QUERY,
                 examples=[
                     OpenApiExample(
-                        'The 1st of November 2021',
-                        summary='The 1st of November 2021',
-                        value='2021-11-01',
+                        'The 1st of March 2022',
+                        summary='The 1st of March 2022',
+                        value='2022-03-01',
                     ),
                 ],
             ),
@@ -68,6 +70,13 @@ class Seatmap(APIView):
         ],
         auth=None,
         summary='How does the seatmap looks like on a specific flight?',
+        responses={
+            HTTP_200_OK: seatmap_response_schema,
+            HTTP_404_NOT_FOUND: OpenApiResponse(description="There is no seatmap for the specified flight."),
+            HTTP_400_BAD_REQUEST: None,
+            HTTP_503_SERVICE_UNAVAILABLE: OpenApiResponse(
+                description="The internally used service provider has server problems."),
+        },
     )
     def get(self, request):
         """

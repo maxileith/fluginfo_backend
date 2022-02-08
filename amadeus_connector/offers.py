@@ -160,10 +160,12 @@ class OfferSeatmap:
                     'type': 'seat',
                     'number': seat['number'],
                     'available': seat['travelerPricing'][0]['seatAvailabilityStatus'] == "AVAILABLE",
-                    'characteristics': [
-                        bookshelf.get('seatCharacteristics', c) for c in seat['characteristicsCodes']
-                    ],
                 }
+
+                if 'characteristicsCodes' in seat.keys():
+                    grid[x][y]['characteristics'] = [
+                        bookshelf.get('seatCharacteristics', c) for c in seat['characteristicsCodes']
+                    ]
 
             # fill the seats up with facilities
             if 'facilities' in deck.keys():

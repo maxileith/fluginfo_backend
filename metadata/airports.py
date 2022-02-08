@@ -1,10 +1,11 @@
 from rest_framework.status import HTTP_200_OK, HTTP_404_NOT_FOUND, HTTP_400_BAD_REQUEST, HTTP_503_SERVICE_UNAVAILABLE
 from rest_framework.views import APIView
 from django.http.response import JsonResponse, HttpResponse
-from drf_spectacular.utils import extend_schema, OpenApiParameter, OpenApiExample
+from drf_spectacular.utils import extend_schema, OpenApiParameter, OpenApiExample, OpenApiResponse
 from amadeus_connector import AmadeusNothingFound, Airport, AmadeusServerError, AmadeusBadRequest
 import traceback
 from fluginfo.settings import DEBUG
+from schemas import airport_search_response_schema
 
 
 class AirportSearch(APIView):
@@ -30,6 +31,13 @@ class AirportSearch(APIView):
         ],
         auth=None,
         summary='Which airports match my keyword?',
+        responses={
+            HTTP_200_OK: airport_search_response_schema,
+            HTTP_404_NOT_FOUND: OpenApiResponse(description="No airports matching the keyword were found."),
+            HTTP_400_BAD_REQUEST: None,
+            HTTP_503_SERVICE_UNAVAILABLE: OpenApiResponse(
+                description="The internally used service provider has server problems."),
+        },
     )
     def get(self, request):
         """

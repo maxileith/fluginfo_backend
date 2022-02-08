@@ -71,9 +71,9 @@ class Search(APIView):
                 location=OpenApiParameter.QUERY,
                 examples=[
                     OpenApiExample(
-                        'The 1st of November 2021',
-                        summary='The 1st of November 2021',
-                        value='2021-11-01',
+                        'The 1st of March 2022',
+                        summary='The 1st of March 2022',
+                        value='2022-03-01',
                     ),
                 ],
             ),
