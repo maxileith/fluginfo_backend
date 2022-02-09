@@ -6,7 +6,7 @@ from .travel_classes import travel_classes
 from copy import copy
 
 segment = inline_serializer(name="Segment", fields={
-    "id": fields.IntegerField(default=1),
+    "id": fields.IntegerField(help_text="e.g. 1"),
     "departure": copy(stop),
     "arrival": copy(stop),
     "flightNumber": fields.CharField(help_text="e.g. LH438"),
@@ -14,7 +14,7 @@ segment = inline_serializer(name="Segment", fields={
     "carrier": fields.CharField(help_text="e.g. LUFTHANSA"),
     "duration": fields.IntegerField(help_text="e.g. 670"),
     "aircraft": fields.CharField(help_text="e.g. AIRBUS A330-300"),
-    "cabin": fields.ListField(child=copy(travel_classes)),
+    "cabin": copy(travel_classes),
     "classId": fields.CharField(help_text="e.g. Y"),
 })
 

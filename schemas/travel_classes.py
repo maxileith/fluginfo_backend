@@ -4,4 +4,4 @@ from .price import price
 from .stop import stop
 
 travel_classes = fields.ChoiceField(
-    choices=["ECONOMY", "FIRST", "BUSINESS", "PREMIUM_ECONOMY"], default=["ECONOMY"])
+    choices=["ECONOMY", "FIRST", "BUSINESS", "PREMIUM_ECONOMY"], default="ECONOMY")

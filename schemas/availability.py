@@ -1,13 +1,11 @@
 from rest_framework import fields
 from drf_spectacular.utils import inline_serializer
-from .price import price
 from .stop import stop
-from .travel_classes import travel_classes
 from copy import copy
 
 available_seats = inline_serializer(name="AvailableSeats", fields={
     "classId": fields.CharField(help_text="e.g. Y"),
-    "seats": fields.IntegerField(default=9),
+    "seats": fields.IntegerField(help_text="e.g. 9"),
 })
 
 status_exact_response_schema = inline_serializer(name="StatusExactResponse", fields={
