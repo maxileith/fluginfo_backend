@@ -71,7 +71,7 @@ class AirlineLogo(APIView):
             ),
         ],
         auth=None,
-        summary='What ist the logo of a certain airline?',
+        summary='What is the logo of a certain airline?',
     )
     @method_decorator(cache_page(CACHE_TIMEOUT))
     def get(self, request):
