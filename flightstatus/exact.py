@@ -1,14 +1,15 @@
 from rest_framework.status import HTTP_200_OK, HTTP_404_NOT_FOUND, HTTP_400_BAD_REQUEST, HTTP_503_SERVICE_UNAVAILABLE
 from rest_framework.views import APIView
 from django.http.response import JsonResponse, HttpResponse
-from amadeus_connector import AmadeusBadRequest, AmadeusNothingFound, AvailabilitySeatmap, AmadeusServerError
+from amadeus_connector import AmadeusBadRequest, AmadeusNothingFound, StatusExact, AmadeusServerError
 from drf_spectacular.utils import extend_schema, OpenApiParameter, OpenApiExample, OpenApiResponse
+from rest_framework import fields
 import traceback
 from fluginfo.settings import DEBUG
-from schemas import seatmap_response_schema
+from schemas import availability_exact_response_schema
 
 
-class Seatmap(APIView):
+class Exact(APIView):
 
     serializer_class = None
 
@@ -16,7 +17,7 @@ class Seatmap(APIView):
         parameters=[
             OpenApiParameter(
                 name='flightNumber',
-                description='The flight number to check the seatmap for.',
+                description='The flight number to check the availability for.',
                 required=True,
                 type=str,
                 location=OpenApiParameter.QUERY,
@@ -42,37 +43,12 @@ class Seatmap(APIView):
                     ),
                 ],
             ),
-            OpenApiParameter(
-                name='travelClass',
-                description='The accepted travel class.',
-                required=True,
-                type=str,
-                location=OpenApiParameter.QUERY,
-                default='Y',
-                examples=[
-                    OpenApiExample(
-                        'Economy',
-                        summary='Economy',
-                        value='Y',
-                    ),
-                    OpenApiExample(
-                        'Business',
-                        summary='Business',
-                        value='C',
-                    ),
-                    OpenApiExample(
-                        'First',
-                        summary='First',
-                        value='F',
-                    ),
-                ],
-            ),
         ],
         auth=None,
-        summary='How does the seatmap looks like on a specific flight?',
+        summary='How many seats are available on a specific flight?',
         responses={
-            HTTP_200_OK: seatmap_response_schema,
-            HTTP_404_NOT_FOUND: OpenApiResponse(description="There is no seatmap for the specified flight."),
+            HTTP_200_OK: availability_exact_response_schema,
+            HTTP_404_NOT_FOUND: OpenApiResponse(description="There are no availability information for the specified flight."),
             HTTP_400_BAD_REQUEST: None,
             HTTP_503_SERVICE_UNAVAILABLE: OpenApiResponse(
                 description="The internally used service provider has server problems."),
@@ -80,8 +56,9 @@ class Seatmap(APIView):
     )
     def get(self, request):
         """
-        This endpoint returns a seatmap for the aircraft doing the
-        given flight.
+        This endpoint return the number of seats that are available
+        on a specific flight. The number of seats is categorized by
+        class.
         """
         if 'flightNumber' not in request.GET.dict().keys():
             return HttpResponse(
@@ -93,20 +70,14 @@ class Seatmap(APIView):
                 content='',
                 status=HTTP_400_BAD_REQUEST,
             )
-        if 'travelClass' not in request.GET.dict().keys():
-            return HttpResponse(
-                content='',
-                status=HTTP_400_BAD_REQUEST,
-            )
         try:
-            seatmap = AvailabilitySeatmap.get(
+            availability = StatusExact.get(
                 flight_number=request.GET.get('flightNumber'),
                 date=request.GET.get('date'),
-                travel_class=request.GET.get('travelClass'),
             )
 
             return JsonResponse(
-                data=seatmap,
+                data=availability,
                 status=HTTP_200_OK,
             )
         except AmadeusBadRequest:
