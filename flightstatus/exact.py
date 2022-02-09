@@ -6,7 +6,7 @@ from drf_spectacular.utils import extend_schema, OpenApiParameter, OpenApiExampl
 from rest_framework import fields
 import traceback
 from fluginfo.settings import DEBUG
-from schemas import availability_exact_response_schema
+from schemas import status_exact_response_schema
 
 
 class Exact(APIView):
@@ -47,7 +47,7 @@ class Exact(APIView):
         auth=None,
         summary='How many seats are available on a specific flight?',
         responses={
-            HTTP_200_OK: availability_exact_response_schema,
+            HTTP_200_OK: status_exact_response_schema,
             HTTP_404_NOT_FOUND: OpenApiResponse(description="There are no availability information for the specified flight."),
             HTTP_400_BAD_REQUEST: None,
             HTTP_503_SERVICE_UNAVAILABLE: OpenApiResponse(
@@ -71,13 +71,13 @@ class Exact(APIView):
                 status=HTTP_400_BAD_REQUEST,
             )
         try:
-            availability = StatusExact.get(
+            status = StatusExact.get(
                 flight_number=request.GET.get('flightNumber'),
                 date=request.GET.get('date'),
             )
 
             return JsonResponse(
-                data=availability,
+                data=status,
                 status=HTTP_200_OK,
             )
         except AmadeusBadRequest:

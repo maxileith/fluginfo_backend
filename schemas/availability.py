@@ -10,7 +10,7 @@ available_seats = inline_serializer(name="AvailableSeats", fields={
     "seats": fields.IntegerField(default=9),
 })
 
-availability_exact_response_schema = inline_serializer(name="StatusExactResponse", fields={
+status_exact_response_schema = inline_serializer(name="StatusExactResponse", fields={
     "flightNumber": fields.CharField(default="LH438"),
     "carrierCode": fields.CharField(default="LH"),
     "carrier": fields.CharField(default="LUFTHANSA", required=False),

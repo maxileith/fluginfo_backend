@@ -16,7 +16,7 @@ class FlightRoute(APIView):
         parameters=[
             OpenApiParameter(
                 name='flightNumber',
-                description='The flight number to check the availability for.',
+                description='The flight number to check the route for.',
                 required=True,
                 type=str,
                 location=OpenApiParameter.QUERY,
