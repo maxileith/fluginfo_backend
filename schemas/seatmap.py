@@ -53,11 +53,6 @@ deck_wings_x = inline_serializer(name="DeckWingsX", fields={
     "end": fields.IntegerField(help_text="e.g. 9"),
 })
 
-deck_seat_rows = inline_serializer(name="DeckSeatRows", fields={
-    "start": fields.IntegerField(help_text="e.g. 10"),
-    "end": fields.IntegerField(help_text="e.g. 10"),
-})
-
 deck_grid_item = inline_serializer(name="GridItemSeat", fields={
     "type": fields.ChoiceField(choices=["seat", "facility"], help_text="e.g. seat"),
     "number": fields.CharField(help_text="e.g. 12B (seat only)", required=False),
@@ -68,7 +63,6 @@ deck_grid_item = inline_serializer(name="GridItemSeat", fields={
 
 deck = inline_serializer(name="Deck", fields={
     "wingsX": copy(deck_wings_x),
-    "seatRows": copy(deck_seat_rows),
     "exitRowsX": fields.ListField(child=fields.IntegerField(help_text="e.g. 42"), required=False),
     "grid": fields.ListField(child=fields.ListField(child=copy(deck_grid_item))),
 })

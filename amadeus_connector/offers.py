@@ -124,15 +124,6 @@ class OfferSeatmap:
                     **deck_infos,
                 }
 
-            if 'startSeatRow' in deck['deckConfiguration'].keys() and 'endSeatRow' in deck['deckConfiguration'].keys():
-                deck_infos = {
-                    'seatRows': {
-                        'start': deck['deckConfiguration']['startSeatRow'],
-                        'end': deck['deckConfiguration']['endSeatRow'],
-                    },
-                    **deck_infos,
-                }
-
             if 'exitRowsX' in deck['deckConfiguration'].keys():
                 deck_infos = {
                     'exitRowsX': deck['deckConfiguration']['exitRowsX'],
