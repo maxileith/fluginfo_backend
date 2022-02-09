@@ -55,7 +55,7 @@ class AirlineLogo(APIView):
             ),
             OpenApiParameter(
                 name='width',
-                description='This specifies the width of the logo. Ignored for SVGs.',
+                description='This specifies the width of the logo.',
                 required=False,
                 type=int,
                 location=OpenApiParameter.QUERY,
@@ -63,7 +63,7 @@ class AirlineLogo(APIView):
             ),
             OpenApiParameter(
                 name='height',
-                description='This specifies the height of the logo. Ignored for SVGs.',
+                description='This specifies the height of the logo.',
                 required=False,
                 type=int,
                 location=OpenApiParameter.QUERY,
@@ -81,7 +81,7 @@ class AirlineLogo(APIView):
         """
         if 'iata' not in request.GET.dict().keys() or \
             'shape' not in request.GET.dict().keys() or \
-            'filetype' not in request.GET.dict().keys():
+                'filetype' not in request.GET.dict().keys():
             return HttpResponse(
                 content='',
                 status=HTTP_400_BAD_REQUEST,
@@ -109,15 +109,17 @@ class AirlineLogo(APIView):
 
         # usage of the API according to the documentation
         # https://airhex.com/api/logos/
-        
+
         # png
         if request.GET.get('filetype') == 'png':
-            height = request.GET.get('height') if 'height' in request.GET.dict().keys() else 200
-            width = request.GET.get('width') if 'width' in request.GET.dict().keys() else 200
+            height = request.GET.get(
+                'height') if 'height' in request.GET.dict().keys() else 200
+            width = request.GET.get(
+                'width') if 'width' in request.GET.dict().keys() else 200
             logo_id = f'{iata_code}_{width}_{height}_{shape}_{AIRHEX_KEY}'
             logo_md5 = md5(logo_id.encode('utf-8')).hexdigest()
             url = f'https://content.airhex.com/content/logos/airlines_{iata_code}_{width}_{height}_{shape}.png?proportions=keep&md5apikey={logo_md5}'
-        
+
         # svg
         else:
             logo_id = f'{iata_code}_{shape}_{AIRHEX_KEY}'

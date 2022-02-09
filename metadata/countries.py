@@ -52,7 +52,7 @@ class CountryFlag(APIView):
     def get(self, request):
         """
         This endpoint gives the flag associated with the given
-        Country-Code as an SVG file. 
+        Country-Code as a PNG file. 
         """
         if 'countryCode' not in request.GET.dict().keys():
             return HttpResponse(
