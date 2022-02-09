@@ -9,17 +9,17 @@ segment = inline_serializer(name="Segment", fields={
     "id": fields.IntegerField(default=1),
     "departure": copy(stop),
     "arrival": copy(stop),
-    "flightNumber": fields.CharField(default="LH438"),
-    "carrierCode": fields.CharField(default="LH"),
-    "carrier": fields.CharField(default="LUFTHANSA"),
-    "duration": fields.IntegerField(default=670),
-    "aircraft": fields.CharField(default="AIRBUS A330-300"),
+    "flightNumber": fields.CharField(help_text="e.g. LH438"),
+    "carrierCode": fields.CharField(help_text="e.g. LH"),
+    "carrier": fields.CharField(help_text="e.g. LUFTHANSA"),
+    "duration": fields.IntegerField(help_text="e.g. 670"),
+    "aircraft": fields.CharField(help_text="e.g. AIRBUS A330-300"),
     "cabin": fields.ListField(child=copy(travel_classes)),
-    "classId": fields.CharField(default="Y"),
+    "classId": fields.CharField(help_text="e.g. Y"),
 })
 
 itinerary = inline_serializer(name="Itinerary (Details)", fields={
-    "duration": fields.IntegerField(default=670),
+    "duration": fields.IntegerField(help_text="e.g. 670"),
     "segments": fields.ListField(child=copy(segment)),
 })
 
