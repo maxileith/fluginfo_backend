@@ -20,7 +20,7 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 # See https://docs.djangoproject.com/en/3.2/howto/deployment/checklist/
 
 # SECURITY WARNING: keep the secret key used in production secret!
-SECRET_KEY = "not relevant"
+SECRET_KEY = 'not relevant'
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = os.environ.get('FLUGINFO_BACKEND_DEBUG', 'false') == 'true'
 
@@ -34,6 +34,11 @@ CORS_ALLOWED_ORIGIN_REGEXES = [
     fr'^http(s)?://{os.environ.get("FLUGINFO_BACKEND_FRONTEND_HOSTNAME", "localhost")}(:[0-9]+)?$',
     fr'^http(s)?://localhost(:[0-9]+)?$'
 ]
+
+CSP_FRAME_SRC = (os.environ.get(
+    'FLUGINFO_BACKEND_FRONTEND_HOSTNAME', 'localhost'), )
+CSP_SCRIPT_SRC = ('cdn.jsdelivr.net', )
+CSP_STYLE_SRC = ('cdn.jsdelivr.net', )
 
 # Application definition
 
@@ -57,7 +62,8 @@ MIDDLEWARE = [
     'django.middleware.csrf.CsrfViewMiddleware',
     'django.contrib.auth.middleware.AuthenticationMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
-    'django.middleware.clickjacking.XFrameOptionsMiddleware',
+    #    'django.middleware.clickjacking.XFrameOptionsMiddleware',
+    'csp.middleware.CSPMiddleware',
 ]
 
 ROOT_URLCONF = 'fluginfo.urls'
