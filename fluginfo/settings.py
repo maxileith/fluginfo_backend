@@ -39,7 +39,8 @@ CSP_FRAME_SRC = (os.environ.get(
     'FLUGINFO_BACKEND_FRONTEND_HOSTNAME', 'localhost'), )
 CSP_SCRIPT_SRC = ('cdn.jsdelivr.net', "'unsafe-inline'", )
 CSP_STYLE_SRC = ('cdn.jsdelivr.net', "'unsafe-inline'", )
-CSP_IMG_SRC = ("'self'", "'unsafe-inline'", 'cdn.jsdelivr.net', )
+CSP_IMG_SRC = ("'self'", "'unsafe-inline'",
+               'cdn.jsdelivr.net', 'blob:', 'data:')
 
 # Application definition
 
