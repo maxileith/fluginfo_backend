@@ -1,9 +1,9 @@
+import traceback
 from rest_framework.status import HTTP_200_OK, HTTP_404_NOT_FOUND, HTTP_400_BAD_REQUEST, HTTP_503_SERVICE_UNAVAILABLE
 from rest_framework.views import APIView
 from django.http.response import JsonResponse, HttpResponse
 from drf_spectacular.utils import extend_schema, OpenApiParameter, OpenApiExample
 from amadeus_connector import AmadeusNothingFound, AmadeusBadRequest, FlightRoute as AmadeusConnectorFlightRoute, AmadeusServerError
-import traceback
 from fluginfo.settings import DEBUG
 
 

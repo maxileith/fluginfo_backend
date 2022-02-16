@@ -1,9 +1,7 @@
 import re
-from functools import lru_cache, wraps
-
-from fluginfo.settings import CACHE_TIMEOUT, DEBUG
 from time import monotonic_ns
-
+from functools import lru_cache, wraps
+from fluginfo.settings import CACHE_TIMEOUT, DEBUG
 from .errors import AmadeusBadRequest
 from .foundation import amadeus_client
 
@@ -77,7 +75,7 @@ def inches_to_cm(inches: float) -> int:
     return round(inches * 2.54)
 
 
-cache_timeout = 0 if DEBUG else CACHE_TIMEOUT
+CT = 0 if DEBUG else CACHE_TIMEOUT
 
 
 # https://blog.soumendrak.com/cache-heavy-computation-functions-with-a-timeout-value
@@ -85,7 +83,7 @@ cache_timeout = 0 if DEBUG else CACHE_TIMEOUT
 
 def timed_lru_cache(
 
-    _func=None, *, seconds: int = cache_timeout, maxsize: int = 1024, typed: bool = False, forever: bool = False
+    _func=None, *, seconds: int = CT, maxsize: int = 1024, typed: bool = False, forever: bool = False
 
 ):
     """ Extension over existing lru_cache with timeout

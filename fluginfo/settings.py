@@ -32,7 +32,7 @@ ALLOWED_HOSTS = [
 
 CORS_ALLOWED_ORIGIN_REGEXES = [
     fr'^http(s)?://{os.environ.get("FLUGINFO_BACKEND_FRONTEND_HOSTNAME", "localhost")}(:[0-9]+)?$',
-    fr'^http(s)?://localhost(:[0-9]+)?$'
+    r'^http(s)?://localhost(:[0-9]+)?$'
 ]
 
 CSP_FRAME_SRC = (os.environ.get(

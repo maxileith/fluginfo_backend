@@ -1,12 +1,12 @@
+from os import path
+import requests
 from rest_framework.status import HTTP_500_INTERNAL_SERVER_ERROR, HTTP_200_OK, HTTP_404_NOT_FOUND, HTTP_400_BAD_REQUEST, HTTP_503_SERVICE_UNAVAILABLE
 from rest_framework.views import APIView
-from django.http.response import HttpResponse
 from drf_spectacular.utils import extend_schema, OpenApiParameter, OpenApiExample
-import requests
+from django.http.response import HttpResponse
 from django.utils.decorators import method_decorator
 from django.views.decorators.cache import cache_page
 from fluginfo.settings import BASE_DIR
-from os import path
 
 
 class CountryFlag(APIView):
@@ -52,7 +52,7 @@ class CountryFlag(APIView):
     def get(self, request):
         """
         This endpoint gives the flag associated with the given
-        Country-Code as a PNG file. 
+        Country-Code as a PNG file.
         """
         if 'countryCode' not in request.GET.dict().keys():
             return HttpResponse(
@@ -63,7 +63,7 @@ class CountryFlag(APIView):
         country_code = request.GET.get('countryCode').lower()
 
         if country_code == "world":
-            with open(path.join(BASE_DIR, "metadata", "globe.svg")) as f:
+            with open(path.join(BASE_DIR, 'metadata', 'globe.svg'), 'r', encoding='utf-8') as f:
                 return HttpResponse(
                     content=f.readlines(),
                     status=HTTP_200_OK,

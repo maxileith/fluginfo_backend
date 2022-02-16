@@ -1,9 +1,9 @@
+import traceback
 from rest_framework.status import HTTP_200_OK, HTTP_404_NOT_FOUND, HTTP_400_BAD_REQUEST, HTTP_503_SERVICE_UNAVAILABLE
 from rest_framework.views import APIView
 from django.http.response import JsonResponse, HttpResponse
-from amadeus_connector import AmadeusBadRequest, OfferSearch, AmadeusNothingFound, AmadeusServerError
 from drf_spectacular.utils import extend_schema, OpenApiParameter, OpenApiExample, OpenApiResponse
-import traceback
+from amadeus_connector import AmadeusBadRequest, OfferSearch, AmadeusNothingFound, AmadeusServerError
 from fluginfo.settings import DEBUG
 from schemas import offer_search_response_schema
 
@@ -229,7 +229,7 @@ class Search(APIView):
             offers = OfferSearch.get(
                 **{**request.GET.dict(), 'currencyCode': 'EUR'})
 
-            if len(offers):
+            if len(offers) != 0:
                 return JsonResponse(
                     data={
                         'data': offers,

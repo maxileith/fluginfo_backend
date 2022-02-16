@@ -1,7 +1,7 @@
 import json
-from fluginfo.settings import BASE_DIR, DEBUG
 from os import path
 from hashlib import sha512
+from fluginfo.settings import BASE_DIR, DEBUG
 from .errors import AmadeusNothingFound
 
 

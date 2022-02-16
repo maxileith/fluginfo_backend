@@ -1,6 +1,7 @@
-from fluginfo.settings import BASE_DIR, DEBUG
 from os import path
+from copy import copy
 import json
+from fluginfo.settings import BASE_DIR, DEBUG
 from .errors import AmadeusNothingFound
 
 
@@ -9,7 +10,7 @@ class Bookshelf:
     The bookshelf is used to cache various dictionaries from amadeus responses and make them available for retrieval.
     """
 
-    def __init__(self: object, initial_dictionaries: dict = dict()):
+    def __init__(self: object, initial_dictionaries: dict = copy({})):
         """
         Create a new bookshelf with optional initial dictionaries.
 
@@ -69,14 +70,14 @@ class Bookshelf:
             with open(json_path, 'w+', encoding='utf-8') as f:
                 json.dump(self.__dictionaries, f, indent=4)
 
-    def get(self: object, type: str, id: str) -> dict:
+    def get(self: object, dict_type: str, item_id: str) -> dict:
         """
         Get an item of a dictionary in the bookshelf.
 
         Args:
             self (object): Object itself.
-            type (str): Identifier of the dictionary to look into.
-            id (str): Identifier of the item in the dictionary.
+            dict_type (str): Identifier of the dictionary to look into.
+            item_id (str): Identifier of the item in the dictionary.
 
         Raises:
             AmadeusNothingFound: The item cannot be found on the bookshelf.
@@ -86,7 +87,7 @@ class Bookshelf:
         """
         try:
             # look for the item and return
-            return self.__dictionaries[type][id]
+            return self.__dictionaries[dict_type][item_id]
         except KeyError as e:
             # raise if error if at least one of the keys does not exist.
             raise AmadeusNothingFound from e

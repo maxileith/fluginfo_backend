@@ -1,11 +1,11 @@
-from amadeus import Client
-from fluginfo.settings import AMADEUS_KEY, AMADEUS_SECRET
+
 import logging
+from os import path
+import json
+from amadeus import Client
+from fluginfo.settings import AMADEUS_KEY, AMADEUS_SECRET, BASE_DIR
 from .offer_cache import OfferCache
 from .bookshelf import Bookshelf
-import json
-from fluginfo.settings import BASE_DIR
-from os import path
 
 # in this file are variables that are required by
 # almost all components of the amadeus connector.
@@ -65,7 +65,7 @@ AIRCRAFT_CABIN_AMENITIES = {
 # responses
 bookshelf = Bookshelf(AIRCRAFT_CABIN_AMENITIES)
 
-# load the seatmap offer bluprint for creating pseudo-offers
+# load the seatmap offer blueprint for creating pseudo-offers
 # to query seatmaps.
 seatmap_offer_blueprint_path = path.join(
     BASE_DIR, "amadeus_connector", "seatmap_offer_blueprint.json")

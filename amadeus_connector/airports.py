@@ -1,6 +1,7 @@
-from .foundation import amadeus_client, bookshelf
+
 from amadeus import Location
 from amadeus.client.errors import ServerError, ClientError, NotFoundError
+from .foundation import amadeus_client, bookshelf
 from .errors import AmadeusNothingFound, AmadeusBadRequest, AmadeusServerError
 from .utils import timed_lru_cache
 
@@ -35,13 +36,13 @@ class Airport:
 
     @staticmethod
     @timed_lru_cache(forever=True)
-    def search(keyword: str, isIata: bool = False) -> list:
+    def search(keyword: str, is_iata: bool = False) -> list:
         """
         Returns airports that match the specified keyword.
 
         Args:
             keyword (str): keyword
-            isIata (bool, optional): Specifies whether the keyword is an IATA code or not. Defaults to False.
+            is_iata (bool, optional): Specifies whether the keyword is an IATA code or not. Defaults to False.
 
         Raises:
             AmadeusServerError: Amadeus experienced a server error.
@@ -55,10 +56,10 @@ class Airport:
         if keyword == "":
             return []
 
-        airports = [{'iata': keyword}] if isIata else []
+        airports = [{'iata': keyword}] if is_iata else []
 
         try:
-            if isIata:
+            if is_iata:
                 # if the keyword is an IATA code, just query the details
                 # by the code directly instead of searching.
                 # A + <IATA>: A for "airport"
@@ -112,7 +113,7 @@ class Airport:
         # if there was nothing found in the bookshelf, trigger the airport search
         # to load details
         try:
-            Airport.search(iata, isIata=True)
+            Airport.search(iata, is_iata=True)
         except AmadeusNothingFound:
             pass
         except AmadeusBadRequest:

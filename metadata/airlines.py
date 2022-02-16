@@ -1,12 +1,12 @@
+from hashlib import md5
+import requests
 from rest_framework.status import HTTP_200_OK, HTTP_404_NOT_FOUND, HTTP_400_BAD_REQUEST
 from rest_framework.views import APIView
-from django.http.response import HttpResponse
 from drf_spectacular.utils import extend_schema, OpenApiParameter, OpenApiExample
+from django.http.response import HttpResponse
 from django.utils.decorators import method_decorator
 from django.views.decorators.cache import cache_page
-import requests
 from fluginfo.settings import AIRHEX_KEY
-from hashlib import md5
 from fluginfo.settings import CACHE_TIMEOUT
 
 
@@ -77,7 +77,7 @@ class AirlineLogo(APIView):
     def get(self, request):
         """
         This endpoint gives the logo of the airline associated with
-        the given IATA-Code as a PNG file. 
+        the given IATA-Code as a PNG file.
         """
         if 'iata' not in request.GET.dict().keys() or \
             'shape' not in request.GET.dict().keys() or \
