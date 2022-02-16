@@ -7,6 +7,8 @@ import json
 from fluginfo.settings import BASE_DIR
 from os import path
 
+# in this file are variables that are required by
+# almost all components of the amadeus connector.
 
 # init amadeus client
 amadeus_client = Client(
@@ -20,6 +22,8 @@ amadeus_client = Client(
 # offer cache
 offer_cache = OfferCache()
 
+# some key value pairs to translate aircraft cabin
+# amenities to human readable strings
 AIRCRAFT_CABIN_AMENITIES = {
     'aircraftCabinAmenitiesPower': {
         'PLUG': 'Plug',
@@ -56,11 +60,14 @@ AIRCRAFT_CABIN_AMENITIES = {
     },
 }
 
-# bookshelf
+# init bookshelf with the aircraft cabin amenities since
+# these are not provided within the responses of amadeus
+# responses
 bookshelf = Bookshelf(AIRCRAFT_CABIN_AMENITIES)
 
-
+# load the seatmap offer bluprint for creating pseudo-offers
+# to query seatmaps.
 seatmap_offer_blueprint_path = path.join(
     BASE_DIR, "amadeus_connector", "seatmap_offer_blueprint.json")
-with open(seatmap_offer_blueprint_path) as f:
+with open(seatmap_offer_blueprint_path, encoding='utf-8') as f:
     SEATMAP_OFFER_BLUEPRINT = json.load(f)

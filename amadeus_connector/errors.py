@@ -1,8 +1,19 @@
+# this file contains custom errors of the
+# amadeus connector
+
 class AmadeusBadRequest(Exception):
-    pass
+    """
+    Raised on bad request by the user.
+    """
+
 
 class AmadeusNothingFound(Exception):
-    pass
+    """
+    Raised if nothing was found.
+    """
+
 
 class AmadeusServerError(Exception):
-    pass
+    """
+    Amadeus experiences a server error.
+    """
