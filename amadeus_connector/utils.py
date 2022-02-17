@@ -51,13 +51,28 @@ def inches_to_cm(inches: float) -> int:
     return round(inches * 2.54)
 
 
-cache_timeout = 0
+try:
+    cache_timeout
+except NameError:
+    cache_timeout = 0
+
+
+def set_cache_timeout(seconds: int):
+    """
+    Set timeout of the cache in seconds.
+
+    Args:
+        seconds (int): Timout in seconds.
+    """
+    global cache_timeout
+    cache_timeout = seconds
+
 
 # https://blog.soumendrak.com/cache-heavy-computation-functions-with-a-timeout-value
 
 
 def timed_lru_cache(
-    _func=None, *, seconds: int = cache_timeout, maxsize: int = 1024, typed: bool = False, forever: bool = False
+    _func=None, *, maxsize: int = 1024, typed: bool = False, forever: bool = False
 ):
     """ Extension over existing lru_cache with timeout
     :param seconds: timeout value
@@ -69,7 +84,7 @@ def timed_lru_cache(
         # create a function wrapped with traditional lru_cache
         f = lru_cache(maxsize=maxsize, typed=typed)(f)
         # convert seconds to nanoseconds to set the expiry time in nanoseconds
-        f.delta = seconds * 10 ** 9
+        f.delta = cache_timeout * 10 ** 9
         f.expiration = monotonic_ns() + f.delta
 
         @wraps(f)  # wraps is used to access the decorated function attributes
@@ -78,6 +93,7 @@ def timed_lru_cache(
                 # if the current cache expired of the decorated function then
                 # clear cache for that function and set a new cache value with new expiration time
                 f.cache_clear()
+                f.delta = cache_timeout * 10 ** 9
                 f.expiration = monotonic_ns() + f.delta
             return f(*args, **kwargs)
 

@@ -175,7 +175,7 @@ CACHES = {
     },
 }
 
-ac.cache_timeout = CACHE_TIMEOUT
+ac.set_cache_timeout(CACHE_TIMEOUT)  # CACHE_TIMEOUT
 amadeus_connector = ac.AmadeusConnector(
     client_id=AMADEUS_KEY,
     client_secret=AMADEUS_SECRET,

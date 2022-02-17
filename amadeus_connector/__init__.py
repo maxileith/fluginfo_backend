@@ -1,3 +1,3 @@
 from .connector import AmadeusConnector
-from .utils import cache_timeout
+from .utils import set_cache_timeout
 from .errors import *
