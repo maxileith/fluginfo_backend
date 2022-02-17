@@ -1,11 +1,10 @@
-
 import traceback
 from rest_framework.status import HTTP_200_OK, HTTP_404_NOT_FOUND, HTTP_400_BAD_REQUEST, HTTP_503_SERVICE_UNAVAILABLE
 from rest_framework.views import APIView
 from django.http.response import JsonResponse, HttpResponse
 from drf_spectacular.utils import extend_schema, OpenApiParameter, OpenApiExample
-from fluginfo.settings import DEBUG
-from amadeus_connector import AmadeusBadRequest, StatusSearch, AmadeusServerError, AmadeusNothingFound
+from fluginfo.settings import DEBUG, amadeus_connector
+from amadeus_connector import AmadeusBadRequest, AmadeusServerError, AmadeusNothingFound
 
 
 class Search(APIView):
@@ -103,7 +102,7 @@ class Search(APIView):
                 status=HTTP_400_BAD_REQUEST,
             )
         try:
-            availabilities = StatusSearch.get(
+            availabilities = amadeus_connector.status_search.get(
                 departure_iata=request.GET.get('departureIata'),
                 arrival_iata=request.GET.get('arrivalIata'),
                 date=request.GET.get('date'),
@@ -129,7 +128,7 @@ class Search(APIView):
                 content='',
                 status=HTTP_404_NOT_FOUND,
             )
-        except AmadeusServerError as e:
+        except AmadeusServerError:
             if DEBUG:
                 traceback.print_exc()
             return HttpResponse(

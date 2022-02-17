@@ -3,8 +3,8 @@ from rest_framework.status import HTTP_200_OK, HTTP_404_NOT_FOUND, HTTP_400_BAD_
 from rest_framework.views import APIView
 from django.http.response import JsonResponse, HttpResponse
 from drf_spectacular.utils import extend_schema, OpenApiParameter, OpenApiResponse
-from amadeus_connector import OfferDetails, AmadeusNothingFound
-from fluginfo.settings import DEBUG
+from amadeus_connector import AmadeusNothingFound
+from fluginfo.settings import DEBUG, amadeus_connector
 from schemas import offer_details_response_schema
 
 
@@ -41,7 +41,8 @@ class Details(APIView):
 
         try:
             return JsonResponse(
-                data=OfferDetails.get(request.GET.get('id')),
+                data=amadeus_connector.offer_details.get(
+                    request.GET.get('id')),
                 status=HTTP_200_OK,
             )
         except AmadeusNothingFound:

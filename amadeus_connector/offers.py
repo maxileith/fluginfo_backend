@@ -1,9 +1,8 @@
 from copy import copy, deepcopy
 from amadeus.client.errors import ServerError, NotFoundError, ClientError
-from .foundation import offer_cache, amadeus_client, bookshelf
 from .utils import duration_to_minutes, inches_to_cm, timed_lru_cache
-from .airports import Airport
 from .errors import AmadeusBadRequest, AmadeusNothingFound, AmadeusServerError
+from .airports import Airport
 
 
 class OfferSeatmap:
@@ -11,13 +10,30 @@ class OfferSeatmap:
     This class contains methods intended for requesting seatmaps for flights included in an offer.
     """
 
-    @staticmethod
+    def __init__(self: object, amadeus_client: object, bookshelf: object, offer_cache: object) -> object:
+        """
+        Initialize offer seatmap object.
+
+        Args:
+            self (object): Object itself.
+            amadeus_client (object): Amadeus client instance.
+            bookshelf (object): Bookshelf instance.
+            offer_cache (object): Offer cache instance.
+
+        Returns:
+            object: Offer seatmap object.
+        """
+        self.__amadeus_client = amadeus_client
+        self.__bookshelf = bookshelf
+        self.__offer_cache = offer_cache
+
     @timed_lru_cache
-    def __load_seatmaps_of_offer(hash_val: str) -> list:
+    def __load_seatmaps_of_offer(self: object, hash_val: str) -> list:
         """
         Loads the seatmaps of an offer from amadeus.
 
         Args:
+            self (object): Object itself.
             hash_val (str): Hash value that identifies the offer.
 
         Raises:
@@ -33,11 +49,11 @@ class OfferSeatmap:
         # hint: this method can raise AmadeusNotFound
         # (letting the error propagate higher in the call
         # stack is intended --> don't catch)
-        offer = offer_cache.get([hash_val])[hash_val]
+        offer = self.__offer_cache.get([hash_val])[hash_val]
 
         try:
             # load seatmaps
-            response = amadeus_client.shopping.seatmaps.post(
+            response = self.__amadeus_client.shopping.seatmaps.post(
                 {
                     'data': [offer]
                 }
@@ -53,17 +69,17 @@ class OfferSeatmap:
         # extract the dictionaries of the response and save
         # them to the bookshelf
         dictionaries = response.result['dictionaries']
-        bookshelf.add(**dictionaries)
+        self.__bookshelf.add(**dictionaries)
 
         # return the seatmaps
         return response
 
-    @staticmethod
-    def get(hash_val: str, segment_id: int) -> dict:
+    def get(self: object, hash_val: str, segment_id: int) -> dict:
         """
         Get a seatmap of a segment.
 
         Args:
+            self (object): Object itself.
             hash_val (str): Hash value that identifies the offer.
             segment_id (int): ID of the segment of the offer.
 
@@ -77,18 +93,18 @@ class OfferSeatmap:
         """
 
         # load all seatmaps of the offer
-        response = OfferSeatmap.__load_seatmaps_of_offer(hash_val)
+        response = self.__load_seatmaps_of_offer(hash_val)
         seatmaps = response.result['data']
 
         # Simplify the seatmap of the requested segment and return
-        return OfferSeatmap.__simplify_seatmap(seatmaps, segment_id)
+        return self.__simplify_seatmap(seatmaps, segment_id)
 
-    @staticmethod
-    def __simplify_seatmap(seatmaps: list, segment_id: int) -> dict:
+    def __simplify_seatmap(self: object, seatmaps: list, segment_id: int) -> dict:
         """
         Selects the seatmap of the segment and transforms the seatmap into the specified format.
 
         Args:
+            self (object): Object itself.
             seatmaps (list): List of Seatmaps.
             segment_id (int): Segment ID of the desired seatmap.
 
@@ -132,11 +148,11 @@ class OfferSeatmap:
         amenities = {
             'power': {
                 'isChargeable': aircraftCabinAmenities['power']['isChargeable'],
-                'type': bookshelf.get('aircraftCabinAmenitiesPower', aircraftCabinAmenities['power']['powerType']),
+                'type': self.__bookshelf.get('aircraftCabinAmenitiesPower', aircraftCabinAmenities['power']['powerType']),
             },
             'seat': {
                 'legSpace': f'{legSpace} cm',
-                'tilt': bookshelf.get('aircraftCabinAmenitiesSeatTilt', aircraftCabinAmenities['seat']['tilt']),
+                'tilt': self.__bookshelf.get('aircraftCabinAmenitiesSeatTilt', aircraftCabinAmenities['seat']['tilt']),
                 'images': [
                     {
                         'title': m['title'],
@@ -147,21 +163,21 @@ class OfferSeatmap:
             },
             'wifi': {
                 'isChargeable': aircraftCabinAmenities['wifi']['isChargeable'],
-                'type': bookshelf.get('aircraftCabinAmenitiesWifi', aircraftCabinAmenities['wifi']['wifiCoverage']),
+                'type': self.__bookshelf.get('aircraftCabinAmenitiesWifi', aircraftCabinAmenities['wifi']['wifiCoverage']),
             },
             'entertainment': [
                 {
                     'isChargeable': e['isChargeable'],
-                    'type': bookshelf.get('aircraftCabinAmenitiesEntertainment', e['entertainmentType']),
+                    'type': self.__bookshelf.get('aircraftCabinAmenitiesEntertainment', e['entertainmentType']),
                 } for e in aircraftCabinAmenities['entertainment']
             ],
             'food': {
                 'isChargeable': aircraftCabinAmenities['food']['isChargeable'],
-                'type': bookshelf.get('aircraftCabinAmenitiesFood', aircraftCabinAmenities['food']['foodType']),
+                'type': self.__bookshelf.get('aircraftCabinAmenitiesFood', aircraftCabinAmenities['food']['foodType']),
             },
             'beverage': {
                 'isChargeable': aircraftCabinAmenities['beverage']['isChargeable'],
-                'type': bookshelf.get('aircraftCabinAmenitiesBeverage', aircraftCabinAmenities['beverage']['beverageType']),
+                'type': self.__bookshelf.get('aircraftCabinAmenitiesBeverage', aircraftCabinAmenities['beverage']['beverageType']),
             },
         }
 
@@ -219,7 +235,7 @@ class OfferSeatmap:
                 # add characteristics if available
                 if 'characteristicsCodes' in seat.keys():
                     grid[x][y]['characteristics'] = [
-                        bookshelf.get('seatCharacteristics', c) for c in seat['characteristicsCodes']
+                        self.__bookshelf.get('seatCharacteristics', c) for c in seat['characteristicsCodes']
                     ]
 
             # compose facility information if available
@@ -236,7 +252,7 @@ class OfferSeatmap:
                     # fill the grid up with facilities
                     grid[x][y] = {
                         'type': 'facility',
-                        'name': bookshelf.get('facilities', facility['code']),
+                        'name': self.__bookshelf.get('facilities', facility['code']),
                     }
 
             # add deck to the seatmaps
@@ -251,12 +267,32 @@ class OfferDetails:
     This class contains methods intended for requesting details of an offer.
     """
 
-    @staticmethod
-    def get(hash_val: str) -> dict:
+    def __init__(self: object, amadeus_client: object, bookshelf: object, offer_cache: object) -> object:
+        """
+        Initialize offer details object.
+
+        Args:
+            self (object): Object itself.
+            amadeus_client (object): Amadeus client instance.
+            bookshelf (object): Bookshelf instance.
+            offer_cache (object): Offer cache instance.
+
+        Returns:
+            object: Offer details object.
+        """
+        self.__bookshelf = bookshelf
+        self.__offer_cache = offer_cache
+        self.__airport = Airport(
+            amadeus_client=amadeus_client,
+            bookshelf=bookshelf
+        )
+
+    def get(self: object, hash_val: str) -> dict:
         """
         Get details of an offer.
 
         Args:
+            self (object): Object itself.
             hash_val (str): Hash value that identifies the offer.
 
         Raises:
@@ -270,17 +306,17 @@ class OfferDetails:
         # hint: this method can raise AmadeusNotFound
         # (letting the error propagate higher in the call
         # stack is intended --> don't catch)
-        offer = offer_cache.get([hash_val])[hash_val]
+        offer = self.__offer_cache.get([hash_val])[hash_val]
 
         # simplify and return the offer details
-        return OfferDetails.__simplify_offer(offer)
+        return self.__simplify_offer(offer)
 
-    @staticmethod
-    def __simplify_offer(offer: dict) -> dict:
+    def __simplify_offer(self: object, offer: dict) -> dict:
         """
         Take an offer and transforms it into the specified format of offer details.
 
         Args:
+            self (object): Object itself.
             offer (dict): Original amadeus offer.
 
         Returns:
@@ -288,7 +324,8 @@ class OfferDetails:
         """
 
         # First, get the currency
-        currency = bookshelf.get('currencies', offer['price']['currency'])
+        currency = self.__bookshelf.get(
+            'currencies', offer['price']['currency'])
 
         # create the dictionary for the specified format and
         # fill in the information.
@@ -304,18 +341,18 @@ class OfferDetails:
                         {
                             'id': int(s['id']),
                             'departure': {
-                                'airport': Airport.details(s['departure']['iataCode']),
+                                'airport': self.__airport.details(s['departure']['iataCode']),
                                 'at': s['departure']['at'],
                             },
                             'arrival': {
-                                'airport': Airport.details(s['arrival']['iataCode']),
+                                'airport': self.__airport.details(s['arrival']['iataCode']),
                                 'at': s['arrival']['at'],
                             },
                             'flightNumber': s['carrierCode'] + s['number'],
                             'carrierCode': s['carrierCode'],
-                            'carrier': bookshelf.get('carriers', s['carrierCode']),
+                            'carrier': self.__bookshelf.get('carriers', s['carrierCode']),
                             'duration': duration_to_minutes(s['duration']),
-                            'aircraft': bookshelf.get('aircraft', s['aircraft']['code']),
+                            'aircraft': self.__bookshelf.get('aircraft', s['aircraft']['code']),
                             'cabin': list(filter(lambda d: d['segmentId'] == s['id'], offer['travelerPricings'][0]['fareDetailsBySegment']))[0]['cabin'],
                             'classId': list(filter(lambda d: d['segmentId'] == s['id'], offer['travelerPricings'][0]['fareDetailsBySegment']))[0]['class'],
                         } for s in i['segments']
@@ -330,13 +367,34 @@ class OfferSearch:
     This class contains methods intended for searching offers.
     """
 
-    @staticmethod
-    def __load_results(**params: dict) -> list:
+    def __init__(self: object, amadeus_client: object, bookshelf: object, offer_cache: object) -> object:
+        """
+        Initialize offer search object.
+
+        Args:
+            self (object): Object itself.
+            amadeus_client (object): Amadeus client instance.
+            bookshelf (object): Bookshelf instance.
+            offer_cache (object): Offer cache instance.
+
+        Returns:
+            object: Offer search object.
+        """
+        self.__amadeus_client = amadeus_client
+        self.__bookshelf = bookshelf
+        self.__offer_cache = offer_cache
+        self.__airport = Airport(
+            amadeus_client=amadeus_client,
+            bookshelf=bookshelf
+        )
+
+    def __load_results(self: object, **params: dict) -> list:
         """
 
         Args:
-            Analog to the parameters of the following endpoint:
-            https://developers.amadeus.com/self-service/category/air/api-doc/flight-offers-search/api-reference
+            self (object): Object itself.
+            **params (dict): Analog to the parameters of the following endpoint:
+                             https://developers.amadeus.com/self-service/category/air/api-doc/flight-offers-search/api-reference
 
         Raises:
             AmadeusNothingFound: There are no offers matching the parameters.
@@ -349,7 +407,7 @@ class OfferSearch:
 
         # ask the amadeus api for matching offers
         try:
-            response = amadeus_client.shopping.flight_offers_search.get(
+            response = self.__amadeus_client.shopping.flight_offers_search.get(
                 **params)
         # return an Amadeus Connector error if there is an error
         except ServerError as e:
@@ -362,28 +420,28 @@ class OfferSearch:
         # extract the dictionaries of the response and save
         # them to the bookshelf if available.
         if 'dictionaries' in response.result.keys():
-            bookshelf.add(**response.result['dictionaries'])
+            self.__bookshelf.add(**response.result['dictionaries'])
 
         # extract offers from response
         offers = response.result['data']
 
         # save original amadeus offers to use them later to
         # return details or request seatmaps.
-        hashes = offer_cache.add(offers)
+        hashes = self.__offer_cache.add(offers)
 
         # return the hash values of the offers that match the
         # searchcriteria.
         return hashes
 
-    @staticmethod
     @timed_lru_cache
-    def get(**params: dict) -> list:
+    def get(self: object, **params: dict) -> list:
         """
         Search offers that match the given parameters.
 
         Args:
-            Analog to the parameters of the following endpoint:
-            https://developers.amadeus.com/self-service/category/air/api-doc/flight-offers-search/api-reference
+            self (object): Object itself.
+            **params (dict): Analog to the parameters of the following endpoint:
+                             https://developers.amadeus.com/self-service/category/air/api-doc/flight-offers-search/api-reference
 
         Raises:
             AmadeusNothingFound: There are no offers matching the parameters.
@@ -396,23 +454,23 @@ class OfferSearch:
 
         # load the results and get the corresponding
         # hashes to access the results.
-        hashes = OfferSearch.__load_results(**params)
+        hashes = self.__load_results(**params)
 
         # get the offer from the cache
         # hint: this method can raise AmadeusNotFound
         # (letting the error propagate higher in the call
         # stack is intended --> don't catch)
-        offers = offer_cache.get(hashes)
+        offers = self.__offer_cache.get(hashes)
 
         # return the simplified offers.
-        return OfferSearch.__simplify_offer(offers)
+        return self.__simplify_offer(offers)
 
-    @staticmethod
-    def __simplify_offer(offers: dict) -> list:
+    def __simplify_offer(self: object, offers: dict) -> list:
         """
         Transform offers to the specified format for search results.
 
         Args:
+        self (object): Object itself.
             offers (dict): Offers with hash value as key.
 
         Returns:
@@ -449,7 +507,8 @@ class OfferSearch:
                             i['classes'].add(s['cabin'])
 
             # determine pricing
-            currency = bookshelf.get('currencies', offer['price']['currency'])
+            currency = self.__bookshelf.get(
+                'currencies', offer['price']['currency'])
             price = offer['price']['grandTotal']
 
             # finally bring all into the expected format and
@@ -468,15 +527,15 @@ class OfferSearch:
                         'carriers': [
                             {
                                 'carrierCode': carrier_code,
-                                'carrier': bookshelf.get('carriers', carrier_code),
+                                'carrier': self.__bookshelf.get('carriers', carrier_code),
                             } for carrier_code in set([s['carrierCode'] for s in i['segments']])
                         ],
                         'departure': {
-                            'airport': Airport.details(i['segments'][0]['departure']['iataCode']),
+                            'airport': self.__airport.details(i['segments'][0]['departure']['iataCode']),
                             'at': i['segments'][0]['departure']['at'],
                         },
                         'arrival': {
-                            'airport': Airport.details(i['segments'][-1]['arrival']['iataCode']),
+                            'airport': self.__airport.details(i['segments'][-1]['arrival']['iataCode']),
                             'at': i['segments'][-1]['arrival']['at'],
                         },
                     } for i in offer['itineraries']

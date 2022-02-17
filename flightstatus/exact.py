@@ -1,12 +1,11 @@
-
 import traceback
 from rest_framework.status import HTTP_200_OK, HTTP_404_NOT_FOUND, HTTP_400_BAD_REQUEST, HTTP_503_SERVICE_UNAVAILABLE
 from rest_framework.views import APIView
 from django.http.response import JsonResponse, HttpResponse
 from drf_spectacular.utils import extend_schema, OpenApiParameter, OpenApiExample, OpenApiResponse
-from fluginfo.settings import DEBUG
+from fluginfo.settings import DEBUG, amadeus_connector
 from schemas import status_exact_response_schema
-from amadeus_connector import AmadeusBadRequest, AmadeusNothingFound, StatusExact, AmadeusServerError
+from amadeus_connector import AmadeusBadRequest, AmadeusNothingFound, AmadeusServerError
 
 
 class Exact(APIView):
@@ -71,7 +70,7 @@ class Exact(APIView):
                 status=HTTP_400_BAD_REQUEST,
             )
         try:
-            status = StatusExact.get(
+            status = amadeus_connector.status_exact.get(
                 flight_number=request.GET.get('flightNumber'),
                 date=request.GET.get('date'),
             )

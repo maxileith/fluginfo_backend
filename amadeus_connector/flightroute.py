@@ -8,12 +8,25 @@ class FlightRoute:
     This class contains methods intended for requesting flight routes.
     """
 
-    @staticmethod
-    def get_advanced(carrier_code: str, number: int, date: str) -> dict:
+    def __init__(self: object, amadeus_client: object) -> object:
+        """
+        Initialize flight route object.
+
+        Args:
+            self (object): Object itself.
+            amadeus_client (object): Amadeus client instance.
+
+        Returns:
+            object: Flight route object.
+        """
+        self.__amadeus_client = amadeus_client
+
+    def get_advanced(self: object, carrier_code: str, number: int, date: str) -> dict:
         """
         Returns the flight route of the specified flight.
 
         Args:
+            self (object): Object itself.
             carrier_code (str): IATA code of the carrier, e.g. LH.
             number (int): Number of the flight, e.g. 439.
             date (str): Date in ISO 8601 YYYY-MM-DD format, e.g. 2022-03-01.
@@ -36,6 +49,7 @@ class FlightRoute:
         try:
             # load schedule
             response = get_flight_schedule(
+                amadeus_client=self.__amadeus_client,
                 carrier_code=carrier_code,
                 number=number,
                 date=date,
@@ -62,12 +76,12 @@ class FlightRoute:
             'arrivalIata': data[0]['flightPoints'][-1]['iataCode'],
         }
 
-    @staticmethod
-    def get(flight_number: str, date: str) -> dict:
+    def get(self: object, flight_number: str, date: str) -> dict:
         """
         Returns the flight route of the specified flight.
 
         Args:
+            self (object): Object itself.
             flight_number (str): Flight number, e.g. LH439.
             date (str): Date in ISO 8601 YYYY-MM-DD format, e.g. 2022-03-01.
 
@@ -90,4 +104,4 @@ class FlightRoute:
         carrier_code, number = split_flight_number(flight_number)
 
         # utilize the already existing function
-        return FlightRoute.get_advanced(carrier_code, number, date)
+        return self.get_advanced(carrier_code, number, date)

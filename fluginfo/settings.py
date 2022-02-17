@@ -12,6 +12,7 @@ https://docs.djangoproject.com/en/3.2/ref/settings/
 
 from pathlib import Path
 import os
+import amadeus_connector as ac
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
@@ -157,7 +158,7 @@ AMADEUS_SECRET = os.environ.get('FLUGINFO_BACKEND_AMADEUS_API_SECRET')
 
 AIRHEX_KEY = os.environ.get('FLUGINFO_BACKEND_AIRHEX_API_KEY', '')
 
-CACHE_TIMEOUT = 1800
+CACHE_TIMEOUT = 0 if DEBUG else 1800
 
 CACHES = {
     'default': {
@@ -173,3 +174,12 @@ CACHES = {
         'BACKEND': 'django.core.cache.backends.dummy.DummyCache',
     },
 }
+
+ac.cache_timeout = CACHE_TIMEOUT
+amadeus_connector = ac.AmadeusConnector(
+    client_id=AMADEUS_KEY,
+    client_secret=AMADEUS_SECRET,
+    hostname='test',
+    debug=DEBUG,
+    debug_output_path=os.path.join(BASE_DIR, 'amadeus_connector'),
+)

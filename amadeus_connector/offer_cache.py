@@ -1,7 +1,6 @@
 import json
 from os import path
 from hashlib import sha512
-from fluginfo.settings import BASE_DIR, DEBUG
 from .errors import AmadeusNothingFound
 
 
@@ -9,6 +8,21 @@ class OfferCache:
     """
     Can be used to cache and retreive original amadeus offers.
     """
+
+    def __init__(self: object, debug: bool = False, debug_output_path: str = "") -> object:
+        """
+        Initialize the offer cache.
+
+        Args:
+            self (object): Object itself
+            debug (bool, optional): Write offer cache to json file for debugging. Defaults to False.
+            debug_output_path (str, optional): Path of debugging file. Defaults to "".
+
+        Returns:
+            object: Offer cache.
+        """
+        self.__debug_output_path = debug_output_path
+        self.__debug = debug
 
     # the dictionary where all added offers
     # are cached
@@ -41,9 +55,9 @@ class OfferCache:
             hash_list.append(hash_value)
 
         # write dict as json to file
-        if DEBUG:
+        if self.__debug:
             json_path = path.join(
-                BASE_DIR, 'amadeus_connector', 'offer_cache.json')
+                self.__debug_output_path, 'offer_cache.json')
             with open(json_path, 'w+', encoding='utf-8') as f:
                 json.dump(self.__offers, f, indent=4)
 

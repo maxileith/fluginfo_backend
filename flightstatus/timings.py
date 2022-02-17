@@ -3,9 +3,9 @@ from rest_framework.status import HTTP_200_OK, HTTP_404_NOT_FOUND, HTTP_400_BAD_
 from rest_framework.views import APIView
 from django.http.response import JsonResponse, HttpResponse
 from drf_spectacular.utils import extend_schema, OpenApiParameter, OpenApiExample, OpenApiResponse
-from fluginfo.settings import DEBUG
+from fluginfo.settings import DEBUG, amadeus_connector
 from schemas import status_timings_response_schema
-from amadeus_connector import AmadeusBadRequest, AmadeusNothingFound, StatusTimings, AmadeusServerError
+from amadeus_connector import AmadeusBadRequest, AmadeusNothingFound, AmadeusServerError
 
 
 class Timings(APIView):
@@ -70,7 +70,7 @@ class Timings(APIView):
             )
 
         try:
-            timings = StatusTimings.get(
+            timings = amadeus_connector.status_timings.get(
                 flight_number=request.GET.get('flightNumber'),
                 date=request.GET.get('date'),
             )

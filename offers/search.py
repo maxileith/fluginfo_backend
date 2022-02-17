@@ -3,8 +3,8 @@ from rest_framework.status import HTTP_200_OK, HTTP_404_NOT_FOUND, HTTP_400_BAD_
 from rest_framework.views import APIView
 from django.http.response import JsonResponse, HttpResponse
 from drf_spectacular.utils import extend_schema, OpenApiParameter, OpenApiExample, OpenApiResponse
-from amadeus_connector import AmadeusBadRequest, OfferSearch, AmadeusNothingFound, AmadeusServerError
-from fluginfo.settings import DEBUG
+from amadeus_connector import AmadeusBadRequest, AmadeusNothingFound, AmadeusServerError
+from fluginfo.settings import DEBUG, amadeus_connector
 from schemas import offer_search_response_schema
 
 
@@ -226,7 +226,7 @@ class Search(APIView):
         (see "/offers/seatmaps")
         """
         try:
-            offers = OfferSearch.get(
+            offers = amadeus_connector.offer_search.get(
                 **{**request.GET.dict(), 'currencyCode': 'EUR'})
 
             if len(offers) != 0:

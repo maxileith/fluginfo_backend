@@ -1,7 +1,5 @@
-
 from amadeus import Location
 from amadeus.client.errors import ServerError, ClientError, NotFoundError
-from .foundation import amadeus_client, bookshelf
 from .errors import AmadeusNothingFound, AmadeusBadRequest, AmadeusServerError
 from .utils import timed_lru_cache
 
@@ -34,13 +32,28 @@ class Airport:
     This class contains methods intended for requesting airport information.
     """
 
-    @staticmethod
+    def __init__(self: object, amadeus_client: object, bookshelf: object) -> object:
+        """
+        Initialize airport object.
+
+        Args:
+            self (object): Object itself.
+            amadeus_client (object): Amadeus client instance.
+            bookshelf (object): Bookshelf instance.
+
+        Returns:
+            object: Airport object.
+        """
+        self.__amadeus_client = amadeus_client
+        self.__bookshelf = bookshelf
+
     @timed_lru_cache(forever=True)
-    def search(keyword: str, is_iata: bool = False) -> list:
+    def search(self: object, keyword: str, is_iata: bool = False) -> list:
         """
         Returns airports that match the specified keyword.
 
         Args:
+            self (object): Object itself.
             keyword (str): keyword
             is_iata (bool, optional): Specifies whether the keyword is an IATA code or not. Defaults to False.
 
@@ -63,13 +76,13 @@ class Airport:
                 # if the keyword is an IATA code, just query the details
                 # by the code directly instead of searching.
                 # A + <IATA>: A for "airport"
-                response = amadeus_client.reference_data.location(
+                response = self.__amadeus_client.reference_data.location(
                     f"A{keyword}").get()
                 # transform to the specified format
                 airports = simplify_airports([response.result['data']])
             else:
                 # search for the airport by keyword
-                response = amadeus_client.reference_data.locations.get(
+                response = self.__amadeus_client.reference_data.locations.get(
                     keyword=keyword,
                     subType=Location.AIRPORT,
                 )
@@ -86,17 +99,17 @@ class Airport:
             # Save airport information in the bookshelf, even if no information
             # could be determined, so that no further attempts are made on the
             # keyword in the future.
-            bookshelf.add(airports={a['iata']: a for a in airports})
+            self.__bookshelf.add(airports={a['iata']: a for a in airports})
 
         # return the airports
         return airports
 
-    @staticmethod
-    def details(iata: str) -> dict:
+    def details(self: object, iata: str) -> dict:
         """
         Return the airport that matches a specified IATA code.
 
         Args:
+            self (object): Object itself.
             iata (str): IATA code of the airport, e.g. FRA.
 
         Returns:
@@ -106,14 +119,14 @@ class Airport:
         # first, look into the bookshelf if there are already details regarding
         # the specified airport
         try:
-            return bookshelf.get('airports', iata)
+            return self.__bookshelf.get('airports', iata)
         except AmadeusNothingFound:
             pass
 
         # if there was nothing found in the bookshelf, trigger the airport search
         # to load details
         try:
-            Airport.search(iata, is_iata=True)
+            self.search(iata, is_iata=True)
         except AmadeusNothingFound:
             pass
         except AmadeusBadRequest:
@@ -123,4 +136,4 @@ class Airport:
         # amadeus knows this airport. Return these. The response could be empty
         # because if there was nothing found within amadeus, an empty entry
         # is made in the dictionary
-        return bookshelf.get('airports', iata)
+        return self.__bookshelf.get('airports', iata)

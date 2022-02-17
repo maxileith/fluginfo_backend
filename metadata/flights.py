@@ -3,8 +3,8 @@ from rest_framework.status import HTTP_200_OK, HTTP_404_NOT_FOUND, HTTP_400_BAD_
 from rest_framework.views import APIView
 from django.http.response import JsonResponse, HttpResponse
 from drf_spectacular.utils import extend_schema, OpenApiParameter, OpenApiExample
-from amadeus_connector import AmadeusNothingFound, AmadeusBadRequest, FlightRoute as AmadeusConnectorFlightRoute, AmadeusServerError
-from fluginfo.settings import DEBUG
+from amadeus_connector import AmadeusNothingFound, AmadeusBadRequest, AmadeusServerError
+from fluginfo.settings import DEBUG, amadeus_connector
 
 
 class FlightRoute(APIView):
@@ -63,7 +63,7 @@ class FlightRoute(APIView):
             )
 
         try:
-            route = AmadeusConnectorFlightRoute.get(
+            route = amadeus_connector.flight_route.get(
                 flight_number=request.GET.get('flightNumber'),
                 date=request.GET.get('date'),
             )

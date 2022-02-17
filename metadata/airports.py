@@ -3,8 +3,8 @@ from rest_framework.status import HTTP_200_OK, HTTP_404_NOT_FOUND, HTTP_400_BAD_
 from rest_framework.views import APIView
 from django.http.response import JsonResponse, HttpResponse
 from drf_spectacular.utils import extend_schema, OpenApiParameter, OpenApiExample, OpenApiResponse
-from amadeus_connector import AmadeusNothingFound, Airport, AmadeusServerError, AmadeusBadRequest
-from fluginfo.settings import DEBUG
+from amadeus_connector import AmadeusNothingFound, AmadeusServerError, AmadeusBadRequest
+from fluginfo.settings import DEBUG, amadeus_connector
 from schemas import airport_search_response_schema
 
 
@@ -51,7 +51,7 @@ class AirportSearch(APIView):
             )
 
         try:
-            airports = Airport.search(request.GET.get('s'))
+            airports = amadeus_connector.airport.search(request.GET.get('s'))
             return JsonResponse(
                 data={
                     'data': airports,
@@ -117,7 +117,8 @@ class AirportDetails(APIView):
             )
 
         try:
-            airport = Airport.details(request.GET.get('iata'))
+            airport = amadeus_connector.airport.details(
+                request.GET.get('iata'))
             return JsonResponse(
                 data=airport,
                 status=HTTP_200_OK,

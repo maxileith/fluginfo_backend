@@ -3,9 +3,9 @@ from rest_framework.status import HTTP_200_OK, HTTP_404_NOT_FOUND, HTTP_400_BAD_
 from rest_framework.views import APIView
 from django.http.response import JsonResponse, HttpResponse
 from drf_spectacular.utils import extend_schema, OpenApiParameter, OpenApiExample, OpenApiResponse
-from fluginfo.settings import DEBUG
+from fluginfo.settings import DEBUG, amadeus_connector
 from schemas import seatmap_response_schema
-from amadeus_connector import AmadeusBadRequest, AmadeusNothingFound, StatusSeatmap, AmadeusServerError
+from amadeus_connector import AmadeusBadRequest, AmadeusNothingFound, AmadeusServerError
 
 
 class Seatmap(APIView):
@@ -99,7 +99,7 @@ class Seatmap(APIView):
                 status=HTTP_400_BAD_REQUEST,
             )
         try:
-            seatmap = StatusSeatmap.get(
+            seatmap = amadeus_connector.status_seatmap.get(
                 flight_number=request.GET.get('flightNumber'),
                 date=request.GET.get('date'),
                 travel_class=request.GET.get('travelClass'),
