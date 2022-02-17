@@ -72,7 +72,7 @@ def set_cache_timeout(seconds: int):
 
 
 def timed_lru_cache(
-    _func=None, *, maxsize: int = 1024, typed: bool = False, forever: bool = False
+    _func=None, *, maxsize: int = 1024, typed: bool = False, forever: bool = False, maxseconds: int = 10e9
 ):
     """ Extension over existing lru_cache with timeout
     :param seconds: timeout value
@@ -84,7 +84,8 @@ def timed_lru_cache(
         # create a function wrapped with traditional lru_cache
         f = lru_cache(maxsize=maxsize, typed=typed)(f)
         # convert seconds to nanoseconds to set the expiry time in nanoseconds
-        f.delta = cache_timeout * 10 ** 9
+        f.delta = (cache_timeout if maxseconds >
+                   cache_timeout else maxseconds) * 10 ** 9
         f.expiration = monotonic_ns() + f.delta
 
         @wraps(f)  # wraps is used to access the decorated function attributes
@@ -93,7 +94,8 @@ def timed_lru_cache(
                 # if the current cache expired of the decorated function then
                 # clear cache for that function and set a new cache value with new expiration time
                 f.cache_clear()
-                f.delta = cache_timeout * 10 ** 9
+                f.delta = (cache_timeout if maxseconds >
+                           cache_timeout else maxseconds) * 10 ** 9
                 f.expiration = monotonic_ns() + f.delta
             return f(*args, **kwargs)
 

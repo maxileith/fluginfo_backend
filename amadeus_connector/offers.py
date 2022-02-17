@@ -27,7 +27,7 @@ class OfferSeatmap:
         self.__bookshelf = bookshelf
         self.__offer_cache = offer_cache
 
-    @timed_lru_cache
+    @timed_lru_cache(maxseconds=60)
     def __load_seatmaps_of_offer(self: object, hash_val: str) -> list:
         """
         Loads the seatmaps of an offer from amadeus.
