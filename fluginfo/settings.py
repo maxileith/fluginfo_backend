@@ -175,11 +175,14 @@ CACHES = {
     },
 }
 
+AMADEUS_PROD = DEBUG = os.environ.get(
+    'FLUGINFO_BACKEND_AMADEUS_PROD', 'false') == 'true'
+
 ac.set_cache_timeout(CACHE_TIMEOUT)  # CACHE_TIMEOUT
 amadeus_connector = ac.AmadeusConnector(
     client_id=AMADEUS_KEY,
     client_secret=AMADEUS_SECRET,
-    hostname='test',
+    prod=AMADEUS_PROD,
     debug=DEBUG,
     debug_output_path=os.path.join(BASE_DIR, 'amadeus_connector'),
 )
