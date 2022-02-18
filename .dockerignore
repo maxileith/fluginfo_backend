@@ -4,7 +4,7 @@
 .gitignore
 db.sqlite3
 docker-compose.yaml
-docker-compose.yaml.example
+docker-compose.example.yaml
 amadeus_connector/offer_cache.json
 amadeus_connector/bookshelf.json
 .dockerignore
