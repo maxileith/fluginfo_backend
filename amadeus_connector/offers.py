@@ -323,17 +323,10 @@ class OfferDetails:
             dict: Offer details.
         """
 
-        # First, get the currency
-        currency = self.__bookshelf.get(
-            'currencies', offer['price']['currency'])
-
         # create the dictionary for the specified format and
         # fill in the information.
         return {
-            'price': {
-                'value': float(offer["price"]["grandTotal"]),
-                'currency': currency,
-            },
+            'price': float(offer["price"]["grandTotal"]),
             'itineraries': [
                 {
                     'duration': duration_to_minutes(i['duration']),
@@ -507,18 +500,13 @@ class OfferSearch:
                             i['classes'].add(s['cabin'])
 
             # determine pricing
-            currency = self.__bookshelf.get(
-                'currencies', offer['price']['currency'])
             price = offer['price']['grandTotal']
 
             # finally bring all into the expected format and
             # add it to the output list.
             slim_offers.append({
                 'hash': key,
-                'price': {
-                    'value': float(price),
-                    'currency': currency,
-                },
+                'price': float(price),
                 'itineraries': [
                     {
                         'duration': duration_to_minutes(i['duration']),

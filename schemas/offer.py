@@ -1,6 +1,5 @@
 from rest_framework import fields
 from drf_spectacular.utils import inline_serializer
-from .price import price
 from .stop import stop
 from .travel_classes import travel_classes
 from copy import copy
@@ -21,7 +20,7 @@ itinerary = inline_serializer(name="Itinerary", fields={
 
 offer = inline_serializer(name="Offer", fields={
     "hash": fields.CharField(help_text="e.g. 719a854bc4d7d275e40419bbdb840dbea183ba80af26b554e7966c3d2146f26659c14c103663313970c0c58fc62db90d0e2ff38a68087fe4f167c39890825f76"),
-    "price": copy(price),
+    "price": fields.FloatField(help_text="e.g. 632.10"),
     "itineraries": fields.ListField(child=copy(itinerary)),
 })
 
