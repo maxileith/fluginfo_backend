@@ -48,7 +48,7 @@ class StatusExact:
 
         Args:
             self (object): Object itself.
-            flight_number (str): Flight number, e.g. LH439.
+            flight_number (str): Flight number, e.g. LH438.
             date (str): Date in ISO 8601 YYYY-MM-DD format, e.g. 2022-03-01.
 
         Raises:
@@ -187,7 +187,7 @@ class StatusSearch:
         """
 
         # create a new list to return
-        simplified_statuses = list()
+        simplified_statuses = []
 
         # iterate over all statuses
         for s in statuses:
@@ -285,7 +285,7 @@ class StatusSeatmap:
 
         Args:
             self (object):  Object itself
-            flight_number (str): Flight number, e.g. LH439.
+            flight_number (str): Flight number, e.g. LH438.
             date (str): Date in ISO 8601 YYYY-MM-DD format, e.g. 2022-03-01.
             travel_class (str): Travel class, e.g. Y.
 
@@ -379,7 +379,7 @@ class StatusTimings:
 
         Args:
             self (object): Object itself.
-            flight_number (str): Flight number, e.g. LH439.
+            flight_number (str): Flight number, e.g. LH438.
             date (str): Date in ISO 8601 YYYY-MM-DD format, e.g. 2022-03-01.
 
         Raises:

@@ -1,5 +1,5 @@
 from os import path
-from copy import copy
+from copy import copy, deepcopy
 import json
 from .errors import AmadeusNothingFound
 
@@ -22,14 +22,14 @@ class Bookshelf:
         Returns:
             object: Bookshelf.
         """
-        self.__dictionaries = initial_dictionaries
+        self.__dictionaries = deepcopy(initial_dictionaries)
         self.__debug_output_path = debug_output_path
         self.__debug = debug
 
     def add(self: object, **dictionaries: dict):
         """
         Puts dictionaries on the bookshelf.
-        Duplicate dictionaries or elements are merged.
+        Duplicate dictionaries or elements are overwritten.
 
         Args:
             self (object): Object itself.
@@ -64,7 +64,7 @@ class Bookshelf:
                 # exists in the bookshelf, merge the new one with the
                 # existing one.
                 self.__dictionaries[t] = {
-                    **dictionaries[t], **self.__dictionaries[t]}
+                    **self.__dictionaries[t], **dictionaries[t]}
             else:
                 # otherwise just add the dictionary
                 self.__dictionaries[t] = dictionaries[t]

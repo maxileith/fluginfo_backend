@@ -25,13 +25,17 @@ def duration_to_minutes(src: str) -> int:
     except TypeError:
         # default to 0
         h = 0
+    except AttributeError as e:
+        raise AmadeusBadRequest from e
+
     try:
         # get minutes
         m = int(result.group(4))
-
     except TypeError:
         # default to 0
         m = 0
+    except AttributeError as e:
+        raise AmadeusBadRequest from e
 
     # add everything together
     return h * 60 + m
@@ -116,7 +120,7 @@ def split_flight_number(flight_number: str) -> tuple:
     Split flight number to carrier code and number.
 
     Args:
-        flight_number (str):  Flight number, e.g. LH439.
+        flight_number (str):  Flight number, e.g. LH438.
 
     Raises:
         AmadeusBadRequest: Client did not provide the right parameters.
@@ -134,7 +138,7 @@ def split_flight_number(flight_number: str) -> tuple:
     except AttributeError as e:
         raise AmadeusBadRequest from e
 
-    return carrier_code, number
+    return carrier_code, int(number)
 
 
 @timed_lru_cache
@@ -157,3 +161,42 @@ def get_flight_schedule(amadeus_client: object, carrier_code: str, number: str, 
         flightNumber=number,
         scheduledDepartureDate=date,
     )
+
+
+# some key value pairs to translate aircraft cabin
+# amenities to human readable strings
+AIRCRAFT_CABIN_AMENITIES = {
+    'aircraftCabinAmenitiesPower': {
+        'PLUG': 'Plug',
+        'USB_PORT': 'USB-Port',
+        'ADAPTOR': 'Adaptor',
+        'PLUG_OR_USB_PORT': 'Plug or USB-Port',
+    },
+    'aircraftCabinAmenitiesSeatTilt': {
+        'FULL_FLAT': 'Full flat',
+        'ANGLE_FLAT': 'Angled flat',
+        'NORMAL': 'Normal',
+    },
+    'aircraftCabinAmenitiesWifi': {
+        'FULL': 'Full',
+        'PARTIAL': 'Partial',
+    },
+    'aircraftCabinAmenitiesEntertainment': {
+        'LIVE_TV': 'Live-TV',
+        'MOVIES': 'Movies',
+        'AUDIO_VIDEO_ON_DEMAND': 'Audio & Video on demand',
+        'TV_SHOWS': 'TV-Shows',
+        'IP_TV': 'IP-TV',
+    },
+    'aircraftCabinAmenitiesFood': {
+        'MEAL': 'Meal',
+        'FRESH_MEAL': 'Fresh meal',
+        'SNACK': 'Snacks',
+        'FRESH_SNACK': 'Fresh snacks',
+    },
+    'aircraftCabinAmenitiesBeverage': {
+        'ALCOHOLIC': 'Alcoholic',
+        'NON_ALCOHOLIC': 'Non-Alcoholic',
+        'ALCOHOLIC_AND_NON_ALCOHOLIC': 'With and without alcohol',
+    },
+}

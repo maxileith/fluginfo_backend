@@ -1,3 +1,4 @@
+from os import path
 import logging
 from amadeus import Client
 from .offer_cache import OfferCache
@@ -6,47 +7,10 @@ from .airports import Airport
 from .flightroute import FlightRoute
 from .offers import OfferSeatmap, OfferDetails, OfferSearch
 from .status import StatusExact, StatusSearch, StatusSeatmap, StatusTimings
+from .utils import AIRCRAFT_CABIN_AMENITIES
 
 # in this file are variables that are required by
 # almost all components of the amadeus connector.
-
-# some key value pairs to translate aircraft cabin
-# amenities to human readable strings
-AIRCRAFT_CABIN_AMENITIES = {
-    'aircraftCabinAmenitiesPower': {
-        'PLUG': 'Plug',
-        'USB_PORT': 'USB-Port',
-        'ADAPTOR': 'Adaptor',
-        'PLUG_OR_USB_PORT': 'Plug or USB-Port',
-    },
-    'aircraftCabinAmenitiesSeatTilt': {
-        'FULL_FLAT': 'Full flat',
-        'ANGLE_FLAT': 'Angled flat',
-        'NORMAL': 'Normal',
-    },
-    'aircraftCabinAmenitiesWifi': {
-        'FULL': 'Full',
-        'PARTIAL': 'Partial',
-    },
-    'aircraftCabinAmenitiesEntertainment': {
-        'LIVE_TV': 'Live-TV',
-        'MOVIES': 'Movies',
-        'AUDIO_VIDEO_ON_DEMAND': 'Audio & Video on demand',
-        'TV_SHOWS': 'TV-Shows',
-        'IP_TV': 'IP-TV',
-    },
-    'aircraftCabinAmenitiesFood': {
-        'MEAL': 'Meal',
-        'FRESH_MEAL': 'Fresh meal',
-        'SNACK': 'Snacks',
-        'FRESH_SNACK': 'Fresh snacks',
-    },
-    'aircraftCabinAmenitiesBeverage': {
-        'ALCOHOLIC': 'Alcoholic',
-        'NON_ALCOHOLIC': 'Non-Alcoholic',
-        'ALCOHOLIC_AND_NON_ALCOHOLIC': 'With and without alcohol',
-    },
-}
 
 
 class AmadeusConnector:
@@ -54,7 +18,7 @@ class AmadeusConnector:
     Everything that is needed for providing the required information for the Fluginfo website.
     """
 
-    def __init__(self: object, client_id: str, client_secret: str, prod: bool = False, logger: object = logging.Logger, ssl: bool = True, debug: bool = False, debug_output_path: str = "") -> object:
+    def __init__(self: object, client_id: str, client_secret: str, prod: bool = False, logger: object = logging.Logger, ssl: bool = True, debug: bool = False, debug_output_path: str = path.dirname(path.realpath(__file__))) -> object:
         """
         Initialize the connector.
 
@@ -66,7 +30,7 @@ class AmadeusConnector:
             logger (object, optional): Logger. Defaults to logging.Logger.
             ssl (bool, optional): Use TLS encryption. Defaults to True.
             debug (bool, optional): Write bookshelf and offer cache to json files for debugging. Defaults to False.
-            debug_output_path (str, optional): Path of debugging files. Defaults to "".
+            debug_output_path (str, optional): Path of debugging files. Defaults to path.dirname(path.realpath(__file__)).
 
         Returns:
             object: Amadeus connector.
@@ -83,7 +47,7 @@ class AmadeusConnector:
         # offer cache
         self.__offer_cache = OfferCache(
             debug=debug,
-            debug_output_path=debug_output_path
+            debug_output_path=debug_output_path,
         )
 
         # init bookshelf with the aircraft cabin amenities since
@@ -97,7 +61,7 @@ class AmadeusConnector:
 
         self.airport = Airport(
             amadeus_client=self.__amadeus_client,
-            bookshelf=self.__bookshelf
+            bookshelf=self.__bookshelf,
         )
 
         self.flight_route = FlightRoute(self.__amadeus_client)
@@ -105,19 +69,19 @@ class AmadeusConnector:
         self.offer_search = OfferSearch(
             amadeus_client=self.__amadeus_client,
             bookshelf=self.__bookshelf,
-            offer_cache=self.__offer_cache
+            offer_cache=self.__offer_cache,
         )
 
         self.offer_details = OfferDetails(
             amadeus_client=self.__amadeus_client,
             bookshelf=self.__bookshelf,
-            offer_cache=self.__offer_cache
+            offer_cache=self.__offer_cache,
         )
 
         self.offer_seatmap = OfferSeatmap(
             amadeus_client=self.__amadeus_client,
             bookshelf=self.__bookshelf,
-            offer_cache=self.__offer_cache
+            offer_cache=self.__offer_cache,
         )
 
         self.status_search = StatusSearch(
@@ -127,13 +91,13 @@ class AmadeusConnector:
 
         self.status_exact = StatusExact(
             amadeus_client=self.__amadeus_client,
-            bookshelf=self.__bookshelf
+            bookshelf=self.__bookshelf,
         )
 
         self.status_seatmap = StatusSeatmap(
             amadeus_client=self.__amadeus_client,
             bookshelf=self.__bookshelf,
-            offer_cache=self.__offer_cache
+            offer_cache=self.__offer_cache,
         )
 
         self.status_timings = StatusTimings(self.__amadeus_client)

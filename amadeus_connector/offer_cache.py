@@ -1,5 +1,6 @@
 import json
 from os import path
+from copy import copy, deepcopy
 from hashlib import sha512
 from .errors import AmadeusNothingFound
 
@@ -9,12 +10,13 @@ class OfferCache:
     Can be used to cache and retreive original amadeus offers.
     """
 
-    def __init__(self: object, debug: bool = False, debug_output_path: str = "") -> object:
+    def __init__(self: object, initial_state: dict = copy({}), debug: bool = False, debug_output_path: str = "") -> object:
         """
         Initialize the offer cache.
 
         Args:
             self (object): Object itself
+            initial_state (dict): Initial cache state. Defaults to {}
             debug (bool, optional): Write offer cache to json file for debugging. Defaults to False.
             debug_output_path (str, optional): Path of debugging file. Defaults to "".
 
@@ -24,9 +26,9 @@ class OfferCache:
         self.__debug_output_path = debug_output_path
         self.__debug = debug
 
-    # the dictionary where all added offers
-    # are cached
-    __offers = dict()
+        # the dictionary where all added offers
+        # are cached
+        self.__offers = deepcopy(initial_state)
 
     def add(self: object, offers: list) -> list:
         """

@@ -82,7 +82,7 @@ class FlightRoute:
 
         Args:
             self (object): Object itself.
-            flight_number (str): Flight number, e.g. LH439.
+            flight_number (str): Flight number, e.g. LH438.
             date (str): Date in ISO 8601 YYYY-MM-DD format, e.g. 2022-03-01.
 
         Raises:

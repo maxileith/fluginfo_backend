@@ -38,5 +38,8 @@ EXPOSE 80
 # copy project
 COPY . .
 
+# run unittests
+RUN python -m unittest -v
+
 ENTRYPOINT [ "/bin/bash" ]
 CMD [ "docker-entrypoint.sh" ]

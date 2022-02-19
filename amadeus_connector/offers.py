@@ -118,14 +118,14 @@ class OfferSeatmap:
         # filter for the seatmap for the right segment
         try:
             seatmap = list(
-                filter(lambda m: m['segmentId'] == segment_id, seatmaps))[0]
+                filter(lambda m: m['segmentId'] == str(segment_id), seatmaps))[0]
         except IndexError as e:
             # raise AmadeusNothingFound if there is no
             # seatmap for the given segment
             raise AmadeusNothingFound from e
 
         # create the simplified seatmap dictionary
-        simplified_seatmap = dict()
+        simplified_seatmap = {}
 
         # insert some metainformation such as the flightNumber
         simplified_seatmap['flightNumber'] = seatmap['carrierCode'] + \
@@ -516,7 +516,7 @@ class OfferSearch:
                             {
                                 'carrierCode': carrier_code,
                                 'carrier': self.__bookshelf.get('carriers', carrier_code),
-                            } for carrier_code in set([s['carrierCode'] for s in i['segments']])
+                            } for carrier_code in {s['carrierCode'] for s in i['segments']}
                         ],
                         'departure': {
                             'airport': self.__airport.details(i['segments'][0]['departure']['iataCode']),
