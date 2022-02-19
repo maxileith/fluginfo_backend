@@ -36,6 +36,8 @@ CORS_ALLOWED_ORIGIN_REGEXES = [
     r'^http(s)?://localhost(:[0-9]+)?$'
 ]
 
+CORS_ALLOW_CREDENTIALS = True
+
 CSP_FRAME_SRC = (os.environ.get(
     'FLUGINFO_BACKEND_FRONTEND_HOSTNAME', 'localhost'), )
 CSP_SCRIPT_SRC = ('cdn.jsdelivr.net', "'unsafe-inline'", )
