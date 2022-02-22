@@ -18,7 +18,7 @@ class AmadeusConnector:
     Everything that is needed for providing the required information for the Fluginfo website.
     """
 
-    def __init__(self, client_id: str, client_secret: str, prod: bool = False, logger: object = logging.Logger, ssl: bool = True, debug: bool = False, debug_output_path: str = path.dirname(path.realpath(__file__))) -> object:
+    def __init__(self, client_id: str, client_secret: str, prod: bool = False, logger: object = logging.Logger, ssl: bool = True, debug: bool = False, debug_output_path: str = path.dirname(path.realpath(__file__))):
         """
         Initialize the connector.
 
@@ -31,9 +31,6 @@ class AmadeusConnector:
             ssl (bool, optional): Use TLS encryption. Defaults to True.
             debug (bool, optional): Write bookshelf and offer cache to json files for debugging. Defaults to False.
             debug_output_path (str, optional): Path of debugging files. Defaults to path.dirname(path.realpath(__file__)).
-
-        Returns:
-            object: Amadeus connector.
         """
 
         self.__amadeus_client = Client(

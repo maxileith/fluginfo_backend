@@ -23,7 +23,7 @@ class StatusExact:
     This class contains methods intended for requesting the status of a flight.
     """
 
-    def __init__(self, amadeus_client: amadeus.Client, bookshelf: Bookshelf) -> object:
+    def __init__(self, amadeus_client: amadeus.Client, bookshelf: Bookshelf):
         """
         Initialize status exact object.
 
@@ -31,9 +31,6 @@ class StatusExact:
             self (object): Object itself.
             amadeus_client (amadeus.Client): Amadeus client instance.
             bookshelf (Bookshelf): Bookshelf instance.
-
-        Returns:
-            object: Status exact object.
         """
         self.__airport = Airport(
             amadeus_client=amadeus_client,
@@ -98,7 +95,7 @@ class StatusSearch:
     This class contains methods intended for search for statuses of flights.
     """
 
-    def __init__(self, amadeus_client: amadeus.Client, bookshelf: Bookshelf) -> object:
+    def __init__(self, amadeus_client: amadeus.Client, bookshelf: Bookshelf):
         """
         Initialize status search object.
 
@@ -106,9 +103,6 @@ class StatusSearch:
             self (object): Object itself.
             amadeus_client (amadeus.Client): Amadeus client instance.
             bookshelf (Bookshelf): Bookshelf instance.
-
-        Returns:
-            object: Status search object.
         """
         self.__bookshelf = bookshelf
         self.__amadeus_client = amadeus_client
@@ -261,7 +255,7 @@ class StatusSeatmap:
     This class contains methods intended for requesting seatmaps for status requests.
     """
 
-    def __init__(self, amadeus_client: amadeus.Client, bookshelf: Bookshelf, offer_cache: OfferCache) -> object:
+    def __init__(self, amadeus_client: amadeus.Client, bookshelf: Bookshelf, offer_cache: OfferCache):
         """
         Initialize status seatmap object.
 
@@ -270,10 +264,8 @@ class StatusSeatmap:
             amadeus_client (amadeus.Client): Amadeus client instance.
             bookshelf (Bookshelf): Bookshelf instance.
             offer_cache (OfferCache): Offer cache instance.
-
-        Returns:
-            object: Status seatmap object.
         """
+
         self.__flight_route = FlightRoute(amadeus_client)
         self.__offer_cache = offer_cache
         self.__offer_seatmap = OfferSeatmap(
@@ -363,16 +355,13 @@ class StatusTimings:
     This class contains methods intended for requesting current timings of flights.
     """
 
-    def __init__(self, amadeus_client: amadeus.Client) -> object:
+    def __init__(self, amadeus_client: amadeus.Client):
         """
         Initialize status timings object.
 
         Args:
             self (object): Object itself.
             amadeus_client (amadeus.Client): Amadeus client instance.
-
-        Returns:
-            object: Status timings object.
         """
         self.__amadeus_client = amadeus_client
 

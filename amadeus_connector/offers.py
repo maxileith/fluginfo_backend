@@ -13,7 +13,7 @@ class OfferSeatmap:
     This class contains methods intended for requesting seatmaps for flights included in an offer.
     """
 
-    def __init__(self, amadeus_client: amadeus.Client, bookshelf: Bookshelf, offer_cache: OfferCache) -> object:
+    def __init__(self, amadeus_client: amadeus.Client, bookshelf: Bookshelf, offer_cache: OfferCache):
         """
         Initialize offer seatmap object.
 
@@ -22,9 +22,6 @@ class OfferSeatmap:
             amadeus_client (amadeus.Client): Amadeus client instance.
             bookshelf (Bookshelf): Bookshelf instance.
             offer_cache (OfferCache): Offer cache instance.
-
-        Returns:
-            object: Offer seatmap object.
         """
         self.__amadeus_client = amadeus_client
         self.__bookshelf = bookshelf
@@ -270,7 +267,7 @@ class OfferDetails:
     This class contains methods intended for requesting details of an offer.
     """
 
-    def __init__(self, amadeus_client: amadeus.Client, bookshelf: Bookshelf, offer_cache: OfferCache) -> object:
+    def __init__(self, amadeus_client: amadeus.Client, bookshelf: Bookshelf, offer_cache: OfferCache):
         """
         Initialize offer details object.
 
@@ -279,9 +276,6 @@ class OfferDetails:
             amadeus_client (amadeus.Client): Amadeus client instance.
             bookshelf (Bookshelf): Bookshelf instance.
             offer_cache (OfferCache): Offer cache instance.
-
-        Returns:
-            object: Offer details object.
         """
         self.__bookshelf = bookshelf
         self.__offer_cache = offer_cache
@@ -363,7 +357,7 @@ class OfferSearch:
     This class contains methods intended for searching offers.
     """
 
-    def __init__(self, amadeus_client: amadeus.Client, bookshelf: Bookshelf, offer_cache: OfferCache) -> object:
+    def __init__(self, amadeus_client: amadeus.Client, bookshelf: Bookshelf, offer_cache: OfferCache):
         """
         Initialize offer search object.
 
@@ -372,9 +366,6 @@ class OfferSearch:
             amadeus_client (amadeus.Client): Amadeus client instance.
             bookshelf (Bookshelf): Bookshelf instance.
             offer_cache (OfferCache): Offer cache instance.
-
-        Returns:
-            object: Offer search object.
         """
         self.__amadeus_client = amadeus_client
         self.__bookshelf = bookshelf

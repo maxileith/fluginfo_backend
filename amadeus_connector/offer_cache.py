@@ -10,7 +10,7 @@ class OfferCache:
     Can be used to cache and retreive original amadeus offers.
     """
 
-    def __init__(self, initial_state: dict = copy({}), debug: bool = False, debug_output_path: str = "") -> object:
+    def __init__(self, initial_state: dict = copy({}), debug: bool = False, debug_output_path: str = ""):
         """
         Initialize the offer cache.
 
@@ -19,9 +19,6 @@ class OfferCache:
             initial_state (dict): Initial cache state. Defaults to {}
             debug (bool, optional): Write offer cache to json file for debugging. Defaults to False.
             debug_output_path (str, optional): Path of debugging file. Defaults to "".
-
-        Returns:
-            object: Offer cache.
         """
         self.__debug_output_path = debug_output_path
         self.__debug = debug

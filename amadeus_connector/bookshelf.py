@@ -9,7 +9,7 @@ class Bookshelf:
     The bookshelf is used to cache various dictionaries from amadeus responses and make them available for retrieval.
     """
 
-    def __init__(self, initial_dictionaries: dict = copy({}), debug: bool = False, debug_output_path: str = "") -> object:
+    def __init__(self, initial_dictionaries: dict = copy({}), debug: bool = False, debug_output_path: str = ""):
         """
         Create a new bookshelf with optional initial dictionaries.
 
@@ -18,9 +18,6 @@ class Bookshelf:
             initial_dictionaries (dict, optional): Dictionaries that should be available right from the initialization to query. Defaults to dict().
             debug (bool, optional): Write bookshelf to json file for debugging. Defaults to False.
             debug_output_path (str, optional): Path of debugging file. Defaults to "".
-
-        Returns:
-            object: Bookshelf.
         """
         self.__dictionaries = deepcopy(initial_dictionaries)
         self.__debug_output_path = debug_output_path

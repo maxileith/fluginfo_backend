@@ -9,16 +9,13 @@ class FlightRoute:
     This class contains methods intended for requesting flight routes.
     """
 
-    def __init__(self, amadeus_client: amadeus.Client) -> object:
+    def __init__(self, amadeus_client: amadeus.Client):
         """
         Initialize flight route object.
 
         Args:
             self (object): Object itself.
             amadeus_client (amadeus.Client): Amadeus client instance.
-
-        Returns:
-            object: Flight route object.
         """
         self.__amadeus_client = amadeus_client
 

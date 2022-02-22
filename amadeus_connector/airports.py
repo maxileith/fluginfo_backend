@@ -34,7 +34,7 @@ class Airport:
     This class contains methods intended for requesting airport information.
     """
 
-    def __init__(self, amadeus_client: amadeus.Client, bookshelf: Bookshelf) -> object:
+    def __init__(self, amadeus_client: amadeus.Client, bookshelf: Bookshelf):
         """
         Initialize airport object.
 
@@ -42,9 +42,6 @@ class Airport:
             self (object): Object itself.
             amadeus_client (amadeus.Client): Amadeus client instance.
             bookshelf (Bookshelf): Bookshelf instance.
-
-        Returns:
-            object: Airport object.
         """
         self.__amadeus_client = amadeus_client
         self.__bookshelf = bookshelf
