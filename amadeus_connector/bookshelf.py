@@ -15,7 +15,7 @@ class Bookshelf:
 
         Args:
             self (object): Object itself.
-            initial_dictionaries (dict, optional): Dictionaries that should be available right from the initialization to query. Defaults to dict().
+            initial_dictionaries (dict, optional): Dictionaries that should be available right from the initialization to query. Defaults to {}.
             debug (bool, optional): Write bookshelf to json file for debugging. Defaults to False.
             debug_output_path (str, optional): Path of debugging file. Defaults to "".
         """

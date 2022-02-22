@@ -184,7 +184,7 @@ class OfferSeatmap:
         # add amenities to the simplified seatmap
         simplified_seatmap['amenities'] = amenities
 
-        simplified_seatmap['decks'] = list()
+        simplified_seatmap['decks'] = []
 
         # Compose each deck
         for deck in seatmap['decks']:
@@ -212,7 +212,7 @@ class OfferSeatmap:
             # create an empty grid for storing seat and
             # facility information
             row = [None] * width
-            grid = list()
+            grid = []
             for _ in range(0, length, 1):
                 grid.append(copy(row))
 
@@ -465,7 +465,7 @@ class OfferSearch:
         """
 
         # create list to return in the end
-        slim_offers = list()
+        slim_offers = []
 
         # iterate through all offers
         for key, offer in offers.items():
@@ -477,7 +477,7 @@ class OfferSearch:
             # save the segment ids belonging to an
             # itinerary within the itinerary itself
             for i in offer['itineraries']:
-                segments = list()
+                segments = []
                 for s in i['segments']:
                     segments.append(s['id'])
                 i['segment_ids'] = segments

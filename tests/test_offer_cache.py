@@ -19,14 +19,6 @@ class TestOfferCache(unittest.TestCase):
         # get multiple offers
         self.assertDictEqual(self.offer_cache.get(
             HASHES[2:5]), {h: INITIAL_STATE[h] for h in HASHES[2:5]})
-        # ignore a missing hash
-        self.assertDictEqual(
-            self.offer_cache.get(
-                hash_values=HASHES[2:5] + ['abc'],
-                ignore_missing=True,
-            ),
-            {h: INITIAL_STATE[h] for h in HASHES[2:5]}
-        )
 
     def test_get_nothing_found(self):
         # nothing found triggered by a single hash

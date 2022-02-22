@@ -41,7 +41,7 @@ class OfferCache:
 
         # create list where the hash values of the
         # newly cached offers are stored
-        hash_list = list()
+        hash_list = []
 
         # add every new offer to the cache
         for offer in offers:
@@ -63,35 +63,32 @@ class OfferCache:
         # return the hash values of the newly cached offers
         return hash_list
 
-    def get(self, hash_values: list, ignore_missing: bool = False) -> dict:
+    def get(self, hash_values: list) -> dict:
         """
         Get original amadeus offers.
 
         Args:
             self (object): Object itself.
             hash_values (list): The hash values that identify the desired offers.
-            ignore_missing (bool, optional): Silence error on missing offer. Defaults to False.
 
         Raises:
-            AmadeusNothingFound: At least one offer cannot be found. See arg ignore_missing to silence.
+            AmadeusNothingFound: At least one offer cannot be found.
 
         Returns:
             dict: Original amadeus offers with hash values as keys.
         """
 
         # create the dict that is gonna be returned
-        offers = dict()
+        offers = {}
 
         for h in hash_values:
             try:
                 # load offer from cache and add to return list
                 offers[h] = self.__offers[h]
             except KeyError as e:
-                # skip raising an error if errors are unwanted
-                if not ignore_missing:
-                    # raise AmadeusNothingFound if there is no offer
-                    # associated with the hash value in the cache
-                    raise AmadeusNothingFound from e
+                # raise AmadeusNothingFound if there is no offer
+                # associated with the hash value in the cache
+                raise AmadeusNothingFound from e
 
         # return the desired offers
         return offers
