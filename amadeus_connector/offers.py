@@ -1,8 +1,11 @@
 from copy import copy, deepcopy
+import amadeus
 from amadeus.client.errors import ServerError, NotFoundError, ClientError
 from .utils import duration_to_minutes, inches_to_cm, timed_lru_cache
 from .errors import AmadeusBadRequest, AmadeusNothingFound, AmadeusServerError
 from .airports import Airport
+from .bookshelf import Bookshelf
+from .offer_cache import OfferCache
 
 
 class OfferSeatmap:
@@ -10,15 +13,15 @@ class OfferSeatmap:
     This class contains methods intended for requesting seatmaps for flights included in an offer.
     """
 
-    def __init__(self: object, amadeus_client: object, bookshelf: object, offer_cache: object) -> object:
+    def __init__(self, amadeus_client: amadeus.Client, bookshelf: Bookshelf, offer_cache: OfferCache) -> object:
         """
         Initialize offer seatmap object.
 
         Args:
             self (object): Object itself.
-            amadeus_client (object): Amadeus client instance.
-            bookshelf (object): Bookshelf instance.
-            offer_cache (object): Offer cache instance.
+            amadeus_client (amadeus.Client): Amadeus client instance.
+            bookshelf (Bookshelf): Bookshelf instance.
+            offer_cache (OfferCache): Offer cache instance.
 
         Returns:
             object: Offer seatmap object.
@@ -28,7 +31,7 @@ class OfferSeatmap:
         self.__offer_cache = offer_cache
 
     @timed_lru_cache(maxseconds=60)
-    def __load_seatmaps_of_offer(self: object, hash_val: str) -> list:
+    def __load_seatmaps_of_offer(self, hash_val: str) -> list:
         """
         Loads the seatmaps of an offer from amadeus.
 
@@ -74,7 +77,7 @@ class OfferSeatmap:
         # return the seatmaps
         return response
 
-    def get(self: object, hash_val: str, segment_id: int) -> dict:
+    def get(self, hash_val: str, segment_id: int) -> dict:
         """
         Get a seatmap of a segment.
 
@@ -99,7 +102,7 @@ class OfferSeatmap:
         # Simplify the seatmap of the requested segment and return
         return self.__simplify_seatmap(seatmaps, segment_id)
 
-    def __simplify_seatmap(self: object, seatmaps: list, segment_id: int) -> dict:
+    def __simplify_seatmap(self, seatmaps: list, segment_id: int) -> dict:
         """
         Selects the seatmap of the segment and transforms the seatmap into the specified format.
 
@@ -267,15 +270,15 @@ class OfferDetails:
     This class contains methods intended for requesting details of an offer.
     """
 
-    def __init__(self: object, amadeus_client: object, bookshelf: object, offer_cache: object) -> object:
+    def __init__(self, amadeus_client: amadeus.Client, bookshelf: Bookshelf, offer_cache: OfferCache) -> object:
         """
         Initialize offer details object.
 
         Args:
             self (object): Object itself.
-            amadeus_client (object): Amadeus client instance.
-            bookshelf (object): Bookshelf instance.
-            offer_cache (object): Offer cache instance.
+            amadeus_client (amadeus.Client): Amadeus client instance.
+            bookshelf (Bookshelf): Bookshelf instance.
+            offer_cache (OfferCache): Offer cache instance.
 
         Returns:
             object: Offer details object.
@@ -287,7 +290,7 @@ class OfferDetails:
             bookshelf=bookshelf
         )
 
-    def get(self: object, hash_val: str) -> dict:
+    def get(self, hash_val: str) -> dict:
         """
         Get details of an offer.
 
@@ -311,7 +314,7 @@ class OfferDetails:
         # simplify and return the offer details
         return self.__simplify_offer(offer)
 
-    def __simplify_offer(self: object, offer: dict) -> dict:
+    def __simplify_offer(self, offer: dict) -> dict:
         """
         Take an offer and transforms it into the specified format of offer details.
 
@@ -360,15 +363,15 @@ class OfferSearch:
     This class contains methods intended for searching offers.
     """
 
-    def __init__(self: object, amadeus_client: object, bookshelf: object, offer_cache: object) -> object:
+    def __init__(self, amadeus_client: amadeus.Client, bookshelf: Bookshelf, offer_cache: OfferCache) -> object:
         """
         Initialize offer search object.
 
         Args:
             self (object): Object itself.
-            amadeus_client (object): Amadeus client instance.
-            bookshelf (object): Bookshelf instance.
-            offer_cache (object): Offer cache instance.
+            amadeus_client (amadeus.Client): Amadeus client instance.
+            bookshelf (Bookshelf): Bookshelf instance.
+            offer_cache (OfferCache): Offer cache instance.
 
         Returns:
             object: Offer search object.
@@ -381,7 +384,7 @@ class OfferSearch:
             bookshelf=bookshelf
         )
 
-    def __load_results(self: object, **params: dict) -> list:
+    def __load_results(self, **params: dict) -> list:
         """
 
         Args:
@@ -427,7 +430,7 @@ class OfferSearch:
         return hashes
 
     @timed_lru_cache
-    def get(self: object, **params: dict) -> list:
+    def get(self, **params: dict) -> list:
         """
         Search offers that match the given parameters.
 
@@ -458,7 +461,7 @@ class OfferSearch:
         # return the simplified offers.
         return self.__simplify_offer(offers)
 
-    def __simplify_offer(self: object, offers: dict) -> list:
+    def __simplify_offer(self, offers: dict) -> list:
         """
         Transform offers to the specified format for search results.
 

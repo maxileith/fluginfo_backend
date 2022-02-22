@@ -1,7 +1,9 @@
+import amadeus
 from amadeus import Location
 from amadeus.client.errors import ServerError, ClientError, NotFoundError
 from .errors import AmadeusNothingFound, AmadeusBadRequest, AmadeusServerError
 from .utils import timed_lru_cache
+from .bookshelf import Bookshelf
 
 
 def simplify_airports(airports: list) -> list:
@@ -32,14 +34,14 @@ class Airport:
     This class contains methods intended for requesting airport information.
     """
 
-    def __init__(self: object, amadeus_client: object, bookshelf: object) -> object:
+    def __init__(self, amadeus_client: amadeus.Client, bookshelf: Bookshelf) -> object:
         """
         Initialize airport object.
 
         Args:
             self (object): Object itself.
-            amadeus_client (object): Amadeus client instance.
-            bookshelf (object): Bookshelf instance.
+            amadeus_client (amadeus.Client): Amadeus client instance.
+            bookshelf (Bookshelf): Bookshelf instance.
 
         Returns:
             object: Airport object.
@@ -48,7 +50,7 @@ class Airport:
         self.__bookshelf = bookshelf
 
     @timed_lru_cache(forever=True)
-    def search(self: object, keyword: str, is_iata: bool = False) -> list:
+    def search(self, keyword: str, is_iata: bool = False) -> list:
         """
         Returns airports that match the specified keyword.
 
@@ -104,7 +106,7 @@ class Airport:
         # return the airports
         return airports
 
-    def details(self: object, iata: str) -> dict:
+    def details(self, iata: str) -> dict:
         """
         Return the airport that matches a specified IATA code.
 

@@ -1,11 +1,14 @@
 import json
 from os import path
+import amadeus
 from amadeus.client.errors import ServerError, NotFoundError, ClientError
 from .errors import AmadeusBadRequest, AmadeusNothingFound, AmadeusServerError
 from .utils import timed_lru_cache, get_flight_schedule, split_flight_number, duration_to_minutes
 from .airports import Airport
 from .flightroute import FlightRoute
 from .offers import OfferSeatmap
+from .bookshelf import Bookshelf
+from .offer_cache import OfferCache
 
 # load the seatmap offer blueprint for creating pseudo-offers
 # to query seatmaps.
@@ -20,14 +23,14 @@ class StatusExact:
     This class contains methods intended for requesting the status of a flight.
     """
 
-    def __init__(self: object, amadeus_client: object, bookshelf: object) -> object:
+    def __init__(self, amadeus_client: amadeus.Client, bookshelf: Bookshelf) -> object:
         """
         Initialize status exact object.
 
         Args:
             self (object): Object itself.
-            amadeus_client (object): Amadeus client instance.
-            bookshelf (object): Bookshelf instance.
+            amadeus_client (amadeus.Client): Amadeus client instance.
+            bookshelf (Bookshelf): Bookshelf instance.
 
         Returns:
             object: Status exact object.
@@ -42,7 +45,7 @@ class StatusExact:
             bookshelf=bookshelf
         )
 
-    def get(self: object, flight_number: str, date: str) -> dict:
+    def get(self, flight_number: str, date: str) -> dict:
         """
         Get the status of a specific flight.
 
@@ -95,14 +98,14 @@ class StatusSearch:
     This class contains methods intended for search for statuses of flights.
     """
 
-    def __init__(self: object, amadeus_client: object, bookshelf: object) -> object:
+    def __init__(self, amadeus_client: amadeus.Client, bookshelf: Bookshelf) -> object:
         """
         Initialize status search object.
 
         Args:
             self (object): Object itself.
-            amadeus_client (object): Amadeus client instance.
-            bookshelf (object): Bookshelf instance.
+            amadeus_client (amadeus.Client): Amadeus client instance.
+            bookshelf (Bookshelf): Bookshelf instance.
 
         Returns:
             object: Status search object.
@@ -111,7 +114,7 @@ class StatusSearch:
         self.__amadeus_client = amadeus_client
 
     @timed_lru_cache
-    def get(self: object, departure_iata: str, arrival_iata: str, date: str) -> list:
+    def get(self, departure_iata: str, arrival_iata: str, date: str) -> list:
         """
         Get status for flights traveling the given route on the given date.
 
@@ -174,7 +177,7 @@ class StatusSearch:
         # simplify the statuses and return
         return self.__simplify_statuses(statuses)
 
-    def __simplify_statuses(self: object, statuses: list) -> list:
+    def __simplify_statuses(self, statuses: list) -> list:
         """
         Transform the statuses to the specified format.
 
@@ -258,15 +261,15 @@ class StatusSeatmap:
     This class contains methods intended for requesting seatmaps for status requests.
     """
 
-    def __init__(self: object, amadeus_client: object, bookshelf: object, offer_cache: object) -> object:
+    def __init__(self, amadeus_client: amadeus.Client, bookshelf: Bookshelf, offer_cache: OfferCache) -> object:
         """
         Initialize status seatmap object.
 
         Args:
             self (object): Object itself
-            amadeus_client (object): Amadeus client instance.
-            bookshelf (object): Bookshelf instance.
-            offer_cache (object): Offer cache instance.
+            amadeus_client (amadeus.Client): Amadeus client instance.
+            bookshelf (Bookshelf): Bookshelf instance.
+            offer_cache (OfferCache): Offer cache instance.
 
         Returns:
             object: Status seatmap object.
@@ -279,7 +282,7 @@ class StatusSeatmap:
             offer_cache=offer_cache
         )
 
-    def get(self: object, flight_number: str, date: str, travel_class: str) -> dict:
+    def get(self, flight_number: str, date: str, travel_class: str) -> dict:
         """
         Get the seatmap of a specific flight given by the travel class and date of travel.
 
@@ -322,7 +325,7 @@ class StatusSeatmap:
         # newly created offer and segment id 1.
         return self.__offer_seatmap.get(hash_val, '1')
 
-    def __get_offer_from_blueprint(self: object, departure_iata: str, arrival_iata: str, carrier_code: str, number: str, travel_class: str, date: str) -> dict:
+    def __get_offer_from_blueprint(self, departure_iata: str, arrival_iata: str, carrier_code: str, number: str, travel_class: str, date: str) -> dict:
         """
         Create a pseudo offer from a blueprint to request seatmaps for offers that aren't existing.
 
@@ -360,20 +363,20 @@ class StatusTimings:
     This class contains methods intended for requesting current timings of flights.
     """
 
-    def __init__(self: object, amadeus_client: object) -> object:
+    def __init__(self, amadeus_client: amadeus.Client) -> object:
         """
         Initialize status timings object.
 
         Args:
             self (object): Object itself.
-            amadeus_client (object): Amadeus client instance.
+            amadeus_client (amadeus.Client): Amadeus client instance.
 
         Returns:
             object: Status timings object.
         """
         self.__amadeus_client = amadeus_client
 
-    def get(self: object, flight_number: str, date: str) -> dict:
+    def get(self, flight_number: str, date: str) -> dict:
         """
         Returns the current timings of a flight.
 
@@ -413,7 +416,7 @@ class StatusTimings:
         # and return
         return self.__simplify_timings(response.result['data'][0])
 
-    def __simplify_timings(self: object, status: dict) -> dict:
+    def __simplify_timings(self, status: dict) -> dict:
         """
         Extract timings from flight schedule.
 

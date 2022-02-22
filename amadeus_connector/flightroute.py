@@ -1,3 +1,4 @@
+import amadeus
 from amadeus.client.errors import ClientError, ServerError, NotFoundError
 from .errors import AmadeusBadRequest, AmadeusNothingFound, AmadeusServerError
 from .utils import split_flight_number, get_flight_schedule
@@ -8,20 +9,20 @@ class FlightRoute:
     This class contains methods intended for requesting flight routes.
     """
 
-    def __init__(self: object, amadeus_client: object) -> object:
+    def __init__(self, amadeus_client: amadeus.Client) -> object:
         """
         Initialize flight route object.
 
         Args:
             self (object): Object itself.
-            amadeus_client (object): Amadeus client instance.
+            amadeus_client (amadeus.Client): Amadeus client instance.
 
         Returns:
             object: Flight route object.
         """
         self.__amadeus_client = amadeus_client
 
-    def get_advanced(self: object, carrier_code: str, number: int, date: str) -> dict:
+    def get_advanced(self, carrier_code: str, number: int, date: str) -> dict:
         """
         Returns the flight route of the specified flight.
 
@@ -76,7 +77,7 @@ class FlightRoute:
             'arrivalIata': data[0]['flightPoints'][-1]['iataCode'],
         }
 
-    def get(self: object, flight_number: str, date: str) -> dict:
+    def get(self, flight_number: str, date: str) -> dict:
         """
         Returns the flight route of the specified flight.
 

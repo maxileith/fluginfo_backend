@@ -1,6 +1,7 @@
 import re
 from time import monotonic_ns
 from functools import lru_cache, wraps
+import amadeus
 from .errors import AmadeusBadRequest
 
 
@@ -142,12 +143,12 @@ def split_flight_number(flight_number: str) -> tuple:
 
 
 @timed_lru_cache
-def get_flight_schedule(amadeus_client: object, carrier_code: str, number: str, date: str) -> dict:
+def get_flight_schedule(amadeus_client: amadeus.Client, carrier_code: str, number: str, date: str) -> dict:
     """
     Return the flight schedule provided by amadeus unmodified.
 
     Args:
-        amadeus_client (object): Amadeus client object.
+        amadeus_client (amadeus.Client): Amadeus client object.
         carrier_code (str): IATA code of the carrier, e.g. LH.
         number (int): Number of the flight, e.g. 439.
         date (str): Date in ISO 8601 YYYY-MM-DD format, e.g. 2022-03-01.

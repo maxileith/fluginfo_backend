@@ -10,7 +10,7 @@ class OfferCache:
     Can be used to cache and retreive original amadeus offers.
     """
 
-    def __init__(self: object, initial_state: dict = copy({}), debug: bool = False, debug_output_path: str = "") -> object:
+    def __init__(self, initial_state: dict = copy({}), debug: bool = False, debug_output_path: str = "") -> object:
         """
         Initialize the offer cache.
 
@@ -30,7 +30,7 @@ class OfferCache:
         # are cached
         self.__offers = deepcopy(initial_state)
 
-    def add(self: object, offers: list) -> list:
+    def add(self, offers: list) -> list:
         """
         Cache original amadeus offers.
 
@@ -66,7 +66,7 @@ class OfferCache:
         # return the hash values of the newly cached offers
         return hash_list
 
-    def get(self: object, hash_values: list, ignore_missing: bool = False) -> dict:
+    def get(self, hash_values: list, ignore_missing: bool = False) -> dict:
         """
         Get original amadeus offers.
 
