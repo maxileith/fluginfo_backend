@@ -938,7 +938,7 @@ OFFER_SEATMAP_RESULT = {
                     {
                         "type": "seat",
                         "number": "10A",
-                        "available": False,
+                        "available": "OCCUPIED",
                         "characteristics": [
                             "Chargeable seats"
                         ]
@@ -946,7 +946,7 @@ OFFER_SEATMAP_RESULT = {
                     {
                         "type": "seat",
                         "number": "10B",
-                        "available": True,
+                        "available": "AVAILABLE",
                         "characteristics": [
                             "Leg space seat",
                             "Seat with bassinet facility",
@@ -959,7 +959,7 @@ OFFER_SEATMAP_RESULT = {
                     {
                         "type": "seat",
                         "number": "10C",
-                        "available": True,
+                        "available": "AVAILABLE",
                         "characteristics": [
                             "Leg space seat",
                             "Seat with bassinet facility",
@@ -973,7 +973,7 @@ OFFER_SEATMAP_RESULT = {
                     {
                         "type": "seat",
                         "number": "10D",
-                        "available": True,
+                        "available": "AVAILABLE",
                         "characteristics": [
                             "Leg space seat",
                             "Chargeable seats",
@@ -985,7 +985,7 @@ OFFER_SEATMAP_RESULT = {
                     {
                         "type": "seat",
                         "number": "10E",
-                        "available": True,
+                        "available": "AVAILABLE",
                         "characteristics": [
                             "Leg space seat",
                             "Chargeable seats",
@@ -997,7 +997,7 @@ OFFER_SEATMAP_RESULT = {
                     {
                         "type": "seat",
                         "number": "10H",
-                        "available": True,
+                        "available": "AVAILABLE",
                         "characteristics": [
                             "Leg space seat",
                             "Chargeable seats",
@@ -1010,7 +1010,7 @@ OFFER_SEATMAP_RESULT = {
                     {
                         "type": "seat",
                         "number": "10J",
-                        "available": False,
+                        "available": "OCCUPIED",
                         "characteristics": [
                             "Chargeable seats"
                         ]
@@ -1018,7 +1018,7 @@ OFFER_SEATMAP_RESULT = {
                     {
                         "type": "seat",
                         "number": "10K",
-                        "available": False,
+                        "available": "OCCUPIED",
                         "characteristics": [
                             "Chargeable seats"
                         ]
@@ -1026,7 +1026,7 @@ OFFER_SEATMAP_RESULT = {
                     {
                         "type": "seat",
                         "number": "10L",
-                        "available": False,
+                        "available": "OCCUPIED",
                         "characteristics": [
                             "Chargeable seats"
                         ]
@@ -1036,7 +1036,7 @@ OFFER_SEATMAP_RESULT = {
                     {
                         "type": "seat",
                         "number": "11A",
-                        "available": True,
+                        "available": "AVAILABLE",
                         "characteristics": [
                             "Leg space seat",
                             "Chargeable seats",
@@ -1047,7 +1047,7 @@ OFFER_SEATMAP_RESULT = {
                     {
                         "type": "seat",
                         "number": "11B",
-                        "available": True,
+                        "available": "AVAILABLE",
                         "characteristics": [
                             "Leg space seat",
                             "Chargeable seats",
@@ -1058,7 +1058,7 @@ OFFER_SEATMAP_RESULT = {
                     {
                         "type": "seat",
                         "number": "11C",
-                        "available": True,
+                        "available": "AVAILABLE",
                         "characteristics": [
                             "Leg space seat",
                             "Chargeable seats",
@@ -1071,7 +1071,7 @@ OFFER_SEATMAP_RESULT = {
                     {
                         "type": "seat",
                         "number": "11D",
-                        "available": True,
+                        "available": "AVAILABLE",
                         "characteristics": [
                             "Leg space seat",
                             "Chargeable seats",
@@ -1083,7 +1083,7 @@ OFFER_SEATMAP_RESULT = {
                     {
                         "type": "seat",
                         "number": "11E",
-                        "available": True,
+                        "available": "AVAILABLE",
                         "characteristics": [
                             "Leg space seat",
                             "Chargeable seats",
@@ -1094,7 +1094,7 @@ OFFER_SEATMAP_RESULT = {
                     {
                         "type": "seat",
                         "number": "11H",
-                        "available": True,
+                        "available": "AVAILABLE",
                         "characteristics": [
                             "Leg space seat",
                             "Chargeable seats",
@@ -1107,7 +1107,7 @@ OFFER_SEATMAP_RESULT = {
                     {
                         "type": "seat",
                         "number": "11J",
-                        "available": True,
+                        "available": "AVAILABLE",
                         "characteristics": [
                             "Leg space seat",
                             "Chargeable seats",
@@ -1119,7 +1119,7 @@ OFFER_SEATMAP_RESULT = {
                     {
                         "type": "seat",
                         "number": "11K",
-                        "available": True,
+                        "available": "AVAILABLE",
                         "characteristics": [
                             "Leg space seat",
                             "Chargeable seats",
@@ -1130,7 +1130,7 @@ OFFER_SEATMAP_RESULT = {
                     {
                         "type": "seat",
                         "number": "11L",
-                        "available": True,
+                        "available": "AVAILABLE",
                         "characteristics": [
                             "Leg space seat",
                             "Chargeable seats",
@@ -1143,7 +1143,7 @@ OFFER_SEATMAP_RESULT = {
                     {
                         "type": "seat",
                         "number": "12A",
-                        "available": True,
+                        "available": "AVAILABLE",
                         "characteristics": [
                             "Chargeable seats",
                             "Overwing seat(s)",
@@ -1153,7 +1153,7 @@ OFFER_SEATMAP_RESULT = {
                     {
                         "type": "seat",
                         "number": "12B",
-                        "available": True,
+                        "available": "AVAILABLE",
                         "characteristics": [
                             "No facility seat (indifferent seat)",
                             "Overwing seat(s)",
@@ -1163,7 +1163,7 @@ OFFER_SEATMAP_RESULT = {
                     {
                         "type": "seat",
                         "number": "12C",
-                        "available": True,
+                        "available": "AVAILABLE",
                         "characteristics": [
                             "Chargeable seats",
                             "Medically OK to travel",
@@ -1175,7 +1175,7 @@ OFFER_SEATMAP_RESULT = {
                     {
                         "type": "seat",
                         "number": "12D",
-                        "available": True,
+                        "available": "AVAILABLE",
                         "characteristics": [
                             "Leg space seat",
                             "Chargeable seats",
@@ -1187,7 +1187,7 @@ OFFER_SEATMAP_RESULT = {
                     {
                         "type": "seat",
                         "number": "12E",
-                        "available": True,
+                        "available": "AVAILABLE",
                         "characteristics": [
                             "Leg space seat",
                             "Chargeable seats",
@@ -1198,7 +1198,7 @@ OFFER_SEATMAP_RESULT = {
                     {
                         "type": "seat",
                         "number": "12H",
-                        "available": True,
+                        "available": "AVAILABLE",
                         "characteristics": [
                             "Leg space seat",
                             "Chargeable seats",
@@ -1211,7 +1211,7 @@ OFFER_SEATMAP_RESULT = {
                     {
                         "type": "seat",
                         "number": "12J",
-                        "available": True,
+                        "available": "AVAILABLE",
                         "characteristics": [
                             "Chargeable seats",
                             "Medically OK to travel",
@@ -1222,7 +1222,7 @@ OFFER_SEATMAP_RESULT = {
                     {
                         "type": "seat",
                         "number": "12K",
-                        "available": True,
+                        "available": "AVAILABLE",
                         "characteristics": [
                             "No facility seat (indifferent seat)",
                             "Overwing seat(s)",
@@ -1232,7 +1232,7 @@ OFFER_SEATMAP_RESULT = {
                     {
                         "type": "seat",
                         "number": "12L",
-                        "available": True,
+                        "available": "AVAILABLE",
                         "characteristics": [
                             "Chargeable seats",
                             "Overwing seat(s)",
@@ -1244,7 +1244,7 @@ OFFER_SEATMAP_RESULT = {
                     {
                         "type": "seat",
                         "number": "13A",
-                        "available": True,
+                        "available": "AVAILABLE",
                         "characteristics": [
                             "Chargeable seats",
                             "Overwing seat(s)",
@@ -1254,7 +1254,7 @@ OFFER_SEATMAP_RESULT = {
                     {
                         "type": "seat",
                         "number": "13B",
-                        "available": True,
+                        "available": "AVAILABLE",
                         "characteristics": [
                             "No facility seat (indifferent seat)",
                             "Overwing seat(s)",
@@ -1264,7 +1264,7 @@ OFFER_SEATMAP_RESULT = {
                     {
                         "type": "seat",
                         "number": "13C",
-                        "available": True,
+                        "available": "AVAILABLE",
                         "characteristics": [
                             "Chargeable seats",
                             "Medically OK to travel",
@@ -1276,7 +1276,7 @@ OFFER_SEATMAP_RESULT = {
                     {
                         "type": "seat",
                         "number": "13D",
-                        "available": True,
+                        "available": "AVAILABLE",
                         "characteristics": [
                             "Leg space seat",
                             "Chargeable seats",
@@ -1288,7 +1288,7 @@ OFFER_SEATMAP_RESULT = {
                     {
                         "type": "seat",
                         "number": "13E",
-                        "available": True,
+                        "available": "AVAILABLE",
                         "characteristics": [
                             "Leg space seat",
                             "Chargeable seats",
@@ -1299,7 +1299,7 @@ OFFER_SEATMAP_RESULT = {
                     {
                         "type": "seat",
                         "number": "13H",
-                        "available": True,
+                        "available": "AVAILABLE",
                         "characteristics": [
                             "Leg space seat",
                             "Chargeable seats",
@@ -1312,7 +1312,7 @@ OFFER_SEATMAP_RESULT = {
                     {
                         "type": "seat",
                         "number": "13J",
-                        "available": True,
+                        "available": "AVAILABLE",
                         "characteristics": [
                             "Chargeable seats",
                             "Medically OK to travel",
@@ -1323,7 +1323,7 @@ OFFER_SEATMAP_RESULT = {
                     {
                         "type": "seat",
                         "number": "13K",
-                        "available": True,
+                        "available": "AVAILABLE",
                         "characteristics": [
                             "No facility seat (indifferent seat)",
                             "Overwing seat(s)",
@@ -1333,7 +1333,7 @@ OFFER_SEATMAP_RESULT = {
                     {
                         "type": "seat",
                         "number": "13L",
-                        "available": True,
+                        "available": "AVAILABLE",
                         "characteristics": [
                             "Chargeable seats",
                             "Overwing seat(s)",
@@ -1345,7 +1345,7 @@ OFFER_SEATMAP_RESULT = {
                     {
                         "type": "seat",
                         "number": "14A",
-                        "available": True,
+                        "available": "AVAILABLE",
                         "characteristics": [
                             "Chargeable seats",
                             "Overwing seat(s)",
@@ -1355,7 +1355,7 @@ OFFER_SEATMAP_RESULT = {
                     {
                         "type": "seat",
                         "number": "14B",
-                        "available": True,
+                        "available": "AVAILABLE",
                         "characteristics": [
                             "No facility seat (indifferent seat)",
                             "Overwing seat(s)",
@@ -1365,7 +1365,7 @@ OFFER_SEATMAP_RESULT = {
                     {
                         "type": "seat",
                         "number": "14C",
-                        "available": True,
+                        "available": "AVAILABLE",
                         "characteristics": [
                             "Chargeable seats",
                             "Medically OK to travel",
@@ -1377,7 +1377,7 @@ OFFER_SEATMAP_RESULT = {
                     {
                         "type": "seat",
                         "number": "14D",
-                        "available": True,
+                        "available": "AVAILABLE",
                         "characteristics": [
                             "Leg space seat",
                             "Chargeable seats",
@@ -1389,7 +1389,7 @@ OFFER_SEATMAP_RESULT = {
                     {
                         "type": "seat",
                         "number": "14E",
-                        "available": True,
+                        "available": "AVAILABLE",
                         "characteristics": [
                             "Leg space seat",
                             "Chargeable seats",
@@ -1400,7 +1400,7 @@ OFFER_SEATMAP_RESULT = {
                     {
                         "type": "seat",
                         "number": "14H",
-                        "available": True,
+                        "available": "AVAILABLE",
                         "characteristics": [
                             "Leg space seat",
                             "Chargeable seats",
@@ -1413,7 +1413,7 @@ OFFER_SEATMAP_RESULT = {
                     {
                         "type": "seat",
                         "number": "14J",
-                        "available": True,
+                        "available": "AVAILABLE",
                         "characteristics": [
                             "Chargeable seats",
                             "Medically OK to travel",
@@ -1424,7 +1424,7 @@ OFFER_SEATMAP_RESULT = {
                     {
                         "type": "seat",
                         "number": "14K",
-                        "available": True,
+                        "available": "AVAILABLE",
                         "characteristics": [
                             "No facility seat (indifferent seat)",
                             "Overwing seat(s)",
@@ -1434,7 +1434,7 @@ OFFER_SEATMAP_RESULT = {
                     {
                         "type": "seat",
                         "number": "14L",
-                        "available": True,
+                        "available": "AVAILABLE",
                         "characteristics": [
                             "Chargeable seats",
                             "Overwing seat(s)",
@@ -1446,7 +1446,7 @@ OFFER_SEATMAP_RESULT = {
                     {
                         "type": "seat",
                         "number": "15A",
-                        "available": True,
+                        "available": "AVAILABLE",
                         "characteristics": [
                             "Chargeable seats",
                             "Overwing seat(s)",
@@ -1456,7 +1456,7 @@ OFFER_SEATMAP_RESULT = {
                     {
                         "type": "seat",
                         "number": "15B",
-                        "available": True,
+                        "available": "AVAILABLE",
                         "characteristics": [
                             "No facility seat (indifferent seat)",
                             "Overwing seat(s)",
@@ -1466,7 +1466,7 @@ OFFER_SEATMAP_RESULT = {
                     {
                         "type": "seat",
                         "number": "15C",
-                        "available": True,
+                        "available": "AVAILABLE",
                         "characteristics": [
                             "Chargeable seats",
                             "Medically OK to travel",
@@ -1478,7 +1478,7 @@ OFFER_SEATMAP_RESULT = {
                     {
                         "type": "seat",
                         "number": "15D",
-                        "available": True,
+                        "available": "AVAILABLE",
                         "characteristics": [
                             "Leg space seat",
                             "Chargeable seats",
@@ -1490,7 +1490,7 @@ OFFER_SEATMAP_RESULT = {
                     {
                         "type": "seat",
                         "number": "15E",
-                        "available": True,
+                        "available": "AVAILABLE",
                         "characteristics": [
                             "Leg space seat",
                             "Chargeable seats",
@@ -1501,7 +1501,7 @@ OFFER_SEATMAP_RESULT = {
                     {
                         "type": "seat",
                         "number": "15H",
-                        "available": True,
+                        "available": "AVAILABLE",
                         "characteristics": [
                             "Leg space seat",
                             "Chargeable seats",
@@ -1514,7 +1514,7 @@ OFFER_SEATMAP_RESULT = {
                     {
                         "type": "seat",
                         "number": "15J",
-                        "available": True,
+                        "available": "AVAILABLE",
                         "characteristics": [
                             "Chargeable seats",
                             "Medically OK to travel",
@@ -1525,7 +1525,7 @@ OFFER_SEATMAP_RESULT = {
                     {
                         "type": "seat",
                         "number": "15K",
-                        "available": True,
+                        "available": "AVAILABLE",
                         "characteristics": [
                             "No facility seat (indifferent seat)",
                             "Overwing seat(s)",
@@ -1535,7 +1535,7 @@ OFFER_SEATMAP_RESULT = {
                     {
                         "type": "seat",
                         "number": "15L",
-                        "available": True,
+                        "available": "AVAILABLE",
                         "characteristics": [
                             "Chargeable seats",
                             "Overwing seat(s)",
@@ -1547,7 +1547,7 @@ OFFER_SEATMAP_RESULT = {
                     {
                         "type": "seat",
                         "number": "16A",
-                        "available": True,
+                        "available": "AVAILABLE",
                         "characteristics": [
                             "Chargeable seats",
                             "Overwing seat(s)",
@@ -1557,7 +1557,7 @@ OFFER_SEATMAP_RESULT = {
                     {
                         "type": "seat",
                         "number": "16B",
-                        "available": True,
+                        "available": "AVAILABLE",
                         "characteristics": [
                             "No facility seat (indifferent seat)",
                             "Overwing seat(s)",
@@ -1567,7 +1567,7 @@ OFFER_SEATMAP_RESULT = {
                     {
                         "type": "seat",
                         "number": "16C",
-                        "available": True,
+                        "available": "AVAILABLE",
                         "characteristics": [
                             "Chargeable seats",
                             "Medically OK to travel",
@@ -1579,7 +1579,7 @@ OFFER_SEATMAP_RESULT = {
                     {
                         "type": "seat",
                         "number": "16D",
-                        "available": True,
+                        "available": "AVAILABLE",
                         "characteristics": [
                             "Leg space seat",
                             "Chargeable seats",
@@ -1591,7 +1591,7 @@ OFFER_SEATMAP_RESULT = {
                     {
                         "type": "seat",
                         "number": "16E",
-                        "available": True,
+                        "available": "AVAILABLE",
                         "characteristics": [
                             "Leg space seat",
                             "Chargeable seats",
@@ -1602,7 +1602,7 @@ OFFER_SEATMAP_RESULT = {
                     {
                         "type": "seat",
                         "number": "16H",
-                        "available": True,
+                        "available": "AVAILABLE",
                         "characteristics": [
                             "Leg space seat",
                             "Chargeable seats",
@@ -1615,7 +1615,7 @@ OFFER_SEATMAP_RESULT = {
                     {
                         "type": "seat",
                         "number": "16J",
-                        "available": True,
+                        "available": "AVAILABLE",
                         "characteristics": [
                             "Chargeable seats",
                             "Medically OK to travel",
@@ -1626,7 +1626,7 @@ OFFER_SEATMAP_RESULT = {
                     {
                         "type": "seat",
                         "number": "16K",
-                        "available": True,
+                        "available": "AVAILABLE",
                         "characteristics": [
                             "No facility seat (indifferent seat)",
                             "Overwing seat(s)",
@@ -1636,7 +1636,7 @@ OFFER_SEATMAP_RESULT = {
                     {
                         "type": "seat",
                         "number": "16L",
-                        "available": True,
+                        "available": "AVAILABLE",
                         "characteristics": [
                             "Chargeable seats",
                             "Overwing seat(s)",
@@ -1648,7 +1648,7 @@ OFFER_SEATMAP_RESULT = {
                     {
                         "type": "seat",
                         "number": "17A",
-                        "available": True,
+                        "available": "AVAILABLE",
                         "characteristics": [
                             "Chargeable seats",
                             "Overwing seat(s)",
@@ -1658,7 +1658,7 @@ OFFER_SEATMAP_RESULT = {
                     {
                         "type": "seat",
                         "number": "17B",
-                        "available": True,
+                        "available": "AVAILABLE",
                         "characteristics": [
                             "No facility seat (indifferent seat)",
                             "Overwing seat(s)",
@@ -1668,7 +1668,7 @@ OFFER_SEATMAP_RESULT = {
                     {
                         "type": "seat",
                         "number": "17C",
-                        "available": True,
+                        "available": "AVAILABLE",
                         "characteristics": [
                             "Chargeable seats",
                             "Medically OK to travel",
@@ -1680,7 +1680,7 @@ OFFER_SEATMAP_RESULT = {
                     {
                         "type": "seat",
                         "number": "17D",
-                        "available": True,
+                        "available": "AVAILABLE",
                         "characteristics": [
                             "Leg space seat",
                             "Chargeable seats",
@@ -1692,7 +1692,7 @@ OFFER_SEATMAP_RESULT = {
                     {
                         "type": "seat",
                         "number": "17E",
-                        "available": True,
+                        "available": "AVAILABLE",
                         "characteristics": [
                             "Leg space seat",
                             "Chargeable seats",
@@ -1703,7 +1703,7 @@ OFFER_SEATMAP_RESULT = {
                     {
                         "type": "seat",
                         "number": "17H",
-                        "available": True,
+                        "available": "AVAILABLE",
                         "characteristics": [
                             "Leg space seat",
                             "Chargeable seats",
@@ -1716,7 +1716,7 @@ OFFER_SEATMAP_RESULT = {
                     {
                         "type": "seat",
                         "number": "17J",
-                        "available": True,
+                        "available": "AVAILABLE",
                         "characteristics": [
                             "Chargeable seats",
                             "Medically OK to travel",
@@ -1727,7 +1727,7 @@ OFFER_SEATMAP_RESULT = {
                     {
                         "type": "seat",
                         "number": "17K",
-                        "available": True,
+                        "available": "AVAILABLE",
                         "characteristics": [
                             "No facility seat (indifferent seat)",
                             "Overwing seat(s)",
@@ -1737,7 +1737,7 @@ OFFER_SEATMAP_RESULT = {
                     {
                         "type": "seat",
                         "number": "17L",
-                        "available": True,
+                        "available": "AVAILABLE",
                         "characteristics": [
                             "Chargeable seats",
                             "Overwing seat(s)",
@@ -1749,7 +1749,7 @@ OFFER_SEATMAP_RESULT = {
                     {
                         "type": "seat",
                         "number": "18A",
-                        "available": True,
+                        "available": "AVAILABLE",
                         "characteristics": [
                             "Chargeable seats",
                             "Overwing seat(s)",
@@ -1759,7 +1759,7 @@ OFFER_SEATMAP_RESULT = {
                     {
                         "type": "seat",
                         "number": "18B",
-                        "available": True,
+                        "available": "AVAILABLE",
                         "characteristics": [
                             "No facility seat (indifferent seat)",
                             "Overwing seat(s)",
@@ -1769,7 +1769,7 @@ OFFER_SEATMAP_RESULT = {
                     {
                         "type": "seat",
                         "number": "18C",
-                        "available": True,
+                        "available": "AVAILABLE",
                         "characteristics": [
                             "Chargeable seats",
                             "Medically OK to travel",
@@ -1781,7 +1781,7 @@ OFFER_SEATMAP_RESULT = {
                     {
                         "type": "seat",
                         "number": "18D",
-                        "available": True,
+                        "available": "AVAILABLE",
                         "characteristics": [
                             "Leg space seat",
                             "Chargeable seats",
@@ -1793,7 +1793,7 @@ OFFER_SEATMAP_RESULT = {
                     {
                         "type": "seat",
                         "number": "18E",
-                        "available": True,
+                        "available": "AVAILABLE",
                         "characteristics": [
                             "Leg space seat",
                             "Chargeable seats",
@@ -1804,7 +1804,7 @@ OFFER_SEATMAP_RESULT = {
                     {
                         "type": "seat",
                         "number": "18H",
-                        "available": True,
+                        "available": "AVAILABLE",
                         "characteristics": [
                             "Leg space seat",
                             "Chargeable seats",
@@ -1817,7 +1817,7 @@ OFFER_SEATMAP_RESULT = {
                     {
                         "type": "seat",
                         "number": "18J",
-                        "available": True,
+                        "available": "AVAILABLE",
                         "characteristics": [
                             "Chargeable seats",
                             "Medically OK to travel",
@@ -1828,7 +1828,7 @@ OFFER_SEATMAP_RESULT = {
                     {
                         "type": "seat",
                         "number": "18K",
-                        "available": True,
+                        "available": "AVAILABLE",
                         "characteristics": [
                             "No facility seat (indifferent seat)",
                             "Overwing seat(s)",
@@ -1838,7 +1838,7 @@ OFFER_SEATMAP_RESULT = {
                     {
                         "type": "seat",
                         "number": "18L",
-                        "available": True,
+                        "available": "AVAILABLE",
                         "characteristics": [
                             "Chargeable seats",
                             "Overwing seat(s)",
@@ -1850,7 +1850,7 @@ OFFER_SEATMAP_RESULT = {
                     {
                         "type": "seat",
                         "number": "19A",
-                        "available": True,
+                        "available": "AVAILABLE",
                         "characteristics": [
                             "Chargeable seats",
                             "Overwing seat(s)",
@@ -1861,7 +1861,7 @@ OFFER_SEATMAP_RESULT = {
                     {
                         "type": "seat",
                         "number": "19C",
-                        "available": True,
+                        "available": "AVAILABLE",
                         "characteristics": [
                             "Chargeable seats",
                             "Medically OK to travel",
@@ -1883,7 +1883,7 @@ OFFER_SEATMAP_RESULT = {
                     {
                         "type": "seat",
                         "number": "19J",
-                        "available": True,
+                        "available": "AVAILABLE",
                         "characteristics": [
                             "Chargeable seats",
                             "Medically OK to travel",
@@ -1895,7 +1895,7 @@ OFFER_SEATMAP_RESULT = {
                     {
                         "type": "seat",
                         "number": "19L",
-                        "available": True,
+                        "available": "AVAILABLE",
                         "characteristics": [
                             "Chargeable seats",
                             "Overwing seat(s)",
@@ -1907,7 +1907,7 @@ OFFER_SEATMAP_RESULT = {
                     {
                         "type": "seat",
                         "number": "20A",
-                        "available": False,
+                        "available": "OCCUPIED",
                         "characteristics": [
                             "Chargeable seats"
                         ]
@@ -1915,7 +1915,7 @@ OFFER_SEATMAP_RESULT = {
                     {
                         "type": "seat",
                         "number": "20B",
-                        "available": True,
+                        "available": "AVAILABLE",
                         "characteristics": [
                             "Exit row seat",
                             "Leg space seat",
@@ -1928,7 +1928,7 @@ OFFER_SEATMAP_RESULT = {
                     {
                         "type": "seat",
                         "number": "20C",
-                        "available": True,
+                        "available": "AVAILABLE",
                         "characteristics": [
                             "Exit row seat",
                             "Leg space seat",
@@ -1942,7 +1942,7 @@ OFFER_SEATMAP_RESULT = {
                     {
                         "type": "seat",
                         "number": "20D",
-                        "available": True,
+                        "available": "AVAILABLE",
                         "characteristics": [
                             "Leg space seat",
                             "Seat with bassinet facility",
@@ -1954,7 +1954,7 @@ OFFER_SEATMAP_RESULT = {
                     {
                         "type": "seat",
                         "number": "20E",
-                        "available": True,
+                        "available": "AVAILABLE",
                         "characteristics": [
                             "Leg space seat",
                             "Seat with bassinet facility",
@@ -1966,7 +1966,7 @@ OFFER_SEATMAP_RESULT = {
                     {
                         "type": "seat",
                         "number": "20H",
-                        "available": True,
+                        "available": "AVAILABLE",
                         "characteristics": [
                             "Leg space seat",
                             "Seat with bassinet facility",
@@ -1979,7 +1979,7 @@ OFFER_SEATMAP_RESULT = {
                     {
                         "type": "seat",
                         "number": "20J",
-                        "available": True,
+                        "available": "AVAILABLE",
                         "characteristics": [
                             "Exit row seat",
                             "Leg space seat",
@@ -1992,7 +1992,7 @@ OFFER_SEATMAP_RESULT = {
                     {
                         "type": "seat",
                         "number": "20K",
-                        "available": True,
+                        "available": "AVAILABLE",
                         "characteristics": [
                             "Exit row seat",
                             "Leg space seat",
@@ -2005,7 +2005,7 @@ OFFER_SEATMAP_RESULT = {
                     {
                         "type": "seat",
                         "number": "20L",
-                        "available": False,
+                        "available": "OCCUPIED",
                         "characteristics": [
                             "Chargeable seats"
                         ]
@@ -2015,7 +2015,7 @@ OFFER_SEATMAP_RESULT = {
                     {
                         "type": "seat",
                         "number": "21A",
-                        "available": True,
+                        "available": "AVAILABLE",
                         "characteristics": [
                             "No facility seat (indifferent seat)",
                             "Left side of aircraft"
@@ -2024,7 +2024,7 @@ OFFER_SEATMAP_RESULT = {
                     {
                         "type": "seat",
                         "number": "21B",
-                        "available": True,
+                        "available": "AVAILABLE",
                         "characteristics": [
                             "No facility seat (indifferent seat)",
                             "Left side of aircraft"
@@ -2033,7 +2033,7 @@ OFFER_SEATMAP_RESULT = {
                     {
                         "type": "seat",
                         "number": "21C",
-                        "available": True,
+                        "available": "AVAILABLE",
                         "characteristics": [
                             "Preferential seat",
                             "No facility seat (indifferent seat)",
@@ -2045,7 +2045,7 @@ OFFER_SEATMAP_RESULT = {
                     {
                         "type": "seat",
                         "number": "21D",
-                        "available": True,
+                        "available": "AVAILABLE",
                         "characteristics": [
                             "No facility seat (indifferent seat)",
                             "Medically OK to travel",
@@ -2055,7 +2055,7 @@ OFFER_SEATMAP_RESULT = {
                     {
                         "type": "seat",
                         "number": "21E",
-                        "available": True,
+                        "available": "AVAILABLE",
                         "characteristics": [
                             "No facility seat (indifferent seat)",
                             "Center section seat(s)"
@@ -2064,7 +2064,7 @@ OFFER_SEATMAP_RESULT = {
                     {
                         "type": "seat",
                         "number": "21H",
-                        "available": True,
+                        "available": "AVAILABLE",
                         "characteristics": [
                             "No facility seat (indifferent seat)",
                             "Medically OK to travel",
@@ -2075,7 +2075,7 @@ OFFER_SEATMAP_RESULT = {
                     {
                         "type": "seat",
                         "number": "21J",
-                        "available": True,
+                        "available": "AVAILABLE",
                         "characteristics": [
                             "No facility seat (indifferent seat)",
                             "Medically OK to travel",
@@ -2085,7 +2085,7 @@ OFFER_SEATMAP_RESULT = {
                     {
                         "type": "seat",
                         "number": "21K",
-                        "available": True,
+                        "available": "AVAILABLE",
                         "characteristics": [
                             "No facility seat (indifferent seat)",
                             "Right side of aircraft"
@@ -2094,7 +2094,7 @@ OFFER_SEATMAP_RESULT = {
                     {
                         "type": "seat",
                         "number": "21L",
-                        "available": True,
+                        "available": "AVAILABLE",
                         "characteristics": [
                             "No facility seat (indifferent seat)",
                             "Right side of aircraft"
@@ -2105,7 +2105,7 @@ OFFER_SEATMAP_RESULT = {
                     {
                         "type": "seat",
                         "number": "22A",
-                        "available": True,
+                        "available": "AVAILABLE",
                         "characteristics": [
                             "No facility seat (indifferent seat)",
                             "Left side of aircraft"
@@ -2114,7 +2114,7 @@ OFFER_SEATMAP_RESULT = {
                     {
                         "type": "seat",
                         "number": "22B",
-                        "available": True,
+                        "available": "AVAILABLE",
                         "characteristics": [
                             "No facility seat (indifferent seat)",
                             "Left side of aircraft"
@@ -2123,7 +2123,7 @@ OFFER_SEATMAP_RESULT = {
                     {
                         "type": "seat",
                         "number": "22C",
-                        "available": True,
+                        "available": "AVAILABLE",
                         "characteristics": [
                             "No facility seat (indifferent seat)",
                             "Medically OK to travel",
@@ -2134,7 +2134,7 @@ OFFER_SEATMAP_RESULT = {
                     {
                         "type": "seat",
                         "number": "22D",
-                        "available": True,
+                        "available": "AVAILABLE",
                         "characteristics": [
                             "No facility seat (indifferent seat)",
                             "Medically OK to travel",
@@ -2144,7 +2144,7 @@ OFFER_SEATMAP_RESULT = {
                     {
                         "type": "seat",
                         "number": "22E",
-                        "available": True,
+                        "available": "AVAILABLE",
                         "characteristics": [
                             "No facility seat (indifferent seat)",
                             "Center section seat(s)"
@@ -2153,7 +2153,7 @@ OFFER_SEATMAP_RESULT = {
                     {
                         "type": "seat",
                         "number": "22H",
-                        "available": True,
+                        "available": "AVAILABLE",
                         "characteristics": [
                             "No facility seat (indifferent seat)",
                             "Medically OK to travel",
@@ -2164,7 +2164,7 @@ OFFER_SEATMAP_RESULT = {
                     {
                         "type": "seat",
                         "number": "22J",
-                        "available": True,
+                        "available": "AVAILABLE",
                         "characteristics": [
                             "No facility seat (indifferent seat)",
                             "Medically OK to travel",
@@ -2174,7 +2174,7 @@ OFFER_SEATMAP_RESULT = {
                     {
                         "type": "seat",
                         "number": "22K",
-                        "available": True,
+                        "available": "AVAILABLE",
                         "characteristics": [
                             "No facility seat (indifferent seat)",
                             "Right side of aircraft"
@@ -2183,7 +2183,7 @@ OFFER_SEATMAP_RESULT = {
                     {
                         "type": "seat",
                         "number": "22L",
-                        "available": True,
+                        "available": "AVAILABLE",
                         "characteristics": [
                             "No facility seat (indifferent seat)",
                             "Right side of aircraft"
@@ -2194,7 +2194,7 @@ OFFER_SEATMAP_RESULT = {
                     {
                         "type": "seat",
                         "number": "23A",
-                        "available": True,
+                        "available": "AVAILABLE",
                         "characteristics": [
                             "No facility seat (indifferent seat)",
                             "Left side of aircraft"
@@ -2203,7 +2203,7 @@ OFFER_SEATMAP_RESULT = {
                     {
                         "type": "seat",
                         "number": "23B",
-                        "available": True,
+                        "available": "AVAILABLE",
                         "characteristics": [
                             "No facility seat (indifferent seat)",
                             "Left side of aircraft"
@@ -2212,7 +2212,7 @@ OFFER_SEATMAP_RESULT = {
                     {
                         "type": "seat",
                         "number": "23C",
-                        "available": True,
+                        "available": "AVAILABLE",
                         "characteristics": [
                             "No facility seat (indifferent seat)",
                             "Medically OK to travel",
@@ -2223,7 +2223,7 @@ OFFER_SEATMAP_RESULT = {
                     {
                         "type": "seat",
                         "number": "23D",
-                        "available": True,
+                        "available": "AVAILABLE",
                         "characteristics": [
                             "No facility seat (indifferent seat)",
                             "Medically OK to travel",
@@ -2233,7 +2233,7 @@ OFFER_SEATMAP_RESULT = {
                     {
                         "type": "seat",
                         "number": "23E",
-                        "available": True,
+                        "available": "AVAILABLE",
                         "characteristics": [
                             "No facility seat (indifferent seat)",
                             "Center section seat(s)"
@@ -2242,7 +2242,7 @@ OFFER_SEATMAP_RESULT = {
                     {
                         "type": "seat",
                         "number": "23H",
-                        "available": True,
+                        "available": "AVAILABLE",
                         "characteristics": [
                             "No facility seat (indifferent seat)",
                             "Medically OK to travel",
@@ -2253,7 +2253,7 @@ OFFER_SEATMAP_RESULT = {
                     {
                         "type": "seat",
                         "number": "23J",
-                        "available": True,
+                        "available": "AVAILABLE",
                         "characteristics": [
                             "No facility seat (indifferent seat)",
                             "Medically OK to travel",
@@ -2263,7 +2263,7 @@ OFFER_SEATMAP_RESULT = {
                     {
                         "type": "seat",
                         "number": "23K",
-                        "available": True,
+                        "available": "AVAILABLE",
                         "characteristics": [
                             "No facility seat (indifferent seat)",
                             "Right side of aircraft"
@@ -2272,7 +2272,7 @@ OFFER_SEATMAP_RESULT = {
                     {
                         "type": "seat",
                         "number": "23L",
-                        "available": True,
+                        "available": "AVAILABLE",
                         "characteristics": [
                             "No facility seat (indifferent seat)",
                             "Right side of aircraft"
@@ -2283,7 +2283,7 @@ OFFER_SEATMAP_RESULT = {
                     {
                         "type": "seat",
                         "number": "24A",
-                        "available": True,
+                        "available": "AVAILABLE",
                         "characteristics": [
                             "No facility seat (indifferent seat)",
                             "Left side of aircraft"
@@ -2292,7 +2292,7 @@ OFFER_SEATMAP_RESULT = {
                     {
                         "type": "seat",
                         "number": "24B",
-                        "available": True,
+                        "available": "AVAILABLE",
                         "characteristics": [
                             "No facility seat (indifferent seat)",
                             "Left side of aircraft"
@@ -2301,7 +2301,7 @@ OFFER_SEATMAP_RESULT = {
                     {
                         "type": "seat",
                         "number": "24C",
-                        "available": True,
+                        "available": "AVAILABLE",
                         "characteristics": [
                             "No facility seat (indifferent seat)",
                             "Medically OK to travel",
@@ -2312,7 +2312,7 @@ OFFER_SEATMAP_RESULT = {
                     {
                         "type": "seat",
                         "number": "24D",
-                        "available": True,
+                        "available": "AVAILABLE",
                         "characteristics": [
                             "No facility seat (indifferent seat)",
                             "Medically OK to travel",
@@ -2322,7 +2322,7 @@ OFFER_SEATMAP_RESULT = {
                     {
                         "type": "seat",
                         "number": "24E",
-                        "available": True,
+                        "available": "AVAILABLE",
                         "characteristics": [
                             "No facility seat (indifferent seat)",
                             "Center section seat(s)"
@@ -2331,7 +2331,7 @@ OFFER_SEATMAP_RESULT = {
                     {
                         "type": "seat",
                         "number": "24H",
-                        "available": True,
+                        "available": "AVAILABLE",
                         "characteristics": [
                             "No facility seat (indifferent seat)",
                             "Medically OK to travel",
@@ -2342,7 +2342,7 @@ OFFER_SEATMAP_RESULT = {
                     {
                         "type": "seat",
                         "number": "24J",
-                        "available": True,
+                        "available": "AVAILABLE",
                         "characteristics": [
                             "No facility seat (indifferent seat)",
                             "Medically OK to travel",
@@ -2352,7 +2352,7 @@ OFFER_SEATMAP_RESULT = {
                     {
                         "type": "seat",
                         "number": "24K",
-                        "available": True,
+                        "available": "AVAILABLE",
                         "characteristics": [
                             "No facility seat (indifferent seat)",
                             "Right side of aircraft"
@@ -2361,7 +2361,7 @@ OFFER_SEATMAP_RESULT = {
                     {
                         "type": "seat",
                         "number": "24L",
-                        "available": True,
+                        "available": "AVAILABLE",
                         "characteristics": [
                             "No facility seat (indifferent seat)",
                             "Right side of aircraft"
@@ -2372,7 +2372,7 @@ OFFER_SEATMAP_RESULT = {
                     {
                         "type": "seat",
                         "number": "25A",
-                        "available": True,
+                        "available": "AVAILABLE",
                         "characteristics": [
                             "No facility seat (indifferent seat)",
                             "Left side of aircraft"
@@ -2381,7 +2381,7 @@ OFFER_SEATMAP_RESULT = {
                     {
                         "type": "seat",
                         "number": "25B",
-                        "available": True,
+                        "available": "AVAILABLE",
                         "characteristics": [
                             "No facility seat (indifferent seat)",
                             "Left side of aircraft"
@@ -2390,7 +2390,7 @@ OFFER_SEATMAP_RESULT = {
                     {
                         "type": "seat",
                         "number": "25C",
-                        "available": True,
+                        "available": "AVAILABLE",
                         "characteristics": [
                             "No facility seat (indifferent seat)",
                             "Medically OK to travel",
@@ -2401,7 +2401,7 @@ OFFER_SEATMAP_RESULT = {
                     {
                         "type": "seat",
                         "number": "25D",
-                        "available": True,
+                        "available": "AVAILABLE",
                         "characteristics": [
                             "No facility seat (indifferent seat)",
                             "Medically OK to travel",
@@ -2411,7 +2411,7 @@ OFFER_SEATMAP_RESULT = {
                     {
                         "type": "seat",
                         "number": "25E",
-                        "available": True,
+                        "available": "AVAILABLE",
                         "characteristics": [
                             "No facility seat (indifferent seat)",
                             "Center section seat(s)"
@@ -2420,7 +2420,7 @@ OFFER_SEATMAP_RESULT = {
                     {
                         "type": "seat",
                         "number": "25H",
-                        "available": True,
+                        "available": "AVAILABLE",
                         "characteristics": [
                             "No facility seat (indifferent seat)",
                             "Medically OK to travel",
@@ -2431,7 +2431,7 @@ OFFER_SEATMAP_RESULT = {
                     {
                         "type": "seat",
                         "number": "25J",
-                        "available": True,
+                        "available": "AVAILABLE",
                         "characteristics": [
                             "No facility seat (indifferent seat)",
                             "Medically OK to travel",
@@ -2441,7 +2441,7 @@ OFFER_SEATMAP_RESULT = {
                     {
                         "type": "seat",
                         "number": "25K",
-                        "available": True,
+                        "available": "AVAILABLE",
                         "characteristics": [
                             "No facility seat (indifferent seat)",
                             "Right side of aircraft"
@@ -2450,7 +2450,7 @@ OFFER_SEATMAP_RESULT = {
                     {
                         "type": "seat",
                         "number": "25L",
-                        "available": True,
+                        "available": "AVAILABLE",
                         "characteristics": [
                             "No facility seat (indifferent seat)",
                             "Right side of aircraft"
@@ -2461,7 +2461,7 @@ OFFER_SEATMAP_RESULT = {
                     {
                         "type": "seat",
                         "number": "26A",
-                        "available": True,
+                        "available": "AVAILABLE",
                         "characteristics": [
                             "No facility seat (indifferent seat)",
                             "Left side of aircraft"
@@ -2470,7 +2470,7 @@ OFFER_SEATMAP_RESULT = {
                     {
                         "type": "seat",
                         "number": "26B",
-                        "available": True,
+                        "available": "AVAILABLE",
                         "characteristics": [
                             "No facility seat (indifferent seat)",
                             "Left side of aircraft"
@@ -2479,7 +2479,7 @@ OFFER_SEATMAP_RESULT = {
                     {
                         "type": "seat",
                         "number": "26C",
-                        "available": True,
+                        "available": "AVAILABLE",
                         "characteristics": [
                             "No facility seat (indifferent seat)",
                             "Medically OK to travel",
@@ -2490,7 +2490,7 @@ OFFER_SEATMAP_RESULT = {
                     {
                         "type": "seat",
                         "number": "26D",
-                        "available": True,
+                        "available": "AVAILABLE",
                         "characteristics": [
                             "No facility seat (indifferent seat)",
                             "Medically OK to travel",
@@ -2500,7 +2500,7 @@ OFFER_SEATMAP_RESULT = {
                     {
                         "type": "seat",
                         "number": "26E",
-                        "available": True,
+                        "available": "AVAILABLE",
                         "characteristics": [
                             "No facility seat (indifferent seat)",
                             "Center section seat(s)"
@@ -2509,7 +2509,7 @@ OFFER_SEATMAP_RESULT = {
                     {
                         "type": "seat",
                         "number": "26H",
-                        "available": True,
+                        "available": "AVAILABLE",
                         "characteristics": [
                             "No facility seat (indifferent seat)",
                             "Medically OK to travel",
@@ -2520,7 +2520,7 @@ OFFER_SEATMAP_RESULT = {
                     {
                         "type": "seat",
                         "number": "26J",
-                        "available": True,
+                        "available": "AVAILABLE",
                         "characteristics": [
                             "No facility seat (indifferent seat)",
                             "Medically OK to travel",
@@ -2530,7 +2530,7 @@ OFFER_SEATMAP_RESULT = {
                     {
                         "type": "seat",
                         "number": "26K",
-                        "available": True,
+                        "available": "AVAILABLE",
                         "characteristics": [
                             "No facility seat (indifferent seat)",
                             "Right side of aircraft"
@@ -2539,7 +2539,7 @@ OFFER_SEATMAP_RESULT = {
                     {
                         "type": "seat",
                         "number": "26L",
-                        "available": True,
+                        "available": "AVAILABLE",
                         "characteristics": [
                             "No facility seat (indifferent seat)",
                             "Right side of aircraft"
@@ -2550,7 +2550,7 @@ OFFER_SEATMAP_RESULT = {
                     {
                         "type": "seat",
                         "number": "27A",
-                        "available": True,
+                        "available": "AVAILABLE",
                         "characteristics": [
                             "No facility seat (indifferent seat)",
                             "Left side of aircraft"
@@ -2559,7 +2559,7 @@ OFFER_SEATMAP_RESULT = {
                     {
                         "type": "seat",
                         "number": "27B",
-                        "available": True,
+                        "available": "AVAILABLE",
                         "characteristics": [
                             "No facility seat (indifferent seat)",
                             "Left side of aircraft"
@@ -2568,7 +2568,7 @@ OFFER_SEATMAP_RESULT = {
                     {
                         "type": "seat",
                         "number": "27C",
-                        "available": True,
+                        "available": "AVAILABLE",
                         "characteristics": [
                             "No facility seat (indifferent seat)",
                             "Medically OK to travel",
@@ -2579,7 +2579,7 @@ OFFER_SEATMAP_RESULT = {
                     {
                         "type": "seat",
                         "number": "27D",
-                        "available": True,
+                        "available": "AVAILABLE",
                         "characteristics": [
                             "No facility seat (indifferent seat)",
                             "Medically OK to travel",
@@ -2589,7 +2589,7 @@ OFFER_SEATMAP_RESULT = {
                     {
                         "type": "seat",
                         "number": "27E",
-                        "available": True,
+                        "available": "AVAILABLE",
                         "characteristics": [
                             "No facility seat (indifferent seat)",
                             "Center section seat(s)"
@@ -2598,7 +2598,7 @@ OFFER_SEATMAP_RESULT = {
                     {
                         "type": "seat",
                         "number": "27H",
-                        "available": True,
+                        "available": "AVAILABLE",
                         "characteristics": [
                             "No facility seat (indifferent seat)",
                             "Medically OK to travel",
@@ -2609,7 +2609,7 @@ OFFER_SEATMAP_RESULT = {
                     {
                         "type": "seat",
                         "number": "27J",
-                        "available": True,
+                        "available": "AVAILABLE",
                         "characteristics": [
                             "No facility seat (indifferent seat)",
                             "Medically OK to travel",
@@ -2619,7 +2619,7 @@ OFFER_SEATMAP_RESULT = {
                     {
                         "type": "seat",
                         "number": "27K",
-                        "available": True,
+                        "available": "AVAILABLE",
                         "characteristics": [
                             "No facility seat (indifferent seat)",
                             "Right side of aircraft"
@@ -2628,7 +2628,7 @@ OFFER_SEATMAP_RESULT = {
                     {
                         "type": "seat",
                         "number": "27L",
-                        "available": True,
+                        "available": "AVAILABLE",
                         "characteristics": [
                             "No facility seat (indifferent seat)",
                             "Right side of aircraft"
@@ -2639,7 +2639,7 @@ OFFER_SEATMAP_RESULT = {
                     {
                         "type": "seat",
                         "number": "28A",
-                        "available": True,
+                        "available": "AVAILABLE",
                         "characteristics": [
                             "No facility seat (indifferent seat)",
                             "Left side of aircraft"
@@ -2648,7 +2648,7 @@ OFFER_SEATMAP_RESULT = {
                     {
                         "type": "seat",
                         "number": "28B",
-                        "available": True,
+                        "available": "AVAILABLE",
                         "characteristics": [
                             "No facility seat (indifferent seat)",
                             "Left side of aircraft"
@@ -2657,7 +2657,7 @@ OFFER_SEATMAP_RESULT = {
                     {
                         "type": "seat",
                         "number": "28C",
-                        "available": False,
+                        "available": "OCCUPIED",
                         "characteristics": [
                             "Aisle seat"
                         ]
@@ -2666,7 +2666,7 @@ OFFER_SEATMAP_RESULT = {
                     {
                         "type": "seat",
                         "number": "28D",
-                        "available": False,
+                        "available": "OCCUPIED",
                         "characteristics": [
                             "Aisle seat"
                         ]
@@ -2674,7 +2674,7 @@ OFFER_SEATMAP_RESULT = {
                     {
                         "type": "seat",
                         "number": "28E",
-                        "available": True,
+                        "available": "AVAILABLE",
                         "characteristics": [
                             "No facility seat (indifferent seat)",
                             "Center section seat(s)"
@@ -2683,7 +2683,7 @@ OFFER_SEATMAP_RESULT = {
                     {
                         "type": "seat",
                         "number": "28H",
-                        "available": False,
+                        "available": "OCCUPIED",
                         "characteristics": [
                             "Aisle seat"
                         ]
@@ -2692,7 +2692,7 @@ OFFER_SEATMAP_RESULT = {
                     {
                         "type": "seat",
                         "number": "28J",
-                        "available": False,
+                        "available": "OCCUPIED",
                         "characteristics": [
                             "Aisle seat"
                         ]
@@ -2700,7 +2700,7 @@ OFFER_SEATMAP_RESULT = {
                     {
                         "type": "seat",
                         "number": "28K",
-                        "available": True,
+                        "available": "AVAILABLE",
                         "characteristics": [
                             "No facility seat (indifferent seat)",
                             "Right side of aircraft"
@@ -2709,7 +2709,7 @@ OFFER_SEATMAP_RESULT = {
                     {
                         "type": "seat",
                         "number": "28L",
-                        "available": False,
+                        "available": "OCCUPIED",
                         "characteristics": [
                             "Window seat"
                         ]
@@ -2719,7 +2719,7 @@ OFFER_SEATMAP_RESULT = {
                     {
                         "type": "seat",
                         "number": "29A",
-                        "available": False,
+                        "available": "OCCUPIED",
                         "characteristics": [
                             "Window seat"
                         ]
@@ -2727,7 +2727,7 @@ OFFER_SEATMAP_RESULT = {
                     {
                         "type": "seat",
                         "number": "29B",
-                        "available": True,
+                        "available": "AVAILABLE",
                         "characteristics": [
                             "No facility seat (indifferent seat)",
                             "Left side of aircraft"
@@ -2736,7 +2736,7 @@ OFFER_SEATMAP_RESULT = {
                     {
                         "type": "seat",
                         "number": "29C",
-                        "available": False,
+                        "available": "OCCUPIED",
                         "characteristics": [
                             "Aisle seat"
                         ]
@@ -2745,7 +2745,7 @@ OFFER_SEATMAP_RESULT = {
                     {
                         "type": "seat",
                         "number": "29D",
-                        "available": False,
+                        "available": "OCCUPIED",
                         "characteristics": [
                             "Aisle seat"
                         ]
@@ -2753,12 +2753,12 @@ OFFER_SEATMAP_RESULT = {
                     {
                         "type": "seat",
                         "number": "29E",
-                        "available": False
+                        "available": "OCCUPIED"
                     },
                     {
                         "type": "seat",
                         "number": "29H",
-                        "available": False,
+                        "available": "OCCUPIED",
                         "characteristics": [
                             "Aisle seat"
                         ]
@@ -2767,7 +2767,7 @@ OFFER_SEATMAP_RESULT = {
                     {
                         "type": "seat",
                         "number": "29J",
-                        "available": False,
+                        "available": "OCCUPIED",
                         "characteristics": [
                             "Aisle seat"
                         ]
@@ -2775,7 +2775,7 @@ OFFER_SEATMAP_RESULT = {
                     {
                         "type": "seat",
                         "number": "29K",
-                        "available": True,
+                        "available": "AVAILABLE",
                         "characteristics": [
                             "No facility seat (indifferent seat)",
                             "Right side of aircraft"
@@ -2784,7 +2784,7 @@ OFFER_SEATMAP_RESULT = {
                     {
                         "type": "seat",
                         "number": "29L",
-                        "available": False,
+                        "available": "OCCUPIED",
                         "characteristics": [
                             "Window seat"
                         ]
@@ -2794,7 +2794,7 @@ OFFER_SEATMAP_RESULT = {
                     {
                         "type": "seat",
                         "number": "30A",
-                        "available": False,
+                        "available": "OCCUPIED",
                         "characteristics": [
                             "Window seat"
                         ]
@@ -2803,7 +2803,7 @@ OFFER_SEATMAP_RESULT = {
                     {
                         "type": "seat",
                         "number": "30C",
-                        "available": False,
+                        "available": "OCCUPIED",
                         "characteristics": [
                             "Aisle seat"
                         ]
@@ -2812,7 +2812,7 @@ OFFER_SEATMAP_RESULT = {
                     {
                         "type": "seat",
                         "number": "30D",
-                        "available": False,
+                        "available": "OCCUPIED",
                         "characteristics": [
                             "Aisle seat"
                         ]
@@ -2820,12 +2820,12 @@ OFFER_SEATMAP_RESULT = {
                     {
                         "type": "seat",
                         "number": "30E",
-                        "available": False
+                        "available": "OCCUPIED"
                     },
                     {
                         "type": "seat",
                         "number": "30H",
-                        "available": False,
+                        "available": "OCCUPIED",
                         "characteristics": [
                             "Aisle seat"
                         ]
@@ -2834,7 +2834,7 @@ OFFER_SEATMAP_RESULT = {
                     {
                         "type": "seat",
                         "number": "30J",
-                        "available": False,
+                        "available": "OCCUPIED",
                         "characteristics": [
                             "Aisle seat"
                         ]
@@ -2843,7 +2843,7 @@ OFFER_SEATMAP_RESULT = {
                     {
                         "type": "seat",
                         "number": "30L",
-                        "available": False,
+                        "available": "OCCUPIED",
                         "characteristics": [
                             "Window seat"
                         ]
@@ -2853,7 +2853,7 @@ OFFER_SEATMAP_RESULT = {
                     {
                         "type": "seat",
                         "number": "31A",
-                        "available": False,
+                        "available": "OCCUPIED",
                         "characteristics": [
                             "Window seat"
                         ]
@@ -2862,7 +2862,7 @@ OFFER_SEATMAP_RESULT = {
                     {
                         "type": "seat",
                         "number": "31C",
-                        "available": False,
+                        "available": "OCCUPIED",
                         "characteristics": [
                             "Aisle seat"
                         ]
@@ -2881,7 +2881,7 @@ OFFER_SEATMAP_RESULT = {
                     {
                         "type": "seat",
                         "number": "31J",
-                        "available": False,
+                        "available": "OCCUPIED",
                         "characteristics": [
                             "Aisle seat"
                         ]
@@ -2890,7 +2890,7 @@ OFFER_SEATMAP_RESULT = {
                     {
                         "type": "seat",
                         "number": "31L",
-                        "available": False,
+                        "available": "OCCUPIED",
                         "characteristics": [
                             "Window seat"
                         ]
