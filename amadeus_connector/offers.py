@@ -229,7 +229,7 @@ class OfferSeatmap:
                 grid[x][y] = {
                     'type': 'seat',
                     'number': seat['number'],
-                    'available': seat['travelerPricing'][0]['seatAvailabilityStatus'] == "AVAILABLE",
+                    'available': seat['travelerPricing'][0]['seatAvailabilityStatus'],
                 }
 
                 # add characteristics if available

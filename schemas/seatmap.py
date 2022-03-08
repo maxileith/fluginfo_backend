@@ -56,7 +56,7 @@ deck_wings_x = inline_serializer(name="DeckWingsX", fields={
 deck_grid_item = inline_serializer(name="GridItemSeat", fields={
     "type": fields.ChoiceField(choices=["seat", "facility"], help_text="e.g. seat"),
     "number": fields.CharField(help_text="e.g. 12B (seat only)", required=False),
-    "available": fields.BooleanField(help_text="e.g. true (seat only)", required=False),
+    "available": fields.ChoiceField(choices=["AVAILABLE", "BLOCKED", "OCCUPIED"], help_text="e.g. AVAILABLE"),
     "characteristics": fields.ListField(child=fields.CharField(help_text="e.g. No infants. (seat only)"), required=False),
     "name": fields.CharField(help_text="e.g. Galley (facility only)", required=False),
 })
