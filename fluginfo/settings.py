@@ -154,7 +154,7 @@ REST_FRAMEWORK = {
 SPECTACULAR_SETTINGS = {
     'TITLE': 'Fluginfo API',
     'DESCRIPTION': 'API to query information about flights.',
-    'VERSION': 'b0.4',
+    'VERSION': 'b0.4.1',
 }
 
 AMADEUS_KEY = os.environ.get('FLUGINFO_BACKEND_AMADEUS_API_KEY')
@@ -179,7 +179,7 @@ CACHES = {
     },
 }
 
-AMADEUS_PROD = DEBUG = os.environ.get(
+AMADEUS_PROD = os.environ.get(
     'FLUGINFO_BACKEND_AMADEUS_PROD', 'false') == 'true'
 
 ac.set_cache_timeout(CACHE_TIMEOUT)  # CACHE_TIMEOUT
