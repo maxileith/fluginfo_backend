@@ -77,7 +77,7 @@ def set_cache_timeout(seconds: int):
 
 
 def timed_lru_cache(
-    _func=None, *, maxsize: int = 1024, typed: bool = False, forever: bool = False, maxseconds: int = 10e9
+    _func=None, *, maxsize: int = 1024, typed: bool = False, forever: bool = False, maxseconds: int = 10e12
 ):
     """ Extension over existing lru_cache with timeout
     :param seconds: timeout value
