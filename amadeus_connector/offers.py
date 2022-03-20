@@ -145,41 +145,40 @@ class OfferSeatmap:
             legSpaceValue)
 
         # make the amenities dictionary
-        amenities = {
-            'power': {
-                'isChargeable': aircraftCabinAmenities['power']['isChargeable'],
-                'type': self.__bookshelf.get('aircraftCabinAmenitiesPower', aircraftCabinAmenities['power']['powerType']),
-            },
-            'seat': {
-                'legSpace': f'{legSpace} cm',
-                'tilt': self.__bookshelf.get('aircraftCabinAmenitiesSeatTilt', aircraftCabinAmenities['seat']['tilt']),
-                'images': [
-                    {
-                        'title': m['title'],
-                        'description': m['description']['text'],
-                        'href': m['href'],
-                    } for m in aircraftCabinAmenities['seat']['medias'] if m['mediaType'] == 'image'
-                ],
-            },
-            'wifi': {
+        amenities = {}
+
+        if 'power' in aircraftCabinAmenities.keys():
+            amenities['power'] = {
+                    'isChargeable': aircraftCabinAmenities['power']['isChargeable'],
+                    'type': self.__bookshelf.get('aircraftCabinAmenitiesPower', aircraftCabinAmenities['power']['powerType']),
+                }
+        if 'wifi' in aircraftCabinAmenities.keys():
+            amenities['wifi'] = {
                 'isChargeable': aircraftCabinAmenities['wifi']['isChargeable'],
                 'type': self.__bookshelf.get('aircraftCabinAmenitiesWifi', aircraftCabinAmenities['wifi']['wifiCoverage']),
-            },
-            'entertainment': [
-                {
-                    'isChargeable': e['isChargeable'],
-                    'type': self.__bookshelf.get('aircraftCabinAmenitiesEntertainment', e['entertainmentType']),
-                } for e in aircraftCabinAmenities['entertainment']
-            ],
-            'food': {
+                }
+        if 'food' in aircraftCabinAmenities.keys():
+            amenities['food'] = {
                 'isChargeable': aircraftCabinAmenities['food']['isChargeable'],
                 'type': self.__bookshelf.get('aircraftCabinAmenitiesFood', aircraftCabinAmenities['food']['foodType']),
-            },
-            'beverage': {
-                'isChargeable': aircraftCabinAmenities['beverage']['isChargeable'],
-                'type': self.__bookshelf.get('aircraftCabinAmenitiesBeverage', aircraftCabinAmenities['beverage']['beverageType']),
-            },
-        }
+                }
+        if 'beverage' in aircraftCabinAmenities.keys():
+            amenities['beverage'] = {
+                    'isChargeable': aircraftCabinAmenities['beverage']['isChargeable'],
+                    'type': self.__bookshelf.get('aircraftCabinAmenitiesBeverage', aircraftCabinAmenities['beverage']['beverageType']),
+                }
+        if 'entertainment' in aircraftCabinAmenities.keys():
+            amenities['entertainment'] = [
+                    {
+                        'isChargeable': e['isChargeable'],
+                        'type': self.__bookshelf.get('aircraftCabinAmenitiesEntertainment', e['entertainmentType']),
+                    } for e in aircraftCabinAmenities['entertainment']
+                ]
+        if 'seat' in aircraftCabinAmenities.keys():
+            amenities['seat'] = {
+                    'legSpace': f'{legSpace} cm',
+                    'tilt': self.__bookshelf.get('aircraftCabinAmenitiesSeatTilt', aircraftCabinAmenities['seat']['tilt']),
+                }
 
         # add amenities to the simplified seatmap
         simplified_seatmap['amenities'] = amenities

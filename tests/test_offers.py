@@ -882,24 +882,7 @@ OFFER_SEATMAP_RESULT = {
         },
         "seat": {
             "legSpace": "74 cm",
-            "tilt": "Normal",
-            "images": [
-                {
-                    "title": "Comfortable Seats",
-                    "description": "Settle in with comfortable seats and an ecoTHREAD blanket made from 100% recycled plastic bottles.",
-                    "href": "https://pdt.content.amadeus.com/AncillaryServicesMedia/14223418_395.jpg"
-                },
-                {
-                    "title": "Stay Connected",
-                    "description": "Stay connected next time you fly. Choose from our great value Wi-Fi plans.",
-                    "href": "https://pdt.content.amadeus.com/AncillaryServicesMedia/71344149_DFL.jpg"
-                },
-                {
-                    "title": "Be Curious",
-                    "description": "With special seat,meals, toys, and dedicated children's ice channels, we encourage curious minds and inspire tomorrow's explorers.",
-                    "href": "https://pdt.content.amadeus.com/AncillaryServicesMedia/42266150_401.jpg"
-                }
-            ]
+            "tilt": "Normal"
         },
         "wifi": {
             "isChargeable": True,
