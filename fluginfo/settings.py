@@ -154,7 +154,7 @@ REST_FRAMEWORK = {
 SPECTACULAR_SETTINGS = {
     'TITLE': 'Fluginfo API',
     'DESCRIPTION': 'API to query information about flights.',
-    'VERSION': 'b0.4.1',
+    'VERSION': 'b0.5',
 }
 
 AMADEUS_KEY = os.environ.get('FLUGINFO_BACKEND_AMADEUS_API_KEY')
