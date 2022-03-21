@@ -74,5 +74,6 @@ seatmap_response_schema = inline_serializer(name="SeatmapResponse", fields={
     "arrivalIata": fields.CharField(help_text="e.g. DFW"),
     "date": fields.CharField(help_text="e.g. 2022-03-01"),
     "amenities": copy(amenities),
+    "aircraft": fields.CharField(help_text="e.g. Airbus A340-300", required=False),
     "decks": fields.ListField(child=copy(deck)),
 })

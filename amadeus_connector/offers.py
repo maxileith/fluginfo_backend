@@ -74,6 +74,46 @@ class OfferSeatmap:
         # return the seatmaps
         return response
 
+    def __load_aircraft(self, hash_val: str, segment_id: int) -> str:
+        """
+        Selects the seatmap of the segment and transforms the seatmap into the specified format.
+
+        Args:
+            self (object): Object itself.
+            hash_val (str): Hash value that identifies the offer.
+            segment_id (int): Segment ID of the desired aircraft.
+
+        Raises:
+            AmadeusNothingFound: There is no aircraft for the given segment.
+
+        Returns:
+            str: aircraft
+        """
+
+        # get the offer from the cache
+        # hint: this method can raise AmadeusNotFound
+        # (letting the error propagate higher in the call
+        # stack is intended --> don't catch)
+        offer = self.__offer_cache.get([hash_val])[hash_val]
+
+        aircraft_id = ''
+        for i in offer['itineraries']:
+            for s in i['segments']:
+                if s['id'] == str(segment_id) and 'aircraft' in s.keys():
+                    aircraft_id = s['aircraft']['code']
+
+        if aircraft_id == '':
+            return None
+
+        try:
+            return self.__bookshelf.get('aircraft', aircraft_id)
+        except AmadeusNothingFound:
+            return aircraft_id
+
+        return None
+
+        # return the seatmaps
+
     def get(self, hash_val: str, segment_id: int) -> dict:
         """
         Get a seatmap of a segment.
@@ -94,12 +134,13 @@ class OfferSeatmap:
 
         # load all seatmaps of the offer
         response = self.__load_seatmaps_of_offer(hash_val)
+        aircraft = self.__load_aircraft(hash_val, segment_id)
         seatmaps = response.result['data']
 
         # Simplify the seatmap of the requested segment and return
-        return self.__simplify_seatmap(seatmaps, segment_id)
+        return self.__simplify_seatmap(seatmaps, segment_id, aircraft)
 
-    def __simplify_seatmap(self, seatmaps: list, segment_id: int) -> dict:
+    def __simplify_seatmap(self, seatmaps: list, segment_id: int, aircraft: str) -> dict:
         """
         Selects the seatmap of the segment and transforms the seatmap into the specified format.
 
@@ -107,6 +148,7 @@ class OfferSeatmap:
             self (object): Object itself.
             seatmaps (list): List of Seatmaps.
             segment_id (int): Segment ID of the desired seatmap.
+            aircraft (str): Aircraft that the cabin belongs to.
 
         Raises:
             AmadeusNothingFound: There is no seatmap for the given segment.
@@ -134,6 +176,8 @@ class OfferSeatmap:
         simplified_seatmap['departureIata'] = seatmap['departure']['iataCode']
         simplified_seatmap['arrivalIata'] = seatmap['arrival']['iataCode']
         simplified_seatmap['date'] = seatmap['departure']['at']
+        if aircraft != None:
+            simplified_seatmap['aircraft'] = aircraft
 
         # provide cabin amenities
         aircraftCabinAmenities = seatmap['aircraftCabinAmenities']
@@ -149,36 +193,36 @@ class OfferSeatmap:
 
         if 'power' in aircraftCabinAmenities.keys():
             amenities['power'] = {
-                    'isChargeable': aircraftCabinAmenities['power']['isChargeable'],
-                    'type': self.__bookshelf.get('aircraftCabinAmenitiesPower', aircraftCabinAmenities['power']['powerType']),
-                }
+                'isChargeable': aircraftCabinAmenities['power']['isChargeable'],
+                'type': self.__bookshelf.get('aircraftCabinAmenitiesPower', aircraftCabinAmenities['power']['powerType']),
+            }
         if 'wifi' in aircraftCabinAmenities.keys():
             amenities['wifi'] = {
                 'isChargeable': aircraftCabinAmenities['wifi']['isChargeable'],
                 'type': self.__bookshelf.get('aircraftCabinAmenitiesWifi', aircraftCabinAmenities['wifi']['wifiCoverage']),
-                }
+            }
         if 'food' in aircraftCabinAmenities.keys():
             amenities['food'] = {
                 'isChargeable': aircraftCabinAmenities['food']['isChargeable'],
                 'type': self.__bookshelf.get('aircraftCabinAmenitiesFood', aircraftCabinAmenities['food']['foodType']),
-                }
+            }
         if 'beverage' in aircraftCabinAmenities.keys():
             amenities['beverage'] = {
-                    'isChargeable': aircraftCabinAmenities['beverage']['isChargeable'],
-                    'type': self.__bookshelf.get('aircraftCabinAmenitiesBeverage', aircraftCabinAmenities['beverage']['beverageType']),
-                }
+                'isChargeable': aircraftCabinAmenities['beverage']['isChargeable'],
+                'type': self.__bookshelf.get('aircraftCabinAmenitiesBeverage', aircraftCabinAmenities['beverage']['beverageType']),
+            }
         if 'entertainment' in aircraftCabinAmenities.keys():
             amenities['entertainment'] = [
-                    {
-                        'isChargeable': e['isChargeable'],
-                        'type': self.__bookshelf.get('aircraftCabinAmenitiesEntertainment', e['entertainmentType']),
-                    } for e in aircraftCabinAmenities['entertainment']
-                ]
+                {
+                    'isChargeable': e['isChargeable'],
+                    'type': self.__bookshelf.get('aircraftCabinAmenitiesEntertainment', e['entertainmentType']),
+                } for e in aircraftCabinAmenities['entertainment']
+            ]
         if 'seat' in aircraftCabinAmenities.keys():
             amenities['seat'] = {
-                    'legSpace': f'{legSpace} cm',
-                    'tilt': self.__bookshelf.get('aircraftCabinAmenitiesSeatTilt', aircraftCabinAmenities['seat']['tilt']),
-                }
+                'legSpace': f'{legSpace} cm',
+                'tilt': self.__bookshelf.get('aircraftCabinAmenitiesSeatTilt', aircraftCabinAmenities['seat']['tilt']),
+            }
 
         # add amenities to the simplified seatmap
         simplified_seatmap['amenities'] = amenities
@@ -216,6 +260,8 @@ class OfferSeatmap:
                 grid.append(copy(row))
 
             # compose seat information
+            if 'seats' not in deck.keys():
+                continue
             for seat in deck['seats']:
                 # determine position of the seats
                 try:
@@ -322,7 +368,7 @@ class OfferDetails:
         # create the dictionary for the specified format and
         # fill in the information.
         return {
-            'price': float(offer["price"]["grandTotal"]),
+            'price': float(offer['price']['grandTotal']),
             'itineraries': [
                 {
                     'duration': duration_to_minutes(i['duration']),
