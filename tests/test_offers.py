@@ -875,6 +875,7 @@ OFFER_SEATMAP_RESULT = {
     "departureIata": "FRA",
     "arrivalIata": "DFW",
     "date": "2022-03-01T10:50:00",
+    "aircraft": "BOEING 787-8",
     "amenities": {
         "power": {
             "isChargeable": False,

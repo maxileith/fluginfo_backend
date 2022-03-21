@@ -1,4 +1,5 @@
 import unittest
+from copy import deepcopy
 from unittest.mock import Mock
 from amadeus.client.errors import ServerError, ClientError, NotFoundError
 from tests.amadeus_client_mock import AmadeusMockClient
@@ -106,6 +107,8 @@ class TestStatusSeatmap(unittest.TestCase):
         )
 
     def test_get_success(self):
+        expected = deepcopy(OFFER_SEATMAP_RESULT)
+        del OFFER_SEATMAP_RESULT['aircraft']
         self.assertDictEqual(OFFER_SEATMAP_RESULT,
                              self.status_seatmap.get(**self.PARAMS))
 
